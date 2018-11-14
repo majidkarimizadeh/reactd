@@ -19,7 +19,7 @@ import {EmptyPage} from './components/EmptyPage';
 import {Documentation} from "./components/Documentation";
 import {ScrollPanel} from 'primereact/components/scrollpanel/ScrollPanel';
 import history from './history'
-import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/themes/nova-colored/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';

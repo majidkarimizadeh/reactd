@@ -64,8 +64,8 @@ class AppSubmenu extends Component {
                 <li className={styleClass} key={i}>
                     {item.items && this.props.root===true && <div className='arrow'></div>}
                     <a href={item.url} onClick={(e) => this.onMenuItemClick(e, item, i)} target={item.target}>
-                        <i className={item.icon}></i>
                         <span>{item.label}</span>
+                        <i className={item.icon}></i>
                         {submenuIcon}
                         {badge}
                     </a>

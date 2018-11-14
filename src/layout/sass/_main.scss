@@ -29,12 +29,13 @@ a {
         padding: .7em 1.5em 0em 1.5em;
         color: #ffffff;
         z-index: 999;
-        right: 0;
+        // right: 0;
+        left: 0;
         @include linear-gradient-left($topbarLeftBgColor,$topbarRightBgColor);
         @include transition(left $transitionDuration);
 
         .layout-topbar-icons {
-            float: right;
+            // float: right;
             display: block;
             -moz-animation-duration: .5s;
             -webkit-animation-duration: .5s;
@@ -129,6 +130,7 @@ a {
         }
 
         .layout-menu-button {
+            float: right;
             cursor: pointer;
             display: inline-block;
             text-decoration: none;
@@ -250,6 +252,7 @@ a {
 
             li {
                 a {
+                    text-align: right;
                     cursor: pointer;
                     position: relative;
                     color: $menuitemColor;
@@ -270,7 +273,8 @@ a {
                     }
 
                     .menuitem-toggle-icon {
-                        float: right;
+                        // float: right;
+                        float: left;
                     }
 
                     &:hover {
@@ -326,14 +330,16 @@ a {
             }
 
             .menuitem-toggle-icon {
-                float: right;
+                // float: right;
+                float: left;
                 margin-top: 2px;
             }
 
             .menuitem-badge {
                 margin-top: 3px;
                 font-size: 10px;
-                float: right;
+                // float: right;
+                float: left;
                 width: 16px;
                 height: 16px;
                 line-height: 16px;
@@ -434,52 +440,63 @@ a {
     .layout-wrapper {
         &.layout-overlay {
             .layout-sidebar {
-                left: -250px;
+                // left: -250px;
+                right: -250px;
             }
             
             .layout-topbar {
-                left: 0;
+                // left: 0;
+                right: 0;
             }
     
             .layout-main, .layout-footer {
-                margin-left: 0;
+                // margin-left: 0;
+                margin-right: 0;
             }
     
             &.layout-overlay-sidebar-active {
                 .layout-sidebar {
-                    left: 0;
+                    // left: 0;
+                    right: 0;
                 }
     
                 .layout-topbar  {
-                    left: 250px;
+                    right: 250px;
+                    // left: 250px;
                 }
             }
         }
 
         &.layout-static {
             .layout-sidebar {
-                left: 0;
+                // left: 0;
+                right: 0;
             }
             
             .layout-topbar {
-                left: 250px;
+                // left: 250px;
+                right: 250px;
             }
     
             .layout-main, .layout-footer {
-                margin-left: 250px;
+                margin-right: 250px;
+                // margin-left: 250px;
             }
     
             &.layout-static-sidebar-inactive {
                 .layout-sidebar {
-                    left: -250px;
+                    right: -250px;
+                    // left: -250px;
                 }
     
                 .layout-topbar  {
-                    left: 0;
+                    // left: 0;
+                    right: 0;
                 }
 
                 .layout-main, .layout-footer {
-                    margin-left: 0;
+                    margin-right: 0;
+                    // margin-left: 0;
                 }
             }
         }
@@ -489,15 +506,18 @@ a {
 @media (max-width: 1024px) {
     .layout-wrapper {
         .layout-topbar {
-            left: 0;
+            // left: 0;
+            right: 0;
         }
 
         .layout-main, .layout-footer {
-            margin-left: 0;
+            // margin-left: 0;
+            margin-right: 0;
         }
 
         .layout-sidebar {
-            left: -250px;
+            // left: -250px;
+            right: -250px;
             margin-top: 50px;
         }
 
@@ -515,7 +535,8 @@ a {
 
         &.layout-mobile-sidebar-active {
             .layout-sidebar {
-                left: -0;
+                right: -0;
+                // left: -0;
             }
 
             .layout-mask {
