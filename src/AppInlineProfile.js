@@ -27,9 +27,9 @@ export class AppInlineProfile extends Component {
                     <i className="pi pi-fw pi-cog"/>
                 </a>
                 <ul className={classNames({'profile-expanded': this.state.expanded})}>
-                    <li><a><i className="pi pi-fw pi-user"/><span>Account</span></a></li>
-                    <li><a><i className="pi pi-fw pi-inbox"/><span>Notifications</span><span className="menuitem-badge">2</span></a></li>
-                    <li><a><i className="pi pi-fw pi-power-off"/><span>Logout</span></a></li>
+                    <li><a><span>Account</span><i className="pi pi-fw pi-user"/></a></li>
+                    <li><a><span>Notifications</span><i className="pi pi-fw pi-inbox"/><span className="menuitem-badge">2</span></a></li>
+                    <li><a><span>Logout</span><i className="pi pi-fw pi-power-off"/></a></li>
                 </ul>
             </div>
         );
