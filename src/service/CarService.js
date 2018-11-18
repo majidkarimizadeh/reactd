@@ -13,7 +13,7 @@ export class CarService {
     }
 
     getCarsLarge() {
-        return axios.get('assets/demo/data/cars-large.json')
+        return axios.get('http://localhost:3002/assets/demo/data/cars-large.json')
                 .then(res => res.data.data);
     }
 }

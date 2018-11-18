@@ -1,1 +1,5 @@
 /* Place your extensions here to make migration to a new release easier. */
+.lable {
+	display: block;
+	margin-bottom: 4px;
+}
