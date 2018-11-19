@@ -19,6 +19,7 @@ export class TableService {
                 .then(res => {
                     return {
                         data: res.data.data,
+                        table: JSON.parse(res.data.table.meta_value),
                         columns: res.data.columns,
                     }    
                 });

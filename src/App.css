@@ -3,3 +3,17 @@
 	display: block;
 	margin-bottom: 4px;
 }
+
+.custom-toolbar {
+	margin-bottom: 25px;
+	background-color: #f4f4f4 !important;
+	border: 1px solid #c8c8c8 !important;
+}
+
+.p-toolbar-group-right > button {
+	margin: 4px  0px  4px 4px
+}
+
+.p-toolbar-group-left > button {
+	margin: 4px  4px  4px 0px
+}

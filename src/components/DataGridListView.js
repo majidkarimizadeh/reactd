@@ -1,20 +1,13 @@
 import React, {Component} from 'react';
+import TextEditComponent from './BaseComponent/TextEditComponent'
+import LongTextEditComponent from './BaseComponent/LongTextEditComponent'
 import {TableService} from '../service/TableService';
-import {CarService} from '../service/CarService';
-import {NodeService} from '../service/NodeService';
-import {EventService} from '../service/EventService';
-import {OrganizationChart} from 'primereact/organizationchart';
+import {RowService} from '../service/RowService';
 import {DataTable} from 'primereact/datatable';
-import {Tree} from 'primereact/tree';
-import {TreeTable} from 'primereact/treetable';
 import {Column} from 'primereact/column'
-import {PickList} from 'primereact/picklist';
-import {OrderList} from 'primereact/orderlist';
-import {Schedule} from 'primereact/schedule';
-import {Panel} from 'primereact/panel';
-import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
-import {Dropdown} from 'primereact/dropdown';
+import {Toolbar} from 'primereact/toolbar';
+import {Dialog} from 'primereact/dialog';
 import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
 
 export class DataGridListView extends Component {
@@ -22,53 +15,157 @@ export class DataGridListView extends Component {
     constructor() {
         super();
         this.state = {
-            dataTableValue:[],
+            data:[],
             columns:[],
-            attr: [],
+            table: {},
+            record: {},
         };
 
-        this.tableService = new TableService();
+        this.create = this.create.bind(this)
+
+        this.onHideModal = this.onHideModal.bind(this)
+        this.onTextChange = this.onTextChange.bind(this)
+
+        this.tableService = new TableService()
+        this.rowService = new RowService()
     }
 
     componentDidMount() {
-        this.getAllTableData();
+        this.getAllTableData()
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.match.params.table !== this.props.match.params.table) {
-           this.getAllTableData();
+            this.getAllTableData()
         }
     }
 
-    getAllTableData() {
-        let tableName = this.props.match.params.table;
+    create() {
+        let { columns } = this.state
+        let record = {}
+        columns.map( (item, index) => {
+            let key = JSON.parse(item.meta_value).name
+            record[key] = ''
+        })
+        this.setState({ visible: true, record })
+    }
 
+    onHideModal(e) {
+        this.setState({ visible: false })
+    }
+
+    onTextChange(e) {
+        let { record } = this.state
+        record[e.target.name] = e.target.value
+        this.setState({ record })
+    }
+
+    // getSingleRecord(id) {
+    //     let tableName = prevProps.match.params.table
+    //     rowService.getRow(tableName, id)
+    //     .then(({ row })   =>  {
+    //         this.setState({
+    //             record: row
+    //         })
+    //     }) 
+    // }
+
+    getAllTableData() {
+        let tableName = this.props.match.params.table
         this.tableService.getAllDataColumn(tableName)
-            .then(({data, columns})  =>  {
-                console.log(columns)
-                this.setState({dataTableValue: data, columns})
-            });
+            .then(({data, table, columns})  =>  {
+                let record = {}
+                columns.map( (item, index) => {
+                    let key = JSON.parse(item.meta_value).name
+                    record[key] = ''
+                })
+                this.setState({ columns, table, data, record})
+            })
     }
 
     render() {
-        const { columns } = this.state
+        const { data, 
+                columns, 
+                table,
+                record } = this.state
+
         return (
             <div className="p-grid">
+
+                <Dialog 
+                    header={table.label}
+                    visible={this.state.visible} 
+                    rtl={true} 
+                    maximizable={true}
+                    modal={true} 
+                    width="75%"
+                    onHide={this.onHideModal}
+                >
+                    <div className="p-grid p-fluid" style={{textAlign:'right'}}>
+
+                        {columns.map( (item, index) => {
+                            switch(JSON.parse(item.meta_value).controller) 
+                            {
+                                case 'text_edit':
+                                    return ( <TextEditComponent 
+                                        index={index}
+                                        key={index}
+                                        value={record[JSON.parse(item.meta_value).name]}
+                                        name={JSON.parse(item.meta_value).name}
+                                        label={JSON.parse(item.meta_value).label}
+                                        placeholder={JSON.parse(item.meta_value).label}
+                                        onChange={e => this.onTextChange(e)}
+                                    /> )
+                                    break;
+
+                                case 'long_text':
+                                    return ( <LongTextEditComponent 
+                                        index={index}
+                                        key={index}
+                                        value={record[JSON.parse(item.meta_value).name]}
+                                        name={JSON.parse(item.meta_value).name}
+                                        label={JSON.parse(item.meta_value).label}
+                                        placeholder={JSON.parse(item.meta_value).label}
+                                        onChange={e => this.onTextChange(e)}
+                                    />)
+                                    break;
+                            }
+                        })}
+                        
+                        <div className="p-col-12 p-md-offset-10 p-md-2">
+                            <Button label="Success" className="p-button-success p-button-raised" />
+                        </div>
+                    </div>
+                </Dialog>
+
                 <div className="p-col-12">
                     <div className="card card-w-title">
-                        <h1>DataView</h1>
+                        <h1 style={{textAlign:'right'}}>{table.label}</h1>
+
+                        <Toolbar className="custom-toolbar">
+                            <div className="p-toolbar-group-right">
+                                {/*<Button label="Export" className="p-button-secondary" />
+                                <Button label="Save" icon="pi pi-check" className="p-button-secondary" />
+                                <Button onClick={this.editRecord} disabled={!record} label="Edit" icon="pi pi-pencil" className="p-button-secondary" />*/}
+                                <Button onClick={this.create} label="New" icon="pi pi-plus" className="p-button-secondary"/>
+                            </div>
+                            <div className="p-toolbar-group-left">
+                                <Button icon="pi pi-search" className="p-button-secondary"/>
+                            </div>
+                        </Toolbar>
+
                         <DataTable 
-                            value={this.state.dataTableValue}
+                            value={data}
                             scrollable={true}
                             paginatorPosition="bottom"
                             autoLayout={true}
                             selectionMode="single"
-                            header={`list of `}
+                            
                             paginator={true}
                             rows={12}
                             responsive={true} 
-                            selection={this.state.dataTableSelection} 
-                            onSelectionChange={event => this.setState({dataTableSelection: event.data})}>
+                            selection={this.state.record} 
+                            onSelectionChange={e => this.setState({ record: e.data }) }>
                             {!!columns && columns.map( (column, index) => {
                                 return <Column field={JSON.parse(column.meta_value).name} key={index} header={JSON.parse(column.meta_value).label} style={{width:'250px', overflow:'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}} sortable={true}/>
                             })}
