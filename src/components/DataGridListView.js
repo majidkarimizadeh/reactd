@@ -71,10 +71,7 @@ export class DataGridListView extends Component {
         if(mode === 'create') {
             let { columns } = this.state
             let record = {}
-            columns.map( (item, index) => {
-                let key = JSON.parse(item.meta_value).name
-                record[key] = ''
-            })
+            columns.map( (item, index) => record[item.name] = '' )
             this.setState({ mode, record, isSelect: false })
             return
         }
@@ -105,25 +102,12 @@ export class DataGridListView extends Component {
         })
     }
 
-    // getSingleRecord(id) {
-    //     let tableName = prevProps.match.params.table
-    //     rowService.getRow(tableName, id)
-    //     .then(({ row })   =>  {
-    //         this.setState({
-    //             record: row
-    //         })
-    //     }) 
-    // }
-
     getAllTableData() {
         let tableName = this.props.match.params.table
         this.tableService.getAllDataColumn(tableName)
             .then(({data, table, columns})  =>  {
                 let record = {}
-                columns.map( (item, index) => {
-                    let key = JSON.parse(item.meta_value).name
-                    record[key] = ''
-                })
+                columns.map( (item, index) => record[item.name] = '' )
                 this.setState({ columns, table, data, record})
             })
     }
@@ -146,6 +130,7 @@ export class DataGridListView extends Component {
 
                 <DataFormComponent 
                     label={table.label}
+                    table={table}
                     columns={columns}
                     mode={mode}
                     record={record}
@@ -163,6 +148,7 @@ export class DataGridListView extends Component {
                         <DataTableComponent 
                             data={data}
                             columns={columns}
+                            table={table}
                             record={record}
                             onSelectionChange={this.onSelectionChange}
                         />

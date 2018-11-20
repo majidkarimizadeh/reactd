@@ -15,13 +15,17 @@ export default class DataFormComponent extends Component {
 		const {
 
             label,
-            columns,
+            table,
             visible,
+            columns,
             onHideDialog,
             record,
             mode
 
         } = this.props
+
+        let modeFields = [];
+        if(mode) { modeFields = table[mode] }
 
 		return (
 			<Dialog 
@@ -35,35 +39,40 @@ export default class DataFormComponent extends Component {
             >
                 <div className="p-grid p-fluid" style={{textAlign:'right'}}>
 
-                    {columns.map( (item, index) => {
-                        switch(JSON.parse(item.meta_value).controller) 
+                    {!!modeFields && modeFields.map( (item, i) => {
+                        let column = columns.find(function(c) {
+                            return c.no === item;
+                        });
+
+                        switch(column.controller) 
                         {
                             case 'text_edit':
                                 return ( <TextEditComponent 
-                                    index={index}
-                                    key={index}
+                                    index={i}
+                                    key={i}
                                     readOnly={mode === 'view'}
-                                    value={record[JSON.parse(item.meta_value).name]}
-                                    name={JSON.parse(item.meta_value).name}
-                                    label={JSON.parse(item.meta_value).label}
-                                    placeholder={JSON.parse(item.meta_value).label}
+                                    value={record[column.name]}
+                                    name={column.name}
+                                    label={column.label}
+                                    placeholder={column.label}
                                     onChange={e => this.onTextChange(e)}
                                 /> )
                                 break;
 
                             case 'long_text':
                                 return ( <LongTextEditComponent 
-                                    index={index}
-                                    key={index}
+                                    index={i}
+                                    key={i}
                                     readOnly={mode === 'view'}
-                                    value={record[JSON.parse(item.meta_value).name]}
-                                    name={JSON.parse(item.meta_value).name}
-                                    label={JSON.parse(item.meta_value).label}
-                                    placeholder={JSON.parse(item.meta_value).label}
+                                    value={record[column.name]}
+                                    name={column.name}
+                                    label={column.label}
+                                    placeholder={column.label}
                                     onChange={e => this.onTextChange(e)}
                                 />)
                                 break;
                         }
+
                     })}
                     
                     <div className="p-col-12 p-md-offset-10 p-md-2">

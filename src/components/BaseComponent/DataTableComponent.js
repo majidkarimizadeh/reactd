@@ -16,10 +16,13 @@ export default class DataTableComponent extends Component {
 
             data,
             columns,
+            table,
             record,
             onSelectionChange,
 
         } = this.props
+
+        let fields = table['list'];
 
 		return (
 			<DataTable 
@@ -34,12 +37,17 @@ export default class DataTableComponent extends Component {
                 responsive={true} 
                 selection={record} 
                 onSelectionChange={onSelectionChange}>
-                {!!columns && columns.map( (column, index) => {
+                
+                {!!fields && fields.map( (item, i) => {
+                    let column = columns.find(function(c) {
+                        return c.no === item;
+                    });
+
                     return (
                         <Column 
-                            field={JSON.parse(column.meta_value).name} 
-                            key={index} 
-                            header={JSON.parse(column.meta_value).label}
+                            field={column.name} 
+                            key={i} 
+                            header={column.label}
                             sortable={true}
                             style={{width:'225px', overflow:'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}} 
                         />
