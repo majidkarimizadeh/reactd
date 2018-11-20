@@ -8,21 +8,38 @@ export default class LongTextEditComponent extends Component {
     }
 
     render() {
-        const { label, placeholder, index, name, value, onChange } = this.props;
+        const { 
+            
+            label, 
+            placeholder, 
+            index, 
+            name, 
+            value, 
+            onChange,
+            readOnly,
+
+        } = this.props;
         return (
             <div className="p-col-12 p-md-12">
-                <label className='lable' htmlFor={`lbl-${index}`}> {label} </label>
-                <InputTextarea 
-                    value={value} 
-                    name={name} 
-                    style={{textAlign:'right'}} 
-                    rows={3} 
-                    cols={30} 
-                    id={`lbl-${index}`} 
-                    placeholder={placeholder} 
-                    autoResize={true}
-                    onChange={onChange}
-                />
+                <label className='lable' htmlFor={`lbl-${index}`}> 
+                    {label} 
+                    {readOnly && 
+                        <span>{` : ${value}`}</span>
+                    }
+                </label>
+                {!readOnly &&
+                    <InputTextarea 
+                        value={value} 
+                        name={name} 
+                        style={{textAlign:'right'}} 
+                        rows={3} 
+                        cols={30} 
+                        id={`lbl-${index}`} 
+                        placeholder={placeholder} 
+                        autoResize={true}
+                        onChange={onChange}
+                    />
+                }
             </div>
         );
     }
