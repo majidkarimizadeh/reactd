@@ -1,7 +1,4 @@
-import React, {Component} from 'react';
-import TextEditComponent from './BaseComponent/TextEditComponent'
-import LongTextEditComponent from './BaseComponent/LongTextEditComponent'
-import DestroyDialogComponent from './BaseComponent/DestroyDialogComponent'
+import React, {Component} from 'react'
 
 import DataTableComponent from './BaseComponent/DataTableComponent'
 import DataFormComponent from './BaseComponent/DataFormComponent'
@@ -9,12 +6,7 @@ import DataToolBarComponent from './BaseComponent/DataToolBarComponent'
 
 import {TableService} from '../service/TableService';
 import {RowService} from '../service/RowService';
-import {DataTable} from 'primereact/datatable';
-import {Column} from 'primereact/column'
-import {Button} from 'primereact/button';
-import {Dialog} from 'primereact/dialog';
 import {Growl} from 'primereact/growl';
-import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
 
 export class DataGridListView extends Component {
 
@@ -32,6 +24,7 @@ export class DataGridListView extends Component {
         this.onHideDialog = this.onHideDialog.bind(this)
         this.onShowDialog = this.onShowDialog.bind(this)
         this.onTextChange = this.onTextChange.bind(this)
+        this.onFormSubmit = this.onFormSubmit.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)    
 
         this.isSelectedRecord = this.isSelectedRecord.bind(this)
@@ -67,7 +60,6 @@ export class DataGridListView extends Component {
     }
 
     onShowDialog(mode) {
-
         if(mode === 'create') {
             let { columns } = this.state
             let record = {}
@@ -75,12 +67,43 @@ export class DataGridListView extends Component {
             this.setState({ mode, record, isSelect: false })
             return
         }
-
         if(!this.isSelectedRecord()) {
             return
         }
-
         this.setState({ mode })
+    }
+
+    onFormSubmit(mode) {
+        const { record, table, columns } = this.state
+
+        let fields = [];
+        let apiObject = {};
+
+        if(mode === 'create') {
+            fields = table[mode];
+            fields.map( (item, index) => {
+                let column = columns.find( (col) => col.no === item)
+                apiObject[column.name] = record[column.name]
+            })
+            this.rowService.storeRow(table.name, apiObject)
+                .then( res => {
+                    this.setState({
+                        data: [
+                            res.data,
+                            ...this.state.data
+                        ],
+                        mode: ''
+                    })
+                })
+        } else if(mode === 'edit') {
+            fields = table[mode];
+            fields.map( (item, index) => {
+                let column = columns.find( (col) => col.no === item)
+                apiObject[column.name] = record[column.name]
+            })
+            this.rowService.updateRow(table.name, record[table.pk], apiObject)
+                .then( (res) => {  this.setState({ mode: '' }) })
+        }
     }
 
     onTextChange(e) {
@@ -134,6 +157,8 @@ export class DataGridListView extends Component {
                     columns={columns}
                     mode={mode}
                     record={record}
+                    onChange={this.onTextChange}
+                    onSubmit={this.onFormSubmit}
                     onHideDialog={this.onHideDialog}
                 />
 

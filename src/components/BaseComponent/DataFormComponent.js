@@ -20,7 +20,9 @@ export default class DataFormComponent extends Component {
             columns,
             onHideDialog,
             record,
-            mode
+            mode,
+            onSubmit,
+            onChange,
 
         } = this.props
 
@@ -55,7 +57,7 @@ export default class DataFormComponent extends Component {
                                     name={column.name}
                                     label={column.label}
                                     placeholder={column.label}
-                                    onChange={e => this.onTextChange(e)}
+                                    onChange={onChange}
                                 /> )
                                 break;
 
@@ -68,19 +70,21 @@ export default class DataFormComponent extends Component {
                                     name={column.name}
                                     label={column.label}
                                     placeholder={column.label}
-                                    onChange={e => this.onTextChange(e)}
+                                    onChange={onChange}
                                 />)
                                 break;
                         }
 
                     })}
                     
-                    <div className="p-col-12 p-md-offset-10 p-md-2">
+                        <div className="p-col-12 p-md-2">
+                            <Button label="Close" onClick={() => onHideDialog(mode)} className="p-button-default p-button-raised" />
+                        </div>
                         {mode !== 'view' &&
-                            <Button label="Success" className="p-button-success p-button-raised" />
+                            <div className="p-col-12 p-md-2">
+                                <Button onClick={(e) => onSubmit(mode)} label="Success" className="p-button-success p-button-raised" />
+                            </div>
                         }
-                        <Button label="Close" className="p-button-default p-button-raised" />
-                    </div>
                 </div>
             </Dialog>
 		)
