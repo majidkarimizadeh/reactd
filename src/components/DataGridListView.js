@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 
+import AlertDialogComponent from './BaseComponent/AlertDialogComponent'
 import DataTableComponent from './BaseComponent/DataTableComponent'
 import DataFormComponent from './BaseComponent/DataFormComponent'
 import DataToolBarComponent from './BaseComponent/DataToolBarComponent'
@@ -19,12 +20,18 @@ export class DataGridListView extends Component {
             record: {},
             isSelect: false,
             mode: '',
+            alertMode: '',
         };
 
         this.onHideDialog = this.onHideDialog.bind(this)
         this.onShowDialog = this.onShowDialog.bind(this)
-        this.onTextChange = this.onTextChange.bind(this)
         this.onFormSubmit = this.onFormSubmit.bind(this)
+
+        this.onShowAlertDialog = this.onShowAlertDialog.bind(this)
+        this.onHideAlertDialog = this.onHideAlertDialog.bind(this)
+        this.onSubmitAlertDialog = this.onSubmitAlertDialog.bind(this)
+        
+        this.onTextChange = this.onTextChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)    
 
         this.isSelectedRecord = this.isSelectedRecord.bind(this)
@@ -53,6 +60,55 @@ export class DataGridListView extends Component {
             return false
         }
         return true
+    }
+
+    onShowAlertDialog(mode) {
+        if(!this.isSelectedRecord()) {
+            return
+        }
+        this.setState({ alertMode: mode })
+    }
+
+    onHideAlertDialog() {
+        this.setState({ alertMode: '' })
+    }
+
+    onSubmitAlertDialog(mode) {
+        if(mode === 'delete') {
+            const { record, table } = this.state;
+            this.rowService.deleteRow(table.name, record[table.pk])
+                .then( (res) => { 
+                    this.onHideAlertDialog()
+                    if(res.status === 'error') {
+                        this.growl.show({
+                            severity: 'error',
+                            summary: 'Error Message',
+                            detail: res.data
+                        });
+                        return false
+                    } else {
+                        this.growl.show({
+                            severity: 'success',
+                            summary: 'Success Message',
+                            detail: res.data
+                        });
+
+                        let data = [...this.state.data];
+                        let index = data.indexOf(record);
+                        if(index !== -1) {
+                            data.splice(index, 1)
+                            let { columns } = this.state
+                            let emptyRecord = {}
+                            columns.map( (item, index) => emptyRecord[item.name] = '' )
+                            this.setState({ 
+                                data,
+                                isSelect: false,
+                                record: emptyRecord
+                            })
+                        }
+                    }
+                })
+        }
     }
 
     onHideDialog(mode) {
@@ -144,6 +200,7 @@ export class DataGridListView extends Component {
             table,
             record,
             mode,
+            alertMode,
 
         } = this.state
 
@@ -151,7 +208,14 @@ export class DataGridListView extends Component {
             <div className="p-grid">
                 <Growl ref={(el) => this.growl = el}></Growl>
 
-                <DataFormComponent 
+                <AlertDialogComponent
+                    onHideAlertDialog={this.onHideAlertDialog}
+                    onCancel={this.onHideAlertDialog}
+                    onSubmit={this.onSubmitAlertDialog}
+                    mode={alertMode}
+                />
+
+                <DataFormComponent
                     label={table.label}
                     table={table}
                     columns={columns}
@@ -168,6 +232,7 @@ export class DataGridListView extends Component {
 
                         <DataToolBarComponent
                             onShowDialog={this.onShowDialog}
+                            onShowAlertDialog={this.onShowAlertDialog}
                         />
 
                         <DataTableComponent 

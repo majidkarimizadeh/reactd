@@ -11,11 +11,12 @@ export default class DataToolBarComponent extends Component {
 
 	render() {
 
-		const { onShowDialog } = this.props
+		const { onShowDialog, onShowAlertDialog } = this.props
 
 		return (
 			<Toolbar className="custom-toolbar">
                 <div className="p-toolbar-group-right">
+                    <Button onClick={() => onShowAlertDialog('delete')} label="Delete" icon="pi pi-trash" className="p-button-secondary" />
                     <Button onClick={() => onShowDialog('view')} label="View" icon="pi pi-check" className="p-button-secondary" />
                     <Button onClick={() => onShowDialog('edit')} label="Edit" icon="pi pi-pencil" className="p-button-secondary" />
                     <Button onClick={() => onShowDialog('create')} label="New" icon="pi pi-plus" className="p-button-secondary"/>

@@ -48,6 +48,20 @@ export default class DataFormComponent extends Component {
 
                         switch(column.controller) 
                         {
+                            case 'number':
+                                return ( <TextEditComponent 
+                                    index={i}
+                                    key={i}
+                                    readOnly={mode === 'view'}
+                                    value={record[column.name]}
+                                    name={column.name}
+                                    label={column.label}
+                                    type='number'
+                                    placeholder={column.label}
+                                    onChange={onChange}
+                                /> )
+                                break;
+
                             case 'text_edit':
                                 return ( <TextEditComponent 
                                     index={i}

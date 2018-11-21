@@ -16,7 +16,8 @@ export default class TextEditComponent extends Component {
             name, 
             value, 
             onChange,
-            readOnly
+            readOnly,
+            type
 
         } = this.props;
         return (
@@ -31,6 +32,7 @@ export default class TextEditComponent extends Component {
                     <InputText 
                         value={value} 
                         name={name} 
+                        type={type}
                         id={`lbl-${index}`}
                         style={{textAlign:'right'}}
                         placeholder={placeholder}
@@ -42,6 +44,6 @@ export default class TextEditComponent extends Component {
     }
 }
 
-// TextEditComponent.defaultProps = {
-//     value: ''
-// };
+TextEditComponent.defaultProps = {
+    type: 'text'
+};

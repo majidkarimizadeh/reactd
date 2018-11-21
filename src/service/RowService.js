@@ -12,6 +12,15 @@ export class RowService {
                 });
     }
 
+    deleteRow(tableName, primary) {
+        const apiObject = {
+            table_name: tableName,
+            table_id: primary
+        };
+        return axios.post('http://localhost:8000/api/delete-row/', {delete: apiObject})
+                .then(res => { return res.data })
+    }
+
     updateRow(tableName, primary, apiObject) {
     	apiObject['table_name'] = tableName;
     	apiObject['table_id'] = primary;
