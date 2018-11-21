@@ -1,6 +1,6 @@
 import axios from 'axios';
 import history from '../history'
-import { dataParser, columnParser, tableParser } from '../parser/parser'
+import { dataParser, columnParser, tableParser, lookupParser } from '../parser/parser'
 export class TableService {
     
     getAllTableData(tableName) {
@@ -20,7 +20,7 @@ export class TableService {
                     return {
                         data: dataParser(res.data.data),
                         table: tableParser(res.data.table),
-                        columns: columnParser(res.data.columns),
+                        columns: columnParser(res.data.columns)
                     }    
                 });
     }

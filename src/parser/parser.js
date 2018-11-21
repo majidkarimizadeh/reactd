@@ -13,3 +13,7 @@ export function tableParser(table) {
 export function dataParser(data) {
 	return data
 }
+
+export function lookupParser(lookups) {
+	return lookups
+}

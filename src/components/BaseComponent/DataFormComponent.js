@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import SelectComponent from './SelectComponent'
 import TextEditComponent from './TextEditComponent'
 import LongTextEditComponent from './LongTextEditComponent'
 import {Button} from 'primereact/button';
@@ -23,6 +24,8 @@ export default class DataFormComponent extends Component {
             mode,
             onSubmit,
             onChange,
+            onLookUp,
+            options
 
         } = this.props
 
@@ -48,6 +51,21 @@ export default class DataFormComponent extends Component {
 
                         switch(column.controller) 
                         {
+                            case 'lookup':
+                                return ( <SelectComponent 
+                                    index={i}
+                                    key={i}
+                                    options={options}
+                                    readOnly={mode === 'view'}
+                                    value={record[column.name]}
+                                    name={column.name}
+                                    label={column.label}
+                                    placeholder={column.label}
+                                    onChange={onChange}
+                                    onMouseDown={() => {onLookUp(column.rdf)}}
+                                /> )
+                                break;
+
                             case 'number':
                                 return ( <TextEditComponent 
                                     index={i}

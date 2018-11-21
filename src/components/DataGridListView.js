@@ -6,7 +6,9 @@ import DataFormComponent from './BaseComponent/DataFormComponent'
 import DataToolBarComponent from './BaseComponent/DataToolBarComponent'
 
 import {TableService} from '../service/TableService';
+import {TabView,TabPanel} from 'primereact/tabview';
 import {RowService} from '../service/RowService';
+import {LookUpService} from '../service/LookUpService';
 import {Growl} from 'primereact/growl';
 
 export class DataGridListView extends Component {
@@ -15,12 +17,14 @@ export class DataGridListView extends Component {
         super();
         this.state = {
             data:[],
+            lookups:[],
             columns:[],
             table: {},
             record: {},
             isSelect: false,
             mode: '',
             alertMode: '',
+            options: []
         };
 
         this.onHideDialog = this.onHideDialog.bind(this)
@@ -31,12 +35,15 @@ export class DataGridListView extends Component {
         this.onHideAlertDialog = this.onHideAlertDialog.bind(this)
         this.onSubmitAlertDialog = this.onSubmitAlertDialog.bind(this)
         
+        this.onLookUp = this.onLookUp.bind(this)
+
         this.onTextChange = this.onTextChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)    
 
         this.isSelectedRecord = this.isSelectedRecord.bind(this)
         this.tableService = new TableService()
         this.rowService = new RowService()
+        this.lookUpService = new LookUpService()
     }
 
     componentDidMount() {
@@ -60,6 +67,11 @@ export class DataGridListView extends Component {
             return false
         }
         return true
+    }
+
+    onLookUp(rdf) {
+        this.lookUpService.getLookUpByRdf(rdf)
+            .then( options => this.setState({ options }) )
     }
 
     onShowAlertDialog(mode) {
@@ -187,7 +199,7 @@ export class DataGridListView extends Component {
             .then(({data, table, columns})  =>  {
                 let record = {}
                 columns.map( (item, index) => record[item.name] = '' )
-                this.setState({ columns, table, data, record})
+                this.setState({ columns, table, data, record })
             })
     }
 
@@ -201,6 +213,7 @@ export class DataGridListView extends Component {
             record,
             mode,
             alertMode,
+            options
 
         } = this.state
 
@@ -224,6 +237,8 @@ export class DataGridListView extends Component {
                     onChange={this.onTextChange}
                     onSubmit={this.onFormSubmit}
                     onHideDialog={this.onHideDialog}
+                    onLookUp={this.onLookUp}
+                    options={options}
                 />
 
                 <div className="p-col-12">
@@ -245,6 +260,29 @@ export class DataGridListView extends Component {
                         
                     </div>
                 </div>
+
+                
+
+                {/*<div className="p-col-12">
+                    <div className="card card-w-title">
+                        <h1 style={{textAlign:'right'}}>{table.label}</h1>
+
+                        <DataToolBarComponent
+                            onShowDialog={this.onShowDialog}
+                            onShowAlertDialog={this.onShowAlertDialog}
+                        />
+
+                        <DataTableComponent 
+                            data={data}
+                            columns={columns}
+                            table={table}
+                            record={record}
+                            onSelectionChange={this.onSelectionChange}
+                        />
+                        
+                    </div>
+                </div>*/}
+
             </div>
         );
     }
