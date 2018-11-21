@@ -37,7 +37,7 @@ export default class DataFormComponent extends Component {
                 maximizable={true}
                 modal={true} 
                 width="75%"
-                onHide={() => onHideDialog(mode)}
+                onHide={() => onHideDialog()}
             >
                 <div className="p-grid p-fluid" style={{textAlign:'right'}}>
 
@@ -92,7 +92,7 @@ export default class DataFormComponent extends Component {
                     })}
                     
                         <div className="p-col-12 p-md-2">
-                            <Button label="Close" onClick={() => onHideDialog(mode)} className="p-button-default p-button-raised" />
+                            <Button label="Close" onClick={() => onHideDialog()} className="p-button-default p-button-raised" />
                         </div>
                         {mode !== 'view' &&
                             <div className="p-col-12 p-md-2">

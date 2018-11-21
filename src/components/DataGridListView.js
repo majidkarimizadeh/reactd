@@ -111,7 +111,7 @@ export class DataGridListView extends Component {
         }
     }
 
-    onHideDialog(mode) {
+    onHideDialog() {
         this.setState({ mode: '' })
     }
 
