@@ -11,26 +11,38 @@ import {RowService} from '../service/RowService';
 import {LookUpService} from '../service/LookUpService';
 import {Growl} from 'primereact/growl';
 
+import history from '../history'
+
 export class DataGridListView extends Component {
 
     constructor() {
         super();
         this.state = {
-            data:[],
-            lookups:[],
-            columns:[],
+            lookups: [],
+
+            data: [],
+            columns: [],
             table: {},
             record: {},
+
+            detailData: [],
+            detailColumns: [],
+            detailTable: {},
+            detailRecord: {},
+
             isSelect: false,
             mode: '',
             alertMode: '',
-            options: []
+            options: [],
+            details: [],
+            activeDetailIndex: 0
         };
 
         this.onHideDialog = this.onHideDialog.bind(this)
         this.onShowDialog = this.onShowDialog.bind(this)
         this.onFormSubmit = this.onFormSubmit.bind(this)
 
+        this.onDetailTabChange = this.onDetailTabChange.bind(this)
         this.onShowAlertDialog = this.onShowAlertDialog.bind(this)
         this.onHideAlertDialog = this.onHideAlertDialog.bind(this)
         this.onSubmitAlertDialog = this.onSubmitAlertDialog.bind(this)
@@ -67,6 +79,22 @@ export class DataGridListView extends Component {
             return false
         }
         return true
+    }
+
+    onDetailTabChange(e) {
+        const { details, table } = this.state;
+        this.setState({
+            activeDetailIndex: e.index
+        })
+        this.tableService.getAllDataColumn(details[e.index].name)
+            .then( ({ data, columns, table }) => { 
+                this.setState({ 
+                    detailData: data,
+                    detailColumns: columns,
+                    detailTable: table,
+                })
+            })
+        // this.getAllTableData(details[e.index].name)
     }
 
     onLookUp(rdf) {
@@ -193,13 +221,26 @@ export class DataGridListView extends Component {
         })
     }
 
-    getAllTableData() {
+    getAllTableData(tName = null) {
         let tableName = this.props.match.params.table
+        if(tName) {
+            tableName = tName;
+        } 
         this.tableService.getAllDataColumn(tableName)
             .then(({data, table, columns})  =>  {
                 let record = {}
                 columns.map( (item, index) => record[item.name] = '' )
-                this.setState({ columns, table, data, record })
+                this.setState({ columns, table, data, record, activeDetailIndex: 0 })
+
+                this.tableService.getAllDetailData(table.details)
+                    .then( ({ detailData, detailColumns, detailTable, details }) => { 
+                        this.setState({ 
+                            detailData,
+                            detailColumns,
+                            detailTable,
+                            details
+                        })
+                    })
             })
     }
 
@@ -213,7 +254,13 @@ export class DataGridListView extends Component {
             record,
             mode,
             alertMode,
-            options
+            options,
+            details,
+            activeDetailIndex,
+            detailData,
+            detailColumns,
+            detailTable,
+            detailRecord,
 
         } = this.state
 
@@ -261,28 +308,40 @@ export class DataGridListView extends Component {
                     </div>
                 </div>
 
-                
-
-                {/*<div className="p-col-12">
-                    <div className="card card-w-title">
-                        <h1 style={{textAlign:'right'}}>{table.label}</h1>
-
-                        <DataToolBarComponent
-                            onShowDialog={this.onShowDialog}
-                            onShowAlertDialog={this.onShowAlertDialog}
-                        />
-
-                        <DataTableComponent 
-                            data={data}
-                            columns={columns}
-                            table={table}
-                            record={record}
-                            onSelectionChange={this.onSelectionChange}
-                        />
-                        
+                {details.length &&
+                    <div className="p-col-12">
+                        <div className="card card-w-title">
+                            <TabView
+                                activeIndex={activeDetailIndex}
+                                onTabChange={this.onDetailTabChange}
+                                style={{textAlign: 'right'}}
+                            >
+                                {details.map( (item, index) => {
+                                    return (
+                                        <TabPanel 
+                                            key={index}
+                                            header={item.label} 
+                                            contentStyle={{padding:'10px 0px'}}
+                                            headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
+                                        >
+                                            <DataToolBarComponent
+                                                onShowDialog={this.onShowDialog}
+                                                onShowAlertDialog={this.onShowAlertDialog}
+                                            />
+                                            <DataTableComponent 
+                                                data={detailData}
+                                                columns={detailColumns}
+                                                table={detailTable}
+                                                record={detailRecord}
+                                                onSelectionChange={this.onSelectionChange}
+                                            />
+                                        </TabPanel>
+                                    )
+                                })}
+                            </TabView>
+                        </div>
                     </div>
-                </div>*/}
-
+                }
             </div>
         );
     }

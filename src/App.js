@@ -259,7 +259,6 @@ class App extends Component {
                     {/*<Route path="/cities" component={DataGridListView} />*/}
                     
                     <Route exact path="/index/:table" component={DataGridListView} />
-                    <Route exact path="/index/:table/create" component={MainView} />
 
                     <Route path="/forms" component={FormsDemo} />
                     <Route path="/sample" component={SampleDemo} />
