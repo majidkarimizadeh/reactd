@@ -48,6 +48,7 @@ export class DataGridListView extends Component {
         this.onSubmitAlertDialog = this.onSubmitAlertDialog.bind(this)
         
         this.onLookUp = this.onLookUp.bind(this)
+        this.refreshDetailTab = this.refreshDetailTab.bind(this)
 
         this.onTextChange = this.onTextChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)    
@@ -82,11 +83,19 @@ export class DataGridListView extends Component {
     }
 
     onDetailTabChange(e) {
-        const { details, table } = this.state;
-        this.setState({
-            activeDetailIndex: e.index
-        })
-        this.tableService.getAllDataColumn(details[e.index].name)
+        const { details, table, detailTable, record } = this.state;
+        const activeDetailIndex = e.index;
+        this.setState({ activeDetailIndex })
+
+        let recordPrimary = null
+        let foreignKey = null
+
+        if(record && detailTable.foreigns) {
+            foreignKey = detailTable.foreigns.find( (item) => item.table === table.name)
+            recordPrimary = record[table.pk]
+        }
+
+        this.tableService.getAllDataColumn(details[activeDetailIndex].name, recordPrimary, foreignKey.key)
             .then( ({ data, columns, table }) => { 
                 this.setState({ 
                     detailData: data,
@@ -94,7 +103,27 @@ export class DataGridListView extends Component {
                     detailTable: table,
                 })
             })
-        // this.getAllTableData(details[e.index].name)
+    }
+
+    refreshDetailTab(record) {
+        const { details, table, detailTable, activeDetailIndex } = this.state;
+
+        let foreignKey = null
+        let recordPrimary = null
+
+        if(record && detailTable.foreigns) {
+            foreignKey = detailTable.foreigns.find( (item) => item.table === table.name)
+            recordPrimary = record[table.pk]
+        }
+
+        this.tableService.getAllDataColumn(details[activeDetailIndex].name, recordPrimary, foreignKey.key)
+            .then( ({ data, columns, table }) => { 
+                this.setState({ 
+                    detailData: data,
+                    detailColumns: columns,
+                    detailTable: table,
+                })
+            })
     }
 
     onLookUp(rdf) {
@@ -219,6 +248,8 @@ export class DataGridListView extends Component {
             record: e.data,
             isSelect: true
         })
+
+        this.refreshDetailTab(e.data);
     }
 
     getAllTableData(tName = null) {

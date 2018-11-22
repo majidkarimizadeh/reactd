@@ -14,8 +14,13 @@ export class TableService {
                 });
     }
 
-    getAllDataColumn(tableName) {
-        return axios.get('http://localhost:8000/api/index/data-column/' + tableName)
+    getAllDataColumn(tableName, primary = null, foreignTable = null) {
+        let apiObject = {
+            table_name: tableName,
+            record_id: primary,
+            foreign_table: foreignTable
+        }
+        return axios.post('http://localhost:8000/api/index/data-column/', apiObject)
                 .then(res => {
                     return {
                         data: dataParser(res.data.data),
