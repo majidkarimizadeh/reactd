@@ -21,7 +21,7 @@ export default class SelectComponent extends Component {
 
         } = this.props;
         return (
-            <div className="p-col-12 p-md-12 p-xs-4 p-sm-4">
+            <div className="p-col-12 p-md-6" style={{textAlign:'right'}}>
                 <label className='lable' htmlFor={`lbl-${index}`}>
                     {label} 
                     {readOnly && 
@@ -39,6 +39,7 @@ export default class SelectComponent extends Component {
                         autoWidth={false}
                         onMouseDown={onMouseDown}
                         onChange={onChange}
+                        style={{textAlign:'right', width:'100%'}}
                         // onChange={event => this.setState({dropdownCity: event.value})} 
                     />
                 }

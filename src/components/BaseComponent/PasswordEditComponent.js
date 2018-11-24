@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {InputText} from 'primereact/inputtext';
+import {Password} from 'primereact/password';
 
-export default class TextEditComponent extends Component {
+export default class PasswordEditComponent extends Component {
 
     constructor(props) {
         super(props)
@@ -23,13 +23,9 @@ export default class TextEditComponent extends Component {
         return (
             <div className="p-col-12 p-md-6" style={{textAlign:'right'}}>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
-                    {label} 
-                    {readOnly && 
-                        <span>{` : ${value}`}</span>
-                    }
+                    {label}
                 </label>
-                {!readOnly &&
-                    <InputText 
+                    <Password 
                         value={value} 
                         name={name} 
                         type={type}
@@ -39,12 +35,7 @@ export default class TextEditComponent extends Component {
                         style={{textAlign:'right'}}
                         className="p-col-12 p-md-12"
                     />
-                }
             </div>
         );
     }
 }
-
-TextEditComponent.defaultProps = {
-    type: 'text'
-};

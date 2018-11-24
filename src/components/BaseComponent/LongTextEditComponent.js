@@ -20,7 +20,7 @@ export default class LongTextEditComponent extends Component {
 
         } = this.props;
         return (
-            <div className="p-col-12 p-md-12">
+            <div className="p-col-12 p-md-6" style={{textAlign:'right'}}>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     {label} 
                     {readOnly && 
@@ -31,13 +31,14 @@ export default class LongTextEditComponent extends Component {
                     <InputTextarea 
                         value={value} 
                         name={name} 
-                        style={{textAlign:'right'}} 
                         rows={3} 
                         cols={30} 
                         id={`lbl-${index}`} 
                         placeholder={placeholder} 
                         autoResize={true}
                         onChange={onChange}
+                        style={{textAlign:'right'}}
+                        className="p-col-12 p-md-12"
                     />
                 }
             </div>
