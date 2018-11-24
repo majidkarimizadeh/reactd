@@ -17,7 +17,7 @@ import {MessagesDemo} from './components/MessagesDemo';
 import {ChartsDemo} from './components/ChartsDemo';
 import {MiscDemo} from './components/MiscDemo';
 import {EmptyPage} from './components/EmptyPage';
-import {DataGridListView} from './components/DataGridListView';
+import DataGridListView from './components/DataGridListView';
 import {Documentation} from "./components/Documentation";
 import {ScrollPanel} from 'primereact/components/scrollpanel/ScrollPanel';
 import {MenuService} from './service/MenuService';
@@ -32,8 +32,8 @@ import './App.css';
 
 class App extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             menu: [],
             layoutMode: 'static',
@@ -236,6 +236,8 @@ class App extends Component {
         });
         let sidebarClassName = classNames("layout-sidebar", {'layout-sidebar-dark': this.state.layoutColorMode === 'dark'});
 
+        const { match } = this.props
+
         return (
             <div className={wrapperClass} onClick={this.onWrapperClick}>
                 <AppTopbar onToggleMenu={this.onToggleMenu}/>
@@ -258,7 +260,9 @@ class App extends Component {
 
                     {/*<Route path="/cities" component={DataGridListView} />*/}
                     
-                    <Route exact path="/index/:table" component={DataGridListView} />
+                    <Route path={`${match.url}:table`} render={props => <DataGridListView {...props} />}/>
+
+                    {/*<Route path={`${match.url}:table`} component={DataGridListView} />*/}
 
                     <Route path="/forms" component={FormsDemo} />
                     <Route path="/sample" component={SampleDemo} />

@@ -16,7 +16,7 @@ export class MenuService {
         let menus = [];
         for (var i = menuItems.length - 1; i >= 0; i--) {
             let menuItem = (typeof menuItems[i] === 'object') ? menuItems[i] : JSON.parse(menuItems[i])
-            let url = menuItem.url.startsWith('/') ? 'index/' + menuItem.url : '/index/' + menuItem.url
+            let url = menuItem.url.startsWith('/') ? '' + menuItem.url : '/' + menuItem.url
             menus.push({
                 icon: menuItem.icon,
                 label: menuItem.label,

@@ -23,6 +23,7 @@ export class TableService {
         return axios.post('http://localhost:8000/api/index/data-column/', apiObject)
                 .then(res => {
                     return {
+                        details: detailParser(res.data.details),
                         data: dataParser(res.data.data),
                         table: tableParser(res.data.table),
                         columns: columnParser(res.data.columns)

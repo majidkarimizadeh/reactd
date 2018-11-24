@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 
+import { Route, withRouter } from 'react-router-dom'
 import AlertDialogComponent from './BaseComponent/AlertDialogComponent'
 import DataTableComponent from './BaseComponent/DataTableComponent'
 import DataFormComponent from './BaseComponent/DataFormComponent'
@@ -13,18 +14,20 @@ import {Growl} from 'primereact/growl';
 
 import history from '../history'
 
-export class DataGridListView extends Component {
+class DataGridListView extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             lookups: [],
 
+            details: [],
             data: [],
             columns: [],
             table: {},
             record: {},
 
+            detailDetails: [],
             detailData: [],
             detailColumns: [],
             detailTable: {},
@@ -34,8 +37,7 @@ export class DataGridListView extends Component {
             mode: '',
             alertMode: '',
             options: [],
-            details: [],
-            activeDetailIndex: 0
+            activeDetailIndex: -1
         };
 
         this.onHideDialog = this.onHideDialog.bind(this)
@@ -59,13 +61,28 @@ export class DataGridListView extends Component {
         this.lookUpService = new LookUpService()
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.getAllTableData()
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.match.params.table !== this.props.match.params.table) {
-            this.getAllTableData()
+        const { data, table, columns, details } = this.props;
+
+        if (prevProps.data !== data) 
+        {
+            this.setState({ data })
+        }
+        if (prevProps.table !== table) 
+        {
+            this.setState({ table })
+        }
+        if (prevProps.columns !== columns) 
+        {
+            this.setState({ columns })
+        }
+        if (prevProps.details !== details) 
+        {
+            this.setState({ details })
         }
     }
 
@@ -83,9 +100,13 @@ export class DataGridListView extends Component {
     }
 
     onDetailTabChange(e) {
-        const { details, table, detailTable, record } = this.state;
-        const activeDetailIndex = e.index;
+        const { details, table, record } = this.state
+        const { match } = this.props
+        const activeDetailIndex = e.index
+        const detailTable = details[activeDetailIndex];
+
         this.setState({ activeDetailIndex })
+        history.push(match.url + "/" + detailTable.url)
 
         let recordPrimary = null
         let foreignKey = null
@@ -95,9 +116,10 @@ export class DataGridListView extends Component {
             recordPrimary = record[table.pk]
         }
 
-        this.tableService.getAllDataColumn(details[activeDetailIndex].name, recordPrimary, foreignKey.key)
-            .then( ({ data, columns, table }) => { 
+        this.tableService.getAllDataColumn(detailTable.name, recordPrimary, foreignKey.key)
+            .then( ({ details, data, columns, table }) => { 
                 this.setState({ 
+                    detailDetails: details,
                     detailData: data,
                     detailColumns: columns,
                     detailTable: table,
@@ -106,8 +128,9 @@ export class DataGridListView extends Component {
     }
 
     refreshDetailTab(record) {
-        const { details, table, detailTable, activeDetailIndex } = this.state;
+        const { details, table, activeDetailIndex } = this.state;
 
+        const detailTable = details[activeDetailIndex];
         let foreignKey = null
         let recordPrimary = null
 
@@ -116,14 +139,17 @@ export class DataGridListView extends Component {
             recordPrimary = record[table.pk]
         }
 
-        this.tableService.getAllDataColumn(details[activeDetailIndex].name, recordPrimary, foreignKey.key)
-            .then( ({ data, columns, table }) => { 
-                this.setState({ 
-                    detailData: data,
-                    detailColumns: columns,
-                    detailTable: table,
+        if(activeDetailIndex !== -1) {
+            this.tableService.getAllDataColumn(detailTable.url, recordPrimary, foreignKey.key)
+                .then( ({ details, data, columns, table }) => { 
+                    this.setState({ 
+                        detailDetails: details,
+                        detailData: data,
+                        detailColumns: columns,
+                        detailTable: table,
+                    })
                 })
-            })
+        }
     }
 
     onLookUp(rdf) {
@@ -248,30 +274,31 @@ export class DataGridListView extends Component {
             record: e.data,
             isSelect: true
         })
-
         this.refreshDetailTab(e.data);
     }
 
     getAllTableData(tName = null) {
+
         let tableName = this.props.match.params.table
         if(tName) {
             tableName = tName;
         } 
+
         this.tableService.getAllDataColumn(tableName)
-            .then(({data, table, columns})  =>  {
+            .then(({data, table, columns, details })  =>  {
                 let record = {}
                 columns.map( (item, index) => record[item.name] = '' )
-                this.setState({ columns, table, data, record, activeDetailIndex: 0 })
+                this.setState({ columns, table, data, details, record })
 
-                this.tableService.getAllDetailData(table.details)
-                    .then( ({ detailData, detailColumns, detailTable, details }) => { 
-                        this.setState({ 
-                            detailData,
-                            detailColumns,
-                            detailTable,
-                            details
-                        })
-                    })
+                // this.tableService.getAllDetailData(table.details)
+                //     .then( ({ detailData, detailColumns, detailTable, details }) => { 
+                //         this.setState({ 
+                //             detailData,
+                //             detailColumns,
+                //             detailTable,
+                //             details
+                //         })
+                //     })
             })
     }
 
@@ -288,12 +315,16 @@ export class DataGridListView extends Component {
             options,
             details,
             activeDetailIndex,
+
+            detailDetails,
             detailData,
             detailColumns,
             detailTable,
             detailRecord,
 
         } = this.state
+
+        const { match } = this.props
 
         return (
             <div className="p-grid">
@@ -329,6 +360,7 @@ export class DataGridListView extends Component {
                         />
 
                         <DataTableComponent 
+                            details={details}
                             data={data}
                             columns={columns}
                             table={table}
@@ -339,7 +371,7 @@ export class DataGridListView extends Component {
                     </div>
                 </div>
 
-                {details.length &&
+                {!!details.length &&
                     <div className="p-col-12">
                         <div className="card card-w-title">
                             <TabView
@@ -355,16 +387,18 @@ export class DataGridListView extends Component {
                                             contentStyle={{padding:'10px 0px'}}
                                             headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
                                         >
-                                            <DataToolBarComponent
-                                                onShowDialog={this.onShowDialog}
-                                                onShowAlertDialog={this.onShowAlertDialog}
-                                            />
-                                            <DataTableComponent 
-                                                data={detailData}
-                                                columns={detailColumns}
-                                                table={detailTable}
-                                                record={detailRecord}
-                                                onSelectionChange={this.onSelectionChange}
+                                            <Route
+                                                path={`${match.url}/:table`}
+                                                render={ props => {
+                                                    return <DataGridListView 
+                                                        data={detailData}
+                                                        table={detailTable}
+                                                        columns={detailColumns}
+                                                        record={detailRecord}
+                                                        details={detailDetails}
+                                                        {...props} 
+                                                    />
+                                                }}
                                             />
                                         </TabPanel>
                                     )
@@ -377,3 +411,5 @@ export class DataGridListView extends Component {
         );
     }
 }
+
+export default withRouter(DataGridListView)
