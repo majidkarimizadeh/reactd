@@ -3,7 +3,7 @@ import {Toolbar} from 'primereact/toolbar';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 
-export default class DataToolBarComponent extends Component {
+export default class ToolBarComponent extends Component {
 
 	constructor(props) {
         super(props)

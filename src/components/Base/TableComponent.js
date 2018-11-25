@@ -4,7 +4,7 @@ import {Column} from 'primereact/column'
 import {Button} from 'primereact/button';
 import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
 
-export default class DataTableComponent extends Component {
+export default class TableComponent extends Component {
 
 	constructor(props) {
         super(props)

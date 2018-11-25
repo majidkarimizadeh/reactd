@@ -5,9 +5,8 @@ import {AppFooter} from './AppFooter';
 import {AppMenu} from './AppMenu';
 import {AppInlineProfile} from './AppInlineProfile';
 import {Route, withRouter} from 'react-router-dom';
-import DataGridListView from './components/DataGridListView';
+import MainView from './components/MainView';
 
-// import {MainView} from './components/MainView';
 // import {Dashboard} from './components/Dashboard';
 // import {FormsDemo} from './components/FormsDemo';
 // import {SampleDemo} from './components/SampleDemo';
@@ -179,7 +178,7 @@ class App extends Component {
 
                     <Route 
                         path={`${match.url}:table`}
-                        render={props => <DataGridListView {...props} />}
+                        render={props => <MainView {...props} />}
                     />
 
                 </div>

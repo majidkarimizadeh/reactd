@@ -10,7 +10,7 @@ import {TabView,TabPanel} from 'primereact/tabview';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 
-export default class DataFormComponent extends Component {
+export default class FormComponent extends Component {
 
 	constructor(props) {
         super(props)

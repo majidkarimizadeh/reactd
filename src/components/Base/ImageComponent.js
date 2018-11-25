@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import ReactCrop from 'react-image-crop';
 import {FileUpload} from 'primereact/fileupload';
-import {Dialog} from 'primereact/dialog';
-import {Cropper} from 'react-image-cropper'
+import 'react-image-crop/dist/ReactCrop.css';
 
 export default class ImageComponent extends Component {
 
@@ -28,13 +28,13 @@ export default class ImageComponent extends Component {
         return (
             <>
                 <div className="p-col-12 p-md-8" style={{textAlign:'right', marginTop:'10px'}}>
-                    {cropWindowVisibles[index] &&
+                    {/*cropWindowVisibles[index] &&
                         <Cropper 
                             src={imageUrls[index]}
                             fixedRatio={false}
                             ref={ ref => { this.cropper = ref }}
                         />
-                    }
+                    */}
 
                     {(!cropWindowVisibles[index] && value) &&
                         <img src={value} />
