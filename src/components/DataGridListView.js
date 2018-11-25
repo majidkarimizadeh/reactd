@@ -23,26 +23,30 @@ class DataGridListView extends Component {
 
             details: [],
             data: [],
-            columns: [],
+            cols: [],
             table: {},
-            record: {},
+            row: {},
 
             detailDetails: [],
             detailData: [],
-            detailColumns: [],
+            detailCols: [],
             detailTable: {},
-            detailRecord: {},
+            detailRow: {},
 
             isSelect: false,
             mode: '',
             alertMode: '',
             options: [],
-            activeDetailIndex: -1
+            activeDetailIndex: -1,
+
+            cropWindowVisibles: [],
+            imageUrls: []
         };
 
         this.onHideDialog = this.onHideDialog.bind(this)
         this.onShowDialog = this.onShowDialog.bind(this)
         this.onFormSubmit = this.onFormSubmit.bind(this)
+        this.onInputFileChange = this.onInputFileChange.bind(this)        
 
         this.onDetailTabChange = this.onDetailTabChange.bind(this)
         this.onShowAlertDialog = this.onShowAlertDialog.bind(this)
@@ -55,7 +59,7 @@ class DataGridListView extends Component {
         this.onTextChange = this.onTextChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)    
 
-        this.isSelectedRecord = this.isSelectedRecord.bind(this)
+        this.isSelectedRow = this.isSelectedRow.bind(this)
         this.tableService = new TableService()
         this.rowService = new RowService()
         this.lookUpService = new LookUpService()
@@ -66,7 +70,7 @@ class DataGridListView extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { data, table, columns, details } = this.props;
+        const { data, table, cols, details } = this.props;
 
         if (prevProps.data !== data) 
         {
@@ -76,9 +80,9 @@ class DataGridListView extends Component {
         {
             this.setState({ table })
         }
-        if (prevProps.columns !== columns) 
+        if (prevProps.cols !== cols) 
         {
-            this.setState({ columns })
+            this.setState({ cols })
         }
         if (prevProps.details !== details) 
         {
@@ -86,13 +90,13 @@ class DataGridListView extends Component {
         }
     }
 
-    isSelectedRecord() {
+    isSelectedRow() {
         let { isSelect } = this.state
         if(!isSelect) {
             this.growl.show({
                 severity: 'warn',
-                summary: 'Record not found',
-                detail: 'please select record'
+                summary: 'Row not found',
+                detail: 'please select row'
             });
             return false
         }
@@ -100,7 +104,7 @@ class DataGridListView extends Component {
     }
 
     onDetailTabChange(e) {
-        const { details, table, record } = this.state
+        const { details, table, row } = this.state
         const { match } = this.props
         const activeDetailIndex = e.index
         const detailTable = details[activeDetailIndex];
@@ -108,47 +112,67 @@ class DataGridListView extends Component {
         this.setState({ activeDetailIndex })
         history.push(match.url + "/" + detailTable.url)
 
-        let recordPrimary = null
+        let rowPrimary = null
         let foreignKey = null
 
-        if(record && detailTable.foreigns) {
+        if(row && detailTable.foreigns) {
             foreignKey = detailTable.foreigns.find( (item) => item.table === table.name)
-            recordPrimary = record[table.pk]
+            rowPrimary = row[table.pk]
         }
 
-        this.tableService.getAllDataColumn(detailTable.name, recordPrimary, foreignKey.key)
-            .then( ({ details, data, columns, table }) => { 
+        this.tableService.getAllDataCol(detailTable.name, rowPrimary, foreignKey.key)
+            .then( ({ details, data, cols, table }) => { 
                 this.setState({ 
                     detailDetails: details,
                     detailData: data,
-                    detailColumns: columns,
+                    detailCols: cols,
                     detailTable: table,
                 })
             })
     }
 
-    refreshDetailTab(record) {
+    refreshDetailTab(row) {
         const { details, table, activeDetailIndex } = this.state;
 
-        const detailTable = details[activeDetailIndex];
-        let foreignKey = null
-        let recordPrimary = null
-
-        if(record && detailTable.foreigns) {
-            foreignKey = detailTable.foreigns.find( (item) => item.table === table.name)
-            recordPrimary = record[table.pk]
-        }
-
         if(activeDetailIndex !== -1) {
-            this.tableService.getAllDataColumn(detailTable.url, recordPrimary, foreignKey.key)
-                .then( ({ details, data, columns, table }) => { 
+
+            const detailTable = details[activeDetailIndex];
+            let foreignKey = null
+            let rowPrimary = null
+
+            if(row && detailTable.foreigns) {
+                foreignKey = detailTable.foreigns.find( (item) => item.table === table.name)
+                rowPrimary = row[table.pk]
+            }
+
+            this.tableService.getAllDataCol(detailTable.url, rowPrimary, foreignKey.key)
+                .then( ({ details, data, cols, table }) => { 
                     this.setState({ 
                         detailDetails: details,
                         detailData: data,
-                        detailColumns: columns,
+                        detailCols: cols,
                         detailTable: table,
                     })
                 })
+        }
+    }
+
+    onInputFileChange(e, index, name) {
+        if(e.files && e.files[0]) 
+        {
+            let cropWindowVisibles = [...this.state.cropWindowVisibles];
+            cropWindowVisibles[index] = true
+            let imageUrls = [...this.state.imageUrls];
+
+            imageUrls[index] = e.files[0].objectURL
+            this.setState({ 
+                cropWindowVisibles,
+                imageUrls,
+                row: {
+                    ...this.state.row,
+                    [name]: e.files[0]
+                }
+            })
         }
     }
 
@@ -158,7 +182,7 @@ class DataGridListView extends Component {
     }
 
     onShowAlertDialog(mode) {
-        if(!this.isSelectedRecord()) {
+        if(!this.isSelectedRow()) {
             return
         }
         this.setState({ alertMode: mode })
@@ -170,8 +194,8 @@ class DataGridListView extends Component {
 
     onSubmitAlertDialog(mode) {
         if(mode === 'delete') {
-            const { record, table } = this.state;
-            this.rowService.deleteRow(table.name, record[table.pk])
+            const { row, table } = this.state;
+            this.rowService.deleteRow(table.name, row[table.pk])
                 .then( (res) => { 
                     this.onHideAlertDialog()
                     if(res.status === 'error') {
@@ -189,16 +213,16 @@ class DataGridListView extends Component {
                         });
 
                         let data = [...this.state.data];
-                        let index = data.indexOf(record);
+                        let index = data.indexOf(row);
                         if(index !== -1) {
                             data.splice(index, 1)
-                            let { columns } = this.state
-                            let emptyRecord = {}
-                            columns.map( (item, index) => emptyRecord[item.name] = '' )
+                            let { cols } = this.state
+                            let emptyRow = {}
+                            cols.map( (item, index) => emptyRow[item.name] = '' )
                             this.setState({ 
                                 data,
                                 isSelect: false,
-                                record: emptyRecord
+                                row: emptyRow
                             })
                         }
                     }
@@ -212,31 +236,33 @@ class DataGridListView extends Component {
 
     onShowDialog(mode) {
         if(mode === 'create') {
-            let { columns } = this.state
-            let record = {}
-            columns.map( (item, index) => record[item.name] = '' )
-            this.setState({ mode, record, isSelect: false })
+            let { cols } = this.state
+            let row = {}
+            cols.map( (item, index) => row[item.name] = '' )
+            this.setState({ mode, row, isSelect: false })
             return
         }
-        if(!this.isSelectedRecord()) {
+        if(!this.isSelectedRow()) {
             return
         }
         this.setState({ mode })
     }
 
     onFormSubmit(mode) {
-        const { record, table, columns } = this.state
+        const { row, table, cols } = this.state
 
         let fields = [];
-        let apiObject = {};
+        let apiObject = new FormData();
 
         if(mode === 'create') {
             fields = table[mode];
+            apiObject.append('table_name', table.name)
+
             fields.map( (item, index) => {
-                let column = columns.find( (col) => col.no === item)
-                apiObject[column.name] = record[column.name]
+                let col = cols.find( (col) => col.no === item)
+                apiObject.append(col.name, row[col.name])
             })
-            this.rowService.storeRow(table.name, apiObject)
+            this.rowService.storeRow(apiObject)
                 .then( res => {
                     this.setState({
                         data: [
@@ -248,19 +274,22 @@ class DataGridListView extends Component {
                 })
         } else if(mode === 'edit') {
             fields = table[mode];
+            apiObject.append('table_name', table.name)
+            apiObject.append('table_id', row[table.pk])
+
             fields.map( (item, index) => {
-                let column = columns.find( (col) => col.no === item)
-                apiObject[column.name] = record[column.name]
+                let col = cols.find( (col) => col.no === item)
+                apiObject.append(col.name, row[col.name])
             })
-            this.rowService.updateRow(table.name, record[table.pk], apiObject)
+            this.rowService.updateRow(apiObject)
                 .then( (res) => {  this.setState({ mode: '' }) })
         }
     }
 
     onTextChange(e) {
-        let { record } = this.state
-        record[e.target.name] = e.target.value
-        this.setState({ record })
+        let { row } = this.state
+        row[e.target.name] = e.target.value
+        this.setState({ row })
     }
 
     onSelectionChange(e) {
@@ -271,7 +300,7 @@ class DataGridListView extends Component {
         })
 
         this.setState({
-            record: e.data,
+            row: e.data,
             isSelect: true
         })
         this.refreshDetailTab(e.data);
@@ -284,17 +313,17 @@ class DataGridListView extends Component {
             tableName = tName;
         } 
 
-        this.tableService.getAllDataColumn(tableName)
-            .then(({data, table, columns, details })  =>  {
-                let record = {}
-                columns.map( (item, index) => record[item.name] = '' )
-                this.setState({ columns, table, data, details, record })
+        this.tableService.getAllDataCol(tableName)
+            .then(({data, table, cols, details })  =>  {
+                let row = {}
+                cols.map( (item, index) => row[item.name] = '' )
+                this.setState({ cols, table, data, details, row })
 
                 // this.tableService.getAllDetailData(table.details)
-                //     .then( ({ detailData, detailColumns, detailTable, details }) => { 
+                //     .then( ({ detailData, detailCols, detailTable, details }) => { 
                 //         this.setState({ 
                 //             detailData,
-                //             detailColumns,
+                //             detailCols,
                 //             detailTable,
                 //             details
                 //         })
@@ -307,9 +336,9 @@ class DataGridListView extends Component {
         const { 
 
             data, 
-            columns, 
+            cols, 
             table,
-            record,
+            row,
             mode,
             alertMode,
             options,
@@ -318,9 +347,11 @@ class DataGridListView extends Component {
 
             detailDetails,
             detailData,
-            detailColumns,
+            detailCols,
             detailTable,
-            detailRecord,
+            detailRow,
+            cropWindowVisibles,
+            imageUrls,
 
         } = this.state
 
@@ -340,14 +371,17 @@ class DataGridListView extends Component {
                 <DataFormComponent
                     label={table.label}
                     table={table}
-                    columns={columns}
+                    cols={cols}
                     mode={mode}
-                    record={record}
+                    row={row}
                     onChange={this.onTextChange}
                     onSubmit={this.onFormSubmit}
                     onHideDialog={this.onHideDialog}
                     onLookUp={this.onLookUp}
                     options={options}
+                    onInputFileChange={this.onInputFileChange}
+                    cropWindowVisibles={cropWindowVisibles}
+                    imageUrls={imageUrls}
                 />
 
                 <div className="p-col-12">
@@ -362,9 +396,9 @@ class DataGridListView extends Component {
                         <DataTableComponent 
                             details={details}
                             data={data}
-                            columns={columns}
+                            cols={cols}
                             table={table}
-                            record={record}
+                            row={row}
                             onSelectionChange={this.onSelectionChange}
                         />
                         
@@ -393,8 +427,8 @@ class DataGridListView extends Component {
                                                     return <DataGridListView 
                                                         data={detailData}
                                                         table={detailTable}
-                                                        columns={detailColumns}
-                                                        record={detailRecord}
+                                                        cols={detailCols}
+                                                        row={detailRow}
                                                         details={detailDetails}
                                                         {...props} 
                                                     />

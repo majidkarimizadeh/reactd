@@ -1,11 +1,11 @@
-export function columnParser(columns) {
-	if(!columns) return [];
+export function colParser(cols) {
+	if(!cols) return [];
 
-	let standardColumns = [];
-	for (var i = 0; i < columns.length; i++) {
-		standardColumns.push(JSON.parse(columns[i]))
+	let standardCols = [];
+	for (var i = 0; i < cols.length; i++) {
+		standardCols.push(JSON.parse(cols[i]))
 	}
-	return standardColumns
+	return standardCols
 }
 
 export function detailParser(details) {
@@ -31,4 +31,15 @@ export function dataParser(data) {
 export function lookupParser(lookups) {
 	if(!lookups) return []
 	return lookups
+}
+
+export function imageParser(record, field) {
+
+	if(!field.name || !record[field.name])
+	{
+		return "";
+	}
+
+	return "http://localhost:8000/images/profiles/" + record.id + "/p." + record[field.name]
+
 }

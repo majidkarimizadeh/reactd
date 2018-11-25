@@ -15,9 +15,9 @@ export default class DataTableComponent extends Component {
 		const {
 
             data,
-            columns,
+            cols,
             table,
-            record,
+            row,
             onSelectionChange,
 
         } = this.props
@@ -35,19 +35,19 @@ export default class DataTableComponent extends Component {
                 paginator={true}
                 rows={12}
                 responsive={true} 
-                selection={record} 
+                selection={row} 
                 onSelectionChange={onSelectionChange}>
                 
                 {!!fields && fields.map( (item, i) => {
-                    let column = columns.find(function(c) {
+                    let col = cols.find(function(c) {
                         return c.no === item;
                     });
 
                     return (
                         <Column 
-                            field={column.name} 
+                            field={col.name} 
                             key={i} 
-                            header={column.label}
+                            header={col.label}
                             sortable={true}
                             style={{width:'225px', overflow:'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}} 
                         />

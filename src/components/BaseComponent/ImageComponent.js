@@ -7,18 +7,6 @@ export default class ImageComponent extends Component {
 
     constructor(props) {
         super(props)
-        this.showCrop = this.showCrop.bind(this)
-        this.state = {
-            visible: false,
-            image: null
-        }
-    }
-
-    showCrop(e) {
-        this.setState({
-            visible: true,
-            image: e.files[0].objectURL
-        })
     }
 
     render() {
@@ -29,36 +17,42 @@ export default class ImageComponent extends Component {
             index, 
             name, 
             value, 
-            onChange,
+            onInputFileChange,
             readOnly,
-            type
+            type,
+            cropWindowVisibles,
+            imageUrls
 
         } = this.props;
 
-        const { visible, image } = this.state
-
         return (
-            <div>
-                <div className="p-col-12 p-md-8" style={{textAlign:'right'}}>
-                    {visible &&
+            <>
+                <div className="p-col-12 p-md-8" style={{textAlign:'right', marginTop:'10px'}}>
+                    {cropWindowVisibles[index] &&
                         <Cropper 
-                            src={image}
+                            src={imageUrls[index]}
+                            fixedRatio={false}
                             ref={ ref => { this.cropper = ref }}
                         />
                     }
+
+                    {(!cropWindowVisibles[index] && value) &&
+                        <img src={value} />
+                    }
                 </div>
-                <div className="p-col-12 p-md-8" style={{textAlign:'right'}}>
+                <div className="p-col-12 p-md-4" style={{textAlign:'right', marginTop:'10px'}}>
                     <label className='lable' htmlFor={`lbl-${index}`}> 
                         {label} 
                     </label>
                     <FileUpload 
-                        onSelect={this.showCrop}
+                        className="p-col-12 p-md-12"
+                        onSelect={(e) => {onInputFileChange(e, index, name)}}
                         name={name} 
                         id={`lbl-${index}`}
                         mode="basic"
                     ></FileUpload>
                 </div>
-            </div>
+            </>
         );
     }
 }

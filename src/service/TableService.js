@@ -1,6 +1,6 @@
 import axios from 'axios';
 import history from '../history'
-import { dataParser, columnParser, tableParser, lookupParser, detailParser } from '../parser/parser'
+import { dataParser, colParser, tableParser, lookupParser, detailParser } from '../parser/parser'
 export class TableService {
     
     getAllTableData(tableName) {
@@ -14,10 +14,10 @@ export class TableService {
                 });
     }
 
-    getAllDataColumn(tableName, primary = null, foreignTable = null) {
+    getAllDataCol(tableName, primary = null, foreignTable = null) {
         let apiObject = {
             table_name: tableName,
-            record_id: primary,
+            row_id: primary,
             foreign_table: foreignTable
         }
         return axios.post('http://localhost:8000/api/index/data-column/', apiObject)
@@ -26,7 +26,7 @@ export class TableService {
                         details: detailParser(res.data.details),
                         data: dataParser(res.data.data),
                         table: tableParser(res.data.table),
-                        columns: columnParser(res.data.columns)
+                        cols: colParser(res.data.cols)
                     }    
                 });
     }
@@ -41,7 +41,7 @@ export class TableService {
                     details: detailParser(res.data.details),
                     detailData: dataParser(res.data.data),
                     detailTable: tableParser(res.data.table),
-                    detailColumns: columnParser(res.data.columns)
+                    detailCols: colParser(res.data.cols)
                 }
             })
     }

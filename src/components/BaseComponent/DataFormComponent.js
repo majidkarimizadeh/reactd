@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { imageParser } from '../../parser/parser'
 import SelectComponent from './SelectComponent'
 import TextEditComponent from './TextEditComponent'
 import LongTextEditComponent from './LongTextEditComponent'
@@ -22,14 +23,17 @@ export default class DataFormComponent extends Component {
             label,
             table,
             visible,
-            columns,
+            cols,
             onHideDialog,
-            record,
+            row,
             mode,
             onSubmit,
             onChange,
+            onInputFileChange,
+            cropWindowVisibles,
             onLookUp,
-            options
+            options,
+            imageUrls,
 
         } = this.props
 
@@ -62,11 +66,11 @@ export default class DataFormComponent extends Component {
                     >
                     <div className="p-grid">
                         {!!modeFields && modeFields.map( (item, i) => {
-                            let column = columns.find(function(c) {
+                            let col = cols.find(function(c) {
                                 return c.no === item;
                             });
 
-                            switch(column.controller) 
+                            switch(col.controller) 
                             {
                                 case 'lookup':
                                     return ( <SelectComponent 
@@ -74,12 +78,12 @@ export default class DataFormComponent extends Component {
                                         key={i}
                                         options={options}
                                         readOnly={mode === 'view'}
-                                        value={record[column.name]}
-                                        name={column.name}
-                                        label={column.label}
-                                        placeholder={column.label}
+                                        value={row[col.name]}
+                                        name={col.name}
+                                        label={col.label}
+                                        placeholder={col.label}
                                         onChange={onChange}
-                                        onMouseDown={() => {onLookUp(column.rdf)}}
+                                        onMouseDown={() => {onLookUp(col.rdf)}}
                                     /> )
                                     break;
 
@@ -87,16 +91,16 @@ export default class DataFormComponent extends Component {
                                     return ( <PasswordEditComponent 
                                         index={i}
                                         key={i}
-                                        value={record[column.name]}
-                                        name={column.name}
-                                        label={column.label}                                    
-                                        placeholder={column.label}
+                                        value={row[col.name]}
+                                        name={col.name}
+                                        label={col.label}                                    
+                                        placeholder={col.label}
                                         onChange={onChange}
                                     /> )
                                     break;
 
                                 case 'image':
-                                    {imagesFields.push(column)}
+                                    {imagesFields.push(col)}
                                     break;
 
                                 case 'number':
@@ -104,11 +108,11 @@ export default class DataFormComponent extends Component {
                                         index={i}
                                         key={i}
                                         readOnly={mode === 'view'}
-                                        value={record[column.name]}
-                                        name={column.name}
-                                        label={column.label}
+                                        value={row[col.name]}
+                                        name={col.name}
+                                        label={col.label}
                                         type='number'
-                                        placeholder={column.label}
+                                        placeholder={col.label}
                                         onChange={onChange}
                                     /> )
                                     break;
@@ -118,10 +122,10 @@ export default class DataFormComponent extends Component {
                                         index={i}
                                         key={i}
                                         readOnly={mode === 'view'}
-                                        value={record[column.name]}
-                                        name={column.name}
-                                        label={column.label}
-                                        placeholder={column.label}
+                                        value={row[col.name]}
+                                        name={col.name}
+                                        label={col.label}
+                                        placeholder={col.label}
                                         onChange={onChange}
                                     /> )
                                     break;
@@ -131,10 +135,10 @@ export default class DataFormComponent extends Component {
                                         index={i}
                                         key={i}
                                         readOnly={mode === 'view'}
-                                        value={record[column.name]}
-                                        name={column.name}
-                                        label={column.label}
-                                        placeholder={column.label}
+                                        value={row[col.name]}
+                                        name={col.name}
+                                        label={col.label}
+                                        placeholder={col.label}
                                         onChange={onChange}
                                     />)
                                     break;
@@ -147,18 +151,23 @@ export default class DataFormComponent extends Component {
                     {!!imagesFields && imagesFields.map( (image, i) => {
                         return (
                             <TabPanel
+                                key={i}
                                 header={image.label}
                                 headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
                             >
-                                <ImageComponent
-                                    index={i}
-                                    key={i}
-                                    value={record[image.name]}
-                                    name={image.name}
-                                    label={image.label}
-                                    placeholder={image.label}
-                                    onChange={onChange}
-                                />
+                                <div className="p-grid">
+                                    <ImageComponent
+                                        index={i}
+                                        key={i}
+                                        value={imageParser(row, image)}
+                                        name={image.name}
+                                        label={image.label}
+                                        placeholder={image.label}
+                                        onInputFileChange={onInputFileChange}
+                                        imageUrls={imageUrls}
+                                        cropWindowVisibles={cropWindowVisibles}
+                                    />
+                                </div>
                             </TabPanel>
                         )
                     })}

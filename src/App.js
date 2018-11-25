@@ -5,20 +5,22 @@ import {AppFooter} from './AppFooter';
 import {AppMenu} from './AppMenu';
 import {AppInlineProfile} from './AppInlineProfile';
 import {Route, withRouter} from 'react-router-dom';
-import {MainView} from './components/MainView';
-import {Dashboard} from './components/Dashboard';
-import {FormsDemo} from './components/FormsDemo';
-import {SampleDemo} from './components/SampleDemo';
-import {DataDemo} from './components/DataDemo';
-import {PanelsDemo} from './components/PanelsDemo';
-import {OverlaysDemo} from './components/OverlaysDemo';
-import {MenusDemo} from './components/MenusDemo';
-import {MessagesDemo} from './components/MessagesDemo';
-import {ChartsDemo} from './components/ChartsDemo';
-import {MiscDemo} from './components/MiscDemo';
-import {EmptyPage} from './components/EmptyPage';
 import DataGridListView from './components/DataGridListView';
-import {Documentation} from "./components/Documentation";
+
+// import {MainView} from './components/MainView';
+// import {Dashboard} from './components/Dashboard';
+// import {FormsDemo} from './components/FormsDemo';
+// import {SampleDemo} from './components/SampleDemo';
+// import {DataDemo} from './components/DataDemo';
+// import {PanelsDemo} from './components/PanelsDemo';
+// import {OverlaysDemo} from './components/OverlaysDemo';
+// import {MenusDemo} from './components/MenusDemo';
+// import {MessagesDemo} from './components/MessagesDemo';
+// import {ChartsDemo} from './components/ChartsDemo';
+// import {MiscDemo} from './components/MiscDemo';
+// import {EmptyPage} from './components/EmptyPage';
+// import {Documentation} from "./components/Documentation";
+
 import {ScrollPanel} from 'primereact/components/scrollpanel/ScrollPanel';
 import {MenuService} from './service/MenuService';
 import history from './history'
@@ -48,7 +50,6 @@ class App extends Component {
         this.onToggleMenu = this.onToggleMenu.bind(this);
         this.onSidebarClick = this.onSidebarClick.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
-        // this.createMenu();
     }
 
     componentDidMount() {
@@ -104,100 +105,6 @@ class App extends Component {
             })
         }
     }
-
-    // createMenu() {
-    //     this.menu = [
-    //         {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {history.push('/')}},
-    //         {
-    //             label: 'نواحی گردشگری', icon: 'pi pi-fw pi-cog',
-    //             items: [
-    //                 {label: 'مشاهده', icon: 'pi pi-fw pi-bars',  command: () => {history.push('/cities')}  },
-    //                 {label: 'ایجاد', icon: 'pi pi-fw pi-bars',  command: () => {history.push('/cities/create')} }
-    //             ]
-    //         },
-    //         {
-    //             label: 'Menu Modes', icon: 'pi pi-fw pi-cog',
-    //             items: [
-    //                 {label: 'Static Menu', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutMode: 'static'}) },
-    //                 {label: 'Overlay Menu', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutMode: 'overlay'}) }
-    //             ]
-    //         },
-    //         {
-    //             label: 'Menu Colors', icon: 'pi pi-fw pi-align-left',
-    //             items: [
-    //                 {label: 'Dark', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutColorMode: 'dark'}) },
-    //                 {label: 'Light', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutColorMode: 'light'}) }
-    //             ]
-    //         },
-    //         {
-    //             label: 'Components', icon: 'pi pi-fw pi-globe', badge: '9',
-    //             items: [
-    //                 {label: 'Sample Page', icon: 'pi pi-fw pi-star-o', command: () => {history.push('/sample')}},
-    //                 {label: 'Forms', icon: 'pi pi-fw pi-calendar', command: () => {history.push('/forms')}},
-    //                 {label: 'Data', icon: 'pi pi-fw pi-align-justify', command: () => {history.push('/data')}},
-    //                 {label: 'Panels', icon: 'pi pi-fw pi-th-large', command: () => {history.push('/panels')}},
-    //                 {label: 'Overlays', icon: 'pi pi-fw pi-clone', command: () => {history.push('/overlays')}},
-    //                 {label: 'Menus', icon: 'pi pi-fw pi-bars', command: () => {history.push('/menus')}},
-    //                 {label: 'Messages', icon: 'pi pi-fw pi-info-circle', command: () => {history.push('/messages')}},
-    //                 {label: 'Charts', icon: 'pi pi-fw pi-clock', command: () => {history.push('/charts')}},
-    //                 {label: 'Misc', icon: 'pi pi-fw pi-filter', command: () => {history.push('/misc')}}
-    //             ]
-    //         },
-    //         {
-    //             label: 'Template Pages', icon: 'pi pi-fw pi-file',
-    //             items: [
-    //                 {label: 'Empty Page', icon: 'pi pi-fw pi-circle-off', command: () => {history.push('/empty')}}
-    //             ]
-    //         },
-    //         {
-    //             label: 'Menu Hierarchy', icon: 'pi pi-fw pi-search',
-    //             items: [
-    //                 {
-    //                     label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
-    //                     items: [
-    //                         {
-    //                             label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
-    //                             items: [
-    //                                 {label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark'},
-    //                                 {label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark'},
-    //                                 {label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark'},
-    //                             ]
-    //                         },
-    //                         {
-    //                             label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
-    //                             items: [
-    //                                 {label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark'},
-    //                                 {label: 'Submenu 1.2.2', icon: 'pi pi-fw pi-bookmark'}
-    //                             ]
-    //                         },
-    //                     ]
-    //                 },
-    //                 {
-    //                     label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-    //                     items: [
-    //                         {
-    //                             label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-    //                             items: [
-    //                                 {label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark'},
-    //                                 {label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark'},
-    //                                 {label: 'Submenu 2.1.3', icon: 'pi pi-fw pi-bookmark'},
-    //                             ]
-    //                         },
-    //                         {
-    //                             label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-    //                             items: [
-    //                                 {label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark'},
-    //                                 {label: 'Submenu 2.2.2', icon: 'pi pi-fw pi-bookmark'}
-    //                             ]
-    //                         }
-    //                     ]
-    //                 }
-    //             ]
-    //         },
-    //         {label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => {history.push('/documentation')}},
-    //         {label: 'View Source', icon: 'pi pi-fw pi-search', command: () => {window.location = "https://github.com/primefaces/sigma"}}
-    //     ];
-    // }
 
     addClass(element, className) {
         if (element.classList)
@@ -256,14 +163,8 @@ class App extends Component {
                 </div>
 
                 <div className="layout-main">
-                    <Route path="/" exact component={Dashboard} />
 
-                    {/*<Route path="/cities" component={DataGridListView} />*/}
-                    
-                    <Route path={`${match.url}:table`} render={props => <DataGridListView {...props} />}/>
-
-                    {/*<Route path={`${match.url}:table`} component={DataGridListView} />*/}
-
+                    {/*<Route path="/" exact component={Dashboard} />
                     <Route path="/forms" component={FormsDemo} />
                     <Route path="/sample" component={SampleDemo} />
                     <Route path="/data" component={DataDemo} />
@@ -274,7 +175,13 @@ class App extends Component {
                     <Route path="/charts" component={ChartsDemo} />
                     <Route path="/misc" component={MiscDemo} />
                     <Route path="/empty" component={EmptyPage} />
-                    <Route path="/documentation" component={Documentation} />
+                    <Route path="/documentation" component={Documentation} />*/}
+
+                    <Route 
+                        path={`${match.url}:table`}
+                        render={props => <DataGridListView {...props} />}
+                    />
+
                 </div>
 
                 <AppFooter />
