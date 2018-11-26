@@ -14,6 +14,7 @@ import { LookUpService } from '../service/LookUpService';
 import { TabView,TabPanel } from 'primereact/tabview';
 import { Growl } from 'primereact/growl';
 import { getPixelCrop } from 'react-image-crop';
+import Loader from 'react-loader-spinner'
 
 import history from '../history'
 
@@ -36,20 +37,13 @@ class MainView extends Component {
             detailTable: {},
             detailRow: {},
 
+            isLoading: true,
+
             isSelect: false,
             mode: '',
             alertMode: '',
             options: [],
             activeDetailIndex: -1,
-
-            baseSrc: null,
-            src: null,
-            crop: {
-                // x: 10,
-                // y: 10,
-                // aspect: 1,
-                // width: 50,
-            },
 
             baseSrc: [],
             src: [],
@@ -98,10 +92,26 @@ class MainView extends Component {
         this.getAllTableData()
     }
 
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({ isLoading: false })
+        }, 500)
+    }
+
+    componentWillUpdate(prevProps) {
+        if(prevProps.match.params.table !== this.props.match.params.table)
+        {
+            this.setState({ isLoading: true })
+        }
+    }
+
     componentDidUpdate(prevProps) {
 
         if(prevProps.match.params.table !== this.props.match.params.table)
         {
+            setTimeout(() => {
+                this.setState({ isLoading: false })
+            }, 500)
             window.scrollTo(0, 0)
             this.getAllTableData()
         }
@@ -507,6 +517,7 @@ class MainView extends Component {
             baseSrc,
             src,
             crop,
+            isLoading
 
         } = this.state
 
@@ -546,28 +557,37 @@ class MainView extends Component {
                     onCropComplete={this.onCropComplete}
                 />
 
-                <div className="p-col-12">
+                <div className="p-col-12" style={{textAlign:'center'}}>
                     <div className="card card-w-title">
-                        <h1 style={{textAlign:'right'}}>{table.label}</h1>
-
-                        <ToolBarComponent
-                            onShowDialog={this.onShowDialog}
-                            onShowAlertDialog={this.onShowAlertDialog}
+                    {isLoading && 
+                        <Loader 
+                            type="Puff"
+                            color="#00BFFF"
+                            height="100"   
+                            width="100"
                         />
-
-                        <TableComponent 
-                            details={details}
-                            data={data}
-                            cols={cols}
-                            table={table}
-                            row={row}
-                            onSelectionChange={this.onSelectionChange}
-                        />
-                        
+                    }
+                    {!isLoading &&
+                        <div>
+                            <h1 style={{textAlign:'right'}}>{table.label}</h1>
+                            <ToolBarComponent
+                                onShowDialog={this.onShowDialog}
+                                onShowAlertDialog={this.onShowAlertDialog}
+                            />
+                            <TableComponent 
+                                details={details}
+                                data={data}
+                                cols={cols}
+                                table={table}
+                                row={row}
+                                onSelectionChange={this.onSelectionChange}
+                            />
+                        </div>
+                    }
                     </div>
                 </div>
 
-                {!!details.length &&
+                {(!!details.length && !isLoading) &&
                     <div className="p-col-12">
                         <div className="card card-w-title">
                             <TabView
