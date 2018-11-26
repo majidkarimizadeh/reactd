@@ -35,6 +35,16 @@ export default class FormComponent extends Component {
             options,
             imageUrls,
 
+            onSelectFile,
+            onCropRevert,
+            onClearFile,
+            onImageLoaded,
+            onCropChange,
+            onCropComplete,
+            baseSrc,
+            src,
+            crop,
+
         } = this.props
 
         let modeFields = [];
@@ -163,9 +173,15 @@ export default class FormComponent extends Component {
                                         name={image.name}
                                         label={image.label}
                                         placeholder={image.label}
-                                        onInputFileChange={onInputFileChange}
-                                        imageUrls={imageUrls}
-                                        cropWindowVisibles={cropWindowVisibles}
+                                        baseSrc={baseSrc}
+                                        src={src}
+                                        crop={crop}
+                                        onSelectFile={onSelectFile}
+                                        onCropRevert={onCropRevert}
+                                        onClearFile={onClearFile}
+                                        onImageLoaded={onImageLoaded}
+                                        onCropChange={onCropChange}
+                                        onCropComplete={onCropComplete}
                                     />
                                 </div>
                             </TabPanel>

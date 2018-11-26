@@ -13,6 +13,7 @@ import { LookUpService } from '../service/LookUpService';
 
 import { TabView,TabPanel } from 'primereact/tabview';
 import { Growl } from 'primereact/growl';
+import { getPixelCrop } from 'react-image-crop';
 
 import history from '../history'
 
@@ -41,15 +42,20 @@ class MainView extends Component {
             options: [],
             activeDetailIndex: -1,
 
-            cropWindowVisibles: [],
-            imageUrls: [],
+            baseSrc: null,
+            src: null,
+            crop: {
+                // x: 10,
+                // y: 10,
+                // aspect: 1,
+                // width: 50,
+            },
 
         }
 
         this.onHideDialog = this.onHideDialog.bind(this)
         this.onShowDialog = this.onShowDialog.bind(this)
         this.onFormSubmit = this.onFormSubmit.bind(this)
-        this.onInputFileChange = this.onInputFileChange.bind(this)        
 
         this.onDetailTabChange = this.onDetailTabChange.bind(this)
         this.onShowAlertDialog = this.onShowAlertDialog.bind(this)
@@ -66,6 +72,15 @@ class MainView extends Component {
         this.tableService = new TableService()
         this.rowService = new RowService()
         this.lookUpService = new LookUpService()
+
+        this.onSelectFile = this.onSelectFile.bind(this)
+        this.onCropRevert = this.onCropRevert.bind(this)
+        this.onClearFile = this.onClearFile.bind(this)
+        this.onImageLoaded = this.onImageLoaded.bind(this)
+        this.onCropChange = this.onCropChange.bind(this)
+        this.onCropComplete = this.onCropComplete.bind(this)
+        this.makeClientCrop = this.makeClientCrop.bind(this)
+        this.getCroppedImg = this.getCroppedImg.bind(this)
     }
 
     componentWillMount() {
@@ -157,25 +172,6 @@ class MainView extends Component {
                         detailTable: table,
                     })
                 })
-        }
-    }
-
-    onInputFileChange(e, index, name) {
-        if(e.files && e.files[0]) 
-        {
-            let cropWindowVisibles = [...this.state.cropWindowVisibles];
-            cropWindowVisibles[index] = true
-            let imageUrls = [...this.state.imageUrls];
-
-            imageUrls[index] = e.files[0].objectURL
-            this.setState({ 
-                cropWindowVisibles,
-                imageUrls,
-                row: {
-                    ...this.state.row,
-                    [name]: e.files[0]
-                }
-            })
         }
     }
 
@@ -283,6 +279,7 @@ class MainView extends Component {
             fields.map( (item, index) => {
                 let col = cols.find( (col) => col.no === item)
                 apiObject.append(col.name, row[col.name])
+                console.log(col.name, row[col.name])
             })
             this.rowService.updateRow(apiObject)
                 .then( (res) => {  this.setState({ mode: '' }) })
@@ -334,6 +331,128 @@ class MainView extends Component {
             })
     }
 
+
+    onClearFile() {
+        this.setState({
+            src: null,
+            baseSrc: null,
+        })
+    }
+
+    onSelectFile(e, name) {
+        if (e.files && e.files.length > 0) {
+            const reader = new FileReader();
+            reader.addEventListener('load', () => 
+                this.setState({ 
+                    src: reader.result,
+                    baseSrc: reader.result
+                })
+            )
+
+            this.setState({ 
+                row: {
+                    ...this.state.row,
+                    [name]: e.files[0]
+                }
+            })
+            reader.readAsDataURL(e.files[0]);
+        }
+    }
+
+    onImageLoaded(image, pixelCrop) {
+        this.imageRef = image;
+
+        const { crop } = this.state;
+
+        if (crop.aspect && crop.height && crop.width) {
+            this.setState({
+                crop: { ...crop, height: null },
+            });
+        } else {
+            this.makeClientCrop(crop, pixelCrop);
+        }
+    }
+
+    onCropComplete(colName) {
+        const { crop } = this.state;
+        this.makeClientCrop(crop, getPixelCrop(this.imageRef, crop), colName);
+    }
+
+    onCropRevert() {
+        this.setState({
+            src: this.state.baseSrc,
+            crop: {
+                x: 10,
+                y: 10,
+                width: 50,
+                height:null
+            }
+        })
+    }
+
+    onCropChange(crop) {
+        this.setState({ crop });
+    }
+
+    async makeClientCrop(crop, pixelCrop, colName) {
+        if (this.imageRef && crop.width && crop.height) {
+            const croppedImageUrl = await this.getCroppedImg(
+                this.imageRef,
+                pixelCrop,
+                'newFile.jpeg',
+                colName
+            );
+            this.setState({ 
+                src: croppedImageUrl,
+                crop: {
+                    x: 10,
+                    y: 10,
+                    width: 50,
+                    height:null
+                },
+                // row: {
+                //     ...this.state.row,
+                //     img: croppedImageUrl
+                // }  
+            });
+        }
+    }
+
+    getCroppedImg(image, pixelCrop, fileName, colName) {
+        const canvas = document.createElement('canvas');
+        canvas.width = pixelCrop.width;
+        canvas.height = pixelCrop.height;
+        const ctx = canvas.getContext('2d');
+
+        ctx.drawImage(
+            image,
+            pixelCrop.x,
+            pixelCrop.y,
+            pixelCrop.width,
+            pixelCrop.height,
+            0,
+            0,
+            pixelCrop.width,
+            pixelCrop.height,
+        );
+
+        return new Promise((resolve, reject) => {
+            canvas.toBlob(blob => {
+                this.setState({
+                    row: {
+                        ...this.state.row,
+                        [colName]: blob
+                    }  
+                })
+                blob.name = fileName;
+                window.URL.revokeObjectURL(this.fileUrl);
+                this.fileUrl = window.URL.createObjectURL(blob);
+                resolve(this.fileUrl);
+            }, 'image/jpeg');
+        })
+    }
+
+
     render() {
 
         const { 
@@ -355,6 +474,10 @@ class MainView extends Component {
             detailRow,
             cropWindowVisibles,
             imageUrls,
+
+            baseSrc,
+            src,
+            crop,
 
         } = this.state
 
@@ -382,9 +505,16 @@ class MainView extends Component {
                     onHideDialog={this.onHideDialog}
                     onLookUp={this.onLookUp}
                     options={options}
-                    onInputFileChange={this.onInputFileChange}
-                    cropWindowVisibles={cropWindowVisibles}
-                    imageUrls={imageUrls}
+
+                    baseSrc={baseSrc}
+                    src={src}
+                    crop={crop}
+                    onSelectFile={this.onSelectFile}
+                    onCropRevert={this.onCropRevert}
+                    onClearFile={this.onClearFile}
+                    onImageLoaded={this.onImageLoaded}
+                    onCropChange={this.onCropChange}
+                    onCropComplete={this.onCropComplete}
                 />
 
                 <div className="p-col-12">

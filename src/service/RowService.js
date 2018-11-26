@@ -23,12 +23,16 @@ export class RowService {
     }
 
     updateRow(apiObject) {
-    	return axios.put(`${API_URL}/update-row/`, apiObject)
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    	return axios.post(`${API_URL}/update-row/`, apiObject, config)
     			.then(res => { return res })
     }
 
     storeRow(apiObject) {
-        console.log(apiObject)
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'

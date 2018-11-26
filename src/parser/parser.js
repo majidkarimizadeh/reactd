@@ -35,11 +35,9 @@ export function lookupParser(lookups) {
 
 export function imageParser(record, field) {
 
-	if(!field.name || !record[field.name])
+	if(field.name && record[field.name])
 	{
-		return "";
+		return "http://localhost:8000/images/profiles/" + record.id + "/p." + record[field.name]
 	}
-
-	return "http://localhost:8000/images/profiles/" + record.id + "/p." + record[field.name]
-
+	return false;
 }
