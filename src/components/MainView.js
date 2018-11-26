@@ -102,6 +102,7 @@ class MainView extends Component {
 
         if(prevProps.match.params.table !== this.props.match.params.table)
         {
+            window.scrollTo(0, 0)
             this.getAllTableData()
         }
 
