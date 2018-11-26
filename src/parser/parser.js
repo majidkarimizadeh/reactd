@@ -18,6 +18,11 @@ export function detailParser(details) {
 	return standardDetail
 }
 
+export function menuParser(menu) {
+	if(!menu) return {}
+	return JSON.parse(menu)
+}
+
 export function tableParser(table) {
 	if(!table) return {}
 	return JSON.parse(table)
