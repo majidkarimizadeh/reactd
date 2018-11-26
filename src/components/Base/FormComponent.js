@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import { imageParser } from '../../parser/parser'
+
 import SelectComponent from './SelectComponent'
 import TextEditComponent from './TextEditComponent'
 import LongTextEditComponent from './LongTextEditComponent'
 import PasswordEditComponent from './PasswordEditComponent'
 import ImageComponent from './ImageComponent'
+import BooleanComponent from './BooleanComponent'
 
 import {TabView,TabPanel} from 'primereact/tabview';
 import {Button} from 'primereact/button';
@@ -34,7 +36,8 @@ export default class FormComponent extends Component {
             onLookUp,
             options,
             imageUrls,
-
+            
+            onSwitchChange,
             onSelectFile,
             onCropRevert,
             onClearFile,
@@ -150,6 +153,19 @@ export default class FormComponent extends Component {
                                         label={col.label}
                                         placeholder={col.label}
                                         onChange={onChange}
+                                    />)
+                                    break;
+
+                                case 'boolean':
+                                    return ( <BooleanComponent 
+                                        index={i}
+                                        key={i}
+                                        readOnly={mode === 'view'}
+                                        value={row[col.name]}
+                                        name={col.name}
+                                        label={col.label}
+                                        placeholder={col.label}
+                                        onChange={onSwitchChange}
                                     />)
                                     break;
                             }

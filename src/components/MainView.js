@@ -70,6 +70,7 @@ class MainView extends Component {
         this.onLookUp = this.onLookUp.bind(this)
         this.refreshDetailTab = this.refreshDetailTab.bind(this)
 
+        this.onSwitchChange = this.onSwitchChange.bind(this)
         this.onTextChange = this.onTextChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)    
 
@@ -134,6 +135,12 @@ class MainView extends Component {
         {
             this.setState({ details })
         }
+    }
+
+    onSwitchChange(e, name) {
+        let row = {...this.state.row}
+        row[name] = e.value
+        this.setState({ row })
     }
 
     isSelectedRow() {
@@ -540,6 +547,7 @@ class MainView extends Component {
                     cols={cols}
                     mode={mode}
                     row={row}
+                    onSwitchChange={this.onSwitchChange}
                     onChange={this.onTextChange}
                     onSubmit={this.onFormSubmit}
                     onHideDialog={this.onHideDialog}
