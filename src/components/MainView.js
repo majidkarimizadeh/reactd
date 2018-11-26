@@ -99,6 +99,12 @@ class MainView extends Component {
     }
 
     componentDidUpdate(prevProps) {
+
+        if(prevProps.match.params.table !== this.props.match.params.table)
+        {
+            this.getAllTableData()
+        }
+
         const { data, table, cols, details } = this.props;
 
         if (prevProps.data !== data) 
