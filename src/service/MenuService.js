@@ -1,11 +1,11 @@
 import axios from 'axios';
 import history from '../history'
+import { API_URL } from '../config'
 
 export class MenuService {
     
     getMenuItem() {
-        // TODO : should move to config
-        return axios.get('http://localhost:8000/api/menubar')
+        return axios.get(`${API_URL}/menubar`)
                 .then(res => {
                     return this.generateMenuItem(res.data)
                 });

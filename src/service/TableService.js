@@ -1,10 +1,17 @@
 import axios from 'axios';
 import history from '../history'
-import { dataParser, colParser, tableParser, lookupParser, detailParser } from '../parser/parser'
+import { API_URL } from '../config'
+import { 
+    dataParser,
+    colParser, 
+    tableParser,
+    detailParser
+} from '../parser/parser'
+
 export class TableService {
     
     getAllTableData(tableName) {
-        return axios.get('http://localhost:8000/api/index/' + tableName)
+        return axios.get(`${API_URL}/index/${tableName}`)
                 .then(res => {
                     return {
                         data: dataParser(res.data.data),
@@ -20,7 +27,7 @@ export class TableService {
             row_id: primary,
             foreign_table: foreignTable
         }
-        return axios.post('http://localhost:8000/api/index/data-column/', apiObject)
+        return axios.post(`${API_URL}/index/data-column/`, apiObject)
                 .then(res => {
                     return {
                         details: detailParser(res.data.details),
@@ -35,7 +42,7 @@ export class TableService {
         let apiObject = {
             details: details
         }
-        return axios.post('http://localhost:8000/api/details', apiObject)
+        return axios.post(`${API_URL}/details`, apiObject)
             .then( res => {
                 return {
                     details: detailParser(res.data.details),

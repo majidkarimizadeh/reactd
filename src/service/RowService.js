@@ -1,10 +1,11 @@
 import axios from 'axios';
 import history from '../history'
+import { API_URL } from '../config'
 
 export class RowService {
 
     getRow(tableName, id) {
-        return axios.get('http://localhost:8000/api/row/' + tableName + '/' + id)
+        return axios.get(`${API_URL}/row/${tableName}/${id}`)
                 .then(res => {
                     return {
                         row: res.data.row,
@@ -17,12 +18,12 @@ export class RowService {
             table_name: tableName,
             table_id: primary
         };
-        return axios.post('http://localhost:8000/api/delete-row/', {delete: apiObject})
+        return axios.post(`${API_URL}/delete-row/`, {delete: apiObject})
                 .then(res => { return res.data })
     }
 
     updateRow(apiObject) {
-    	return axios.put('http://localhost:8000/api/update-row/', apiObject)
+    	return axios.put(`${API_URL}/update-row/`, apiObject)
     			.then(res => { return res })
     }
 
@@ -33,7 +34,7 @@ export class RowService {
                 'Content-Type': 'multipart/form-data'
             }
         }
-    	return axios.post('http://localhost:8000/api/store-row/', apiObject, config)
+    	return axios.post(`${API_URL}/store-row/`, apiObject, config)
     			.then(res => { return res })
     }
 

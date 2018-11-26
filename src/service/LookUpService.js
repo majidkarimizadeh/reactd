@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_URL } from '../config'
 
 export class LookUpService {
 
@@ -6,7 +7,7 @@ export class LookUpService {
     	let apiObject = new FormData()
         apiObject.append('rdf', rdf)
 
-        return axios.post('http://localhost:8000/api/look-up', apiObject)
+        return axios.post(`${API_URL}/look-up`, apiObject)
                 .then(res => res.data);
     }
 }
