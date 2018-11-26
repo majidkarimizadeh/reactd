@@ -1,5 +1,9 @@
 /* Place your extensions here to make migration to a new release easier. */
 
+.full-width-upload-btn > span {
+	width: 100% !important;
+}
+
 .lable {
 	display: block;
 	margin-bottom: 4px;

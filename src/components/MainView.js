@@ -44,14 +44,6 @@ class MainView extends Component {
             cropWindowVisibles: [],
             imageUrls: [],
 
-            src: null,
-            crop: {
-              x: 10,
-              y: 10,
-              aspect: 1,
-              width: 50,
-            },
-
         }
 
         this.onHideDialog = this.onHideDialog.bind(this)
