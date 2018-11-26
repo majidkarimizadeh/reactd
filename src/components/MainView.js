@@ -51,6 +51,17 @@ class MainView extends Component {
                 // width: 50,
             },
 
+            baseSrc: [],
+            src: [],
+            crop: [
+                // {
+                //     x: 10,
+                //     y: 10,
+                //     aspect: 1,
+                //     width: 50,
+                // }
+            ],
+
         }
 
         this.onHideDialog = this.onHideDialog.bind(this)
@@ -279,7 +290,6 @@ class MainView extends Component {
             fields.map( (item, index) => {
                 let col = cols.find( (col) => col.no === item)
                 apiObject.append(col.name, row[col.name])
-                console.log(col.name, row[col.name])
             })
             this.rowService.updateRow(apiObject)
                 .then( (res) => {  this.setState({ mode: '' }) })
@@ -332,22 +342,30 @@ class MainView extends Component {
     }
 
 
-    onClearFile() {
+    onClearFile(index) {
+        let src = [...this.state.src]
+        src[index] = null;
+
+        let baseSrc = [...this.state.baseSrc]
+        baseSrc[index] = null;
+
         this.setState({
-            src: null,
-            baseSrc: null,
+            src, baseSrc
         })
     }
 
-    onSelectFile(e, name) {
+    onSelectFile(e, name, index) {
         if (e.files && e.files.length > 0) {
             const reader = new FileReader();
-            reader.addEventListener('load', () => 
-                this.setState({ 
-                    src: reader.result,
-                    baseSrc: reader.result
-                })
-            )
+            reader.addEventListener('load', () => {
+                let src = [...this.state.src]
+                src[index] = reader.result
+
+                let baseSrc = [...this.state.baseSrc]
+                baseSrc[index] = reader.result
+
+                this.setState({ src, baseSrc })
+            })
 
             this.setState({ 
                 row: {
@@ -359,62 +377,66 @@ class MainView extends Component {
         }
     }
 
-    onImageLoaded(image, pixelCrop) {
+    onImageLoaded(image, pixelCrop, index) {
         this.imageRef = image;
 
         const { crop } = this.state;
 
-        if (crop.aspect && crop.height && crop.width) {
-            this.setState({
-                crop: { ...crop, height: null },
-            });
+        if (crop[index] && crop[index].aspect && crop[index].height && crop[index].width) {
+            let crops = [...this.state.crop]
+            crops[index] = { ...crop, height: null };
+            this.setState({ crop: crops });
         } else {
-            this.makeClientCrop(crop, pixelCrop);
+            this.makeClientCrop(crop[index], pixelCrop, index);
         }
     }
 
-    onCropComplete(colName) {
+    onCropComplete(colName, index) {
         const { crop } = this.state;
-        this.makeClientCrop(crop, getPixelCrop(this.imageRef, crop), colName);
+        this.makeClientCrop(crop[index], getPixelCrop(this.imageRef, crop[index]), colName, index);
     }
 
-    onCropRevert() {
-        this.setState({
-            src: this.state.baseSrc,
-            crop: {
-                x: 10,
-                y: 10,
-                width: 50,
-                height:null
-            }
-        })
+    onCropRevert(index) {
+        let src = [...this.state.src]
+        src[index] = this.state.baseSrc[index]
+
+        let crop = [...this.state.crop]
+        crop[index] = {
+            x: 10,
+            y: 10,
+            width: 50,
+            height:null
+        }
+
+        this.setState({ src, crop  })
     }
 
-    onCropChange(crop) {
+    onCropChange(cr, index) {
+        let crop = [...this.state.crop]
+        crop[index] = cr
         this.setState({ crop });
     }
 
-    async makeClientCrop(crop, pixelCrop, colName) {
-        if (this.imageRef && crop.width && crop.height) {
+    async makeClientCrop(crop, pixelCrop, colName, index) {
+        if (this.imageRef && crop && crop.width && crop.height) {
             const croppedImageUrl = await this.getCroppedImg(
                 this.imageRef,
                 pixelCrop,
                 'newFile.jpeg',
                 colName
             );
-            this.setState({ 
-                src: croppedImageUrl,
-                crop: {
-                    x: 10,
-                    y: 10,
-                    width: 50,
-                    height:null
-                },
-                // row: {
-                //     ...this.state.row,
-                //     img: croppedImageUrl
-                // }  
-            });
+
+            let src = [...this.state.src]
+            src[index] = croppedImageUrl
+
+            let crops = [...this.state.crop] 
+            crops[index] = {
+                x: 10,
+                y: 10,
+                width: 50,
+                height:null
+            }
+            this.setState({ src, crop:crops });
         }
     }
 

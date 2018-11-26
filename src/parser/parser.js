@@ -37,7 +37,14 @@ export function imageParser(record, field) {
 
 	if(field.name && record[field.name])
 	{
-		return "http://localhost:8000/images/profiles/" + record.id + "/p." + record[field.name]
+		if(record[field.name] == 'jpeg' || record[field.name] == 'jpg' || record[field.name] == 'png') 
+		{
+			return "http://localhost:8000/images/profiles/" + record.id + "/p." + record[field.name]
+		}
+		else
+		{
+			return "http://localhost:8000/" + record[field.name]
+		}
 	}
 	return false;
 }
