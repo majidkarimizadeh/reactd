@@ -1,3 +1,6 @@
+import * as JalaliMoment from 'moment-jalaali'
+import moment from 'moment'
+
 export function colParser(cols) {
 	if(!cols) return [];
 
@@ -52,4 +55,34 @@ export function imageParser(record, field) {
 		}
 	}
 	return false;
+}
+
+export function getJalDateByGreDate(date, hasTime = false) {
+	if(!date) {
+		return date
+	}
+	let format = 'jYYYY/jM/jD';
+	if(hasTime) {
+		format += ' HH:mm:ss'
+	}
+	return JalaliMoment(date).format(format)
+}
+
+export function getGreDateByTimestamp(timestamp, hasTime = false) {
+	let format = 'YYYY/M/D';
+	if(hasTime) {
+		format += ' HH:mm:ss'
+	}
+	return moment(timestamp * 1000).format(format)
+}
+
+export function getGreDateByGMT(gmt) {
+	return moment(gmt).format('YYYY-MM-DD HH:mm:ss')
+}
+
+export function getGMTByGreDate(date) {
+	if(!date) {
+		return date	
+	}
+	return moment(date).toDate()
 }

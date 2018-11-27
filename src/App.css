@@ -22,3 +22,78 @@
 .p-toolbar-group-left > button {
 	margin: 4px  4px  4px 0px
 }
+
+
+
+.JC-years > input {
+	margin: 5px 5px 
+}
+.JDatePicker {
+	direction: rtl;
+	color: #333333;
+	border: 1px solid #c8c8c8;
+    -webkit-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    -moz-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    margin-bottom: 20px;
+}
+.JDheader, .JC-months, .days-titles, .day-items {
+	padding: 8px;
+}
+.days-titles > div {
+	font-weight: bold !important
+}
+.JC-months > .holder {
+	width: 100% !important;
+}
+.holder > .prev, .next {
+	font-weight: bold !important;
+}
+.monthPicker {
+	top: 35px !important;
+	right: 0px !important;
+	padding: 10px !important;
+}
+.monthPicker > .month-items {
+	padding: 10px !important;
+	border: 0px !important;
+}
+.JDatePicker .month-items:hover, .JDatePicker .month-items.selected {
+	background: lavender !important;
+	color: #222 !important
+}
+
+.JDatePicker .day-items:hover {
+	background: lavender !important;
+}
+
+.current-date {
+	background: lavenderblush !important;
+}
+
+div.day-items.selected {
+	background: lavender !important;
+}
+
+.JDsubmit , .JDcancel {
+	border-radius: 2px !important;
+	font-size: 14px !important;
+	margin: 0px !important;
+	width: auto !important;
+	height: auto !important;
+	margin-left: 6px !important;
+	margin-top: 10px !important;
+	color: #222 !important;
+	padding: 6px 10px !important;
+}
+
+.JC-years > div > div.right > select, 
+.JC-years > div > div.left > select {
+	background: transparent !important
+}
+
+
+.p-datepicker-month, .p-datepicker-year {
+	background: transparent !important;
+	border: none !important;
+}

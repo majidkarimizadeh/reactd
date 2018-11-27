@@ -14,6 +14,7 @@ import { LookUpService } from '../service/LookUpService';
 import { TabView,TabPanel } from 'primereact/tabview';
 import { Growl } from 'primereact/growl';
 import { getPixelCrop } from 'react-image-crop';
+import { getGreDateByTimestamp } from '../parser/parser'
 import Loader from 'react-loader-spinner'
 
 import history from '../history'
@@ -70,6 +71,7 @@ class MainView extends Component {
         this.onLookUp = this.onLookUp.bind(this)
         this.refreshDetailTab = this.refreshDetailTab.bind(this)
 
+        this.onDateChange = this.onDateChange.bind(this)
         this.onSwitchChange = this.onSwitchChange.bind(this)
         this.onTextChange = this.onTextChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)    
@@ -141,6 +143,13 @@ class MainView extends Component {
         let row = {...this.state.row}
         row[name] = e.value
         this.setState({ row })
+    }
+
+    onDateChange(date, name){
+        let row = {...this.state.row}
+        row[name] = date
+        this.setState({ row })
+        console.log(row);
     }
 
     isSelectedRow() {
@@ -533,7 +542,6 @@ class MainView extends Component {
         return (
             <div className="p-grid">
                 <Growl ref={(el) => this.growl = el}></Growl>
-
                 <AlertDialogComponent
                     onHideAlertDialog={this.onHideAlertDialog}
                     onCancel={this.onHideAlertDialog}
@@ -563,6 +571,7 @@ class MainView extends Component {
                     onImageLoaded={this.onImageLoaded}
                     onCropChange={this.onCropChange}
                     onCropComplete={this.onCropComplete}
+                    onDateChange={this.onDateChange}
                 />
 
                 <div className="p-col-12" style={{textAlign:'center'}}>

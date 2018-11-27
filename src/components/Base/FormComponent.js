@@ -3,6 +3,7 @@ import { imageParser } from '../../parser/parser'
 
 import SelectComponent from './SelectComponent'
 import TextEditComponent from './TextEditComponent'
+import DatePickerComponent from './DatePickerComponent'
 import LongTextEditComponent from './LongTextEditComponent'
 import PasswordEditComponent from './PasswordEditComponent'
 import ImageComponent from './ImageComponent'
@@ -47,6 +48,7 @@ export default class FormComponent extends Component {
             baseSrc,
             src,
             crop,
+            onDateChange,
 
         } = this.props
 
@@ -166,6 +168,21 @@ export default class FormComponent extends Component {
                                         label={col.label}
                                         placeholder={col.label}
                                         onChange={onSwitchChange}
+                                    />)
+                                    break;
+
+                                case 'date':
+                                    return ( <DatePickerComponent
+                                        index={i}
+                                        key={i}
+                                        showTime={false}
+                                        jalali={false}
+                                        readOnly={mode === 'view'}
+                                        value={row[col.name]}
+                                        name={col.name}
+                                        label={col.label}
+                                        placeholder={col.label}
+                                        onChange={onDateChange}
                                     />)
                                     break;
                             }
