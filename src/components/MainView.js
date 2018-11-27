@@ -149,7 +149,12 @@ class MainView extends Component {
         let row = {...this.state.row}
         row[name] = date
         this.setState({ row })
-        console.log(row);
+    }
+
+    onTextChange(e) {
+        let { row } = this.state
+        row[e.target.name] = e.target.value
+        this.setState({ row })
     }
 
     isSelectedRow() {
@@ -327,12 +332,6 @@ class MainView extends Component {
             this.rowService.updateRow(apiObject)
                 .then( (res) => {  this.setState({ mode: '' }) })
         }
-    }
-
-    onTextChange(e) {
-        let { row } = this.state
-        row[e.target.name] = e.target.value
-        this.setState({ row })
     }
 
     onSelectionChange(e) {
@@ -549,95 +548,101 @@ class MainView extends Component {
                     mode={alertMode}
                 />
 
-                <FormComponent
-                    label={table.label}
-                    table={table}
-                    cols={cols}
-                    mode={mode}
-                    row={row}
-                    onSwitchChange={this.onSwitchChange}
-                    onChange={this.onTextChange}
-                    onSubmit={this.onFormSubmit}
-                    onHideDialog={this.onHideDialog}
-                    onLookUp={this.onLookUp}
-                    options={options}
+                {mode &&
+                    <FormComponent
+                        label={table.label}
+                        table={table}
+                        cols={cols}
+                        mode={mode}
+                        row={row}
+                        onSwitchChange={this.onSwitchChange}
+                        onChange={this.onTextChange}
+                        onSubmit={this.onFormSubmit}
+                        onHideDialog={this.onHideDialog}
+                        onLookUp={this.onLookUp}
+                        options={options}
 
-                    baseSrc={baseSrc}
-                    src={src}
-                    crop={crop}
-                    onSelectFile={this.onSelectFile}
-                    onCropRevert={this.onCropRevert}
-                    onClearFile={this.onClearFile}
-                    onImageLoaded={this.onImageLoaded}
-                    onCropChange={this.onCropChange}
-                    onCropComplete={this.onCropComplete}
-                    onDateChange={this.onDateChange}
-                />
+                        baseSrc={baseSrc}
+                        src={src}
+                        crop={crop}
+                        onSelectFile={this.onSelectFile}
+                        onCropRevert={this.onCropRevert}
+                        onClearFile={this.onClearFile}
+                        onImageLoaded={this.onImageLoaded}
+                        onCropChange={this.onCropChange}
+                        onCropComplete={this.onCropComplete}
+                        onDateChange={this.onDateChange}
+                    />
+                }
 
-                <div className="p-col-12" style={{textAlign:'center'}}>
-                    <div className="card card-w-title">
-                    {isLoading && 
-                        <Loader 
-                            type="Puff"
-                            color="#00BFFF"
-                            height="100"   
-                            width="100"
-                        />
-                    }
-                    {!isLoading &&
-                        <div>
-                            <h1 style={{textAlign:'right'}}>{table.label}</h1>
-                            <ToolBarComponent
-                                onShowDialog={this.onShowDialog}
-                                onShowAlertDialog={this.onShowAlertDialog}
-                            />
-                            <TableComponent 
-                                details={details}
-                                data={data}
-                                cols={cols}
-                                table={table}
-                                row={row}
-                                onSelectionChange={this.onSelectionChange}
-                            />
+                {!mode && 
+                    <div className="p-col-12" style={{padding:'0px'}}>
+                        <div className="p-col-12" style={{textAlign:'center', padding:'0px'}}>
+                            <div className="card card-w-title">
+                            {isLoading && 
+                                <Loader 
+                                    type="Puff"
+                                    color="#00BFFF"
+                                    height="100"   
+                                    width="100"
+                                />
+                            }
+                            {!isLoading &&
+                                <div>
+                                    <h1 style={{textAlign:'right'}}>{table.label}</h1>
+                                    <ToolBarComponent
+                                        onShowDialog={this.onShowDialog}
+                                        onShowAlertDialog={this.onShowAlertDialog}
+                                    />
+                                    <TableComponent 
+                                        details={details}
+                                        data={data}
+                                        cols={cols}
+                                        table={table}
+                                        row={row}
+                                        onSelectionChange={this.onSelectionChange}
+                                    />
+                                </div>
+                            }
+                            </div>
                         </div>
-                    }
-                    </div>
-                </div>
 
-                {(!!details.length && !isLoading) &&
-                    <div className="p-col-12">
-                        <div className="card card-w-title">
-                            <TabView
-                                activeIndex={activeDetailIndex}
-                                onTabChange={this.onDetailTabChange}
-                                style={{textAlign: 'right'}}
-                            >
-                                {details.map( (item, index) => {
-                                    return (
-                                        <TabPanel 
-                                            key={index}
-                                            header={item.label} 
-                                            contentStyle={{padding:'10px 0px'}}
-                                            headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
-                                        >
-                                            <Route
-                                                path={`${match.url}/:table`}
-                                                render={ props => {
-                                                    return <MainView 
-                                                        data={detailData}
-                                                        table={detailTable}
-                                                        cols={detailCols}
-                                                        row={detailRow}
-                                                        details={detailDetails}
-                                                        {...props} 
+                        {(!!details.length && !isLoading) &&
+                            <div className="p-col-12" style={{padding:'0px'}}>
+                                <div className="card card-w-title">
+                                    <TabView
+                                        activeIndex={activeDetailIndex}
+                                        onTabChange={this.onDetailTabChange}
+                                        style={{textAlign: 'right'}}
+                                    >
+                                        {details.map( (item, index) => {
+                                            return (
+                                                <TabPanel 
+                                                    key={index}
+                                                    header={item.label} 
+                                                    contentStyle={{padding:'10px 0px'}}
+                                                    headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
+                                                >
+                                                    <Route
+                                                        path={`${match.url}/:table`}
+                                                        render={ props => {
+                                                            return <MainView 
+                                                                data={detailData}
+                                                                table={detailTable}
+                                                                cols={detailCols}
+                                                                row={detailRow}
+                                                                details={detailDetails}
+                                                                {...props} 
+                                                            />
+                                                        }}
                                                     />
-                                                }}
-                                            />
-                                        </TabPanel>
-                                    )
-                                })}
-                            </TabView>
-                        </div>
+                                                </TabPanel>
+                                            )
+                                        })}
+                                    </TabView>
+                                </div>
+                            </div>
+                        }
                     </div>
                 }
             </div>

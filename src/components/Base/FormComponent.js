@@ -56,7 +56,7 @@ export default class FormComponent extends Component {
         let imagesFields = [];
         if(mode) { modeFields = table[mode] }
 
-        const footer = <div style={{textAlign:'left'}}>
+        const footer = <div className="p-col-12" style={{textAlign:'left', marginTop:'20px'}}>
             <Button label="Close" onClick={() => onHideDialog()} className="p-button-default p-button-raised" />
             {mode !== 'view' &&
                 <Button onClick={(e) => onSubmit(mode)} label="Success" className="p-button-success p-button-raised" />
@@ -64,165 +64,158 @@ export default class FormComponent extends Component {
         </div>
 
 		return (
-			<Dialog 
-                header={label}
-                footer={footer}
-                visible={mode ? true : false} 
-                rtl={true} 
-                maximizable={true}
-                modal={true} 
-                width="75%"
-                onHide={() => onHideDialog()}
-            >
-                <TabView>
-                    <TabPanel 
-                        header="Information"
-                        headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
-                    >
-                    <div className="p-grid">
-                        {!!modeFields && modeFields.map( (item, i) => {
-                            let col = cols.find(function(c) {
-                                return c.no === item;
-                            });
+            <div className="p-col-12" style={{padding:'0px'}}>
+                <div className="card card-w-title">
+                    <TabView>
+                        <TabPanel 
+                            header="Information"
+                            headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
+                        >
+                        <div className="p-grid">
+                            {!!modeFields && modeFields.map( (item, i) => {
+                                let col = cols.find(function(c) {
+                                    return c.no === item;
+                                });
 
-                            switch(col.controller) 
-                            {
-                                case 'lookup':
-                                    return ( <SelectComponent 
-                                        index={i}
-                                        key={i}
-                                        options={options}
-                                        readOnly={mode === 'view'}
-                                        value={row[col.name]}
-                                        name={col.name}
-                                        label={col.label}
-                                        placeholder={col.label}
-                                        onChange={onChange}
-                                        onMouseDown={() => {onLookUp(col.rdf)}}
-                                    /> )
-                                    break;
+                                switch(col.controller) 
+                                {
+                                    case 'lookup':
+                                        return ( <SelectComponent 
+                                            index={i}
+                                            key={i}
+                                            options={options}
+                                            readOnly={mode === 'view'}
+                                            value={row[col.name]}
+                                            name={col.name}
+                                            label={col.label}
+                                            placeholder={col.label}
+                                            onChange={onChange}
+                                            onMouseDown={() => {onLookUp(col.rdf)}}
+                                        /> )
+                                        break;
 
-                                case 'password':
-                                    return ( <PasswordEditComponent 
-                                        index={i}
-                                        key={i}
-                                        value={row[col.name]}
-                                        name={col.name}
-                                        label={col.label}                                    
-                                        placeholder={col.label}
-                                        onChange={onChange}
-                                    /> )
-                                    break;
+                                    case 'password':
+                                        return ( <PasswordEditComponent 
+                                            index={i}
+                                            key={i}
+                                            value={row[col.name]}
+                                            name={col.name}
+                                            label={col.label}                                    
+                                            placeholder={col.label}
+                                            onChange={onChange}
+                                        /> )
+                                        break;
 
-                                case 'image':
-                                    {imagesFields.push(col)}
-                                    break;
+                                    case 'image':
+                                        {imagesFields.push(col)}
+                                        break;
 
-                                case 'number':
-                                    return ( <TextEditComponent 
-                                        index={i}
-                                        key={i}
-                                        readOnly={mode === 'view'}
-                                        value={row[col.name]}
-                                        name={col.name}
-                                        label={col.label}
-                                        type='number'
-                                        placeholder={col.label}
-                                        onChange={onChange}
-                                    /> )
-                                    break;
+                                    case 'number':
+                                        return ( <TextEditComponent 
+                                            index={i}
+                                            key={i}
+                                            readOnly={mode === 'view'}
+                                            value={row[col.name]}
+                                            name={col.name}
+                                            label={col.label}
+                                            type='number'
+                                            placeholder={col.label}
+                                            onChange={onChange}
+                                        /> )
+                                        break;
 
-                                case 'text_edit':
-                                    return ( <TextEditComponent 
-                                        index={i}
-                                        key={i}
-                                        readOnly={mode === 'view'}
-                                        value={row[col.name]}
-                                        name={col.name}
-                                        label={col.label}
-                                        placeholder={col.label}
-                                        onChange={onChange}
-                                    /> )
-                                    break;
+                                    case 'text_edit':
+                                        return ( <TextEditComponent 
+                                            index={i}
+                                            key={i}
+                                            readOnly={mode === 'view'}
+                                            value={row[col.name]}
+                                            name={col.name}
+                                            label={col.label}
+                                            placeholder={col.label}
+                                            onChange={onChange}
+                                        /> )
+                                        break;
 
-                                case 'long_text':
-                                    return ( <LongTextEditComponent 
-                                        index={i}
-                                        key={i}
-                                        readOnly={mode === 'view'}
-                                        value={row[col.name]}
-                                        name={col.name}
-                                        label={col.label}
-                                        placeholder={col.label}
-                                        onChange={onChange}
-                                    />)
-                                    break;
+                                    case 'long_text':
+                                        return ( <LongTextEditComponent 
+                                            index={i}
+                                            key={i}
+                                            readOnly={mode === 'view'}
+                                            value={row[col.name]}
+                                            name={col.name}
+                                            label={col.label}
+                                            placeholder={col.label}
+                                            onChange={onChange}
+                                        />)
+                                        break;
 
-                                case 'boolean':
-                                    return ( <BooleanComponent 
-                                        index={i}
-                                        key={i}
-                                        readOnly={mode === 'view'}
-                                        value={row[col.name]}
-                                        name={col.name}
-                                        label={col.label}
-                                        placeholder={col.label}
-                                        onChange={onSwitchChange}
-                                    />)
-                                    break;
+                                    case 'boolean':
+                                        return ( <BooleanComponent 
+                                            index={i}
+                                            key={i}
+                                            readOnly={mode === 'view'}
+                                            value={row[col.name]}
+                                            name={col.name}
+                                            label={col.label}
+                                            placeholder={col.label}
+                                            onChange={onSwitchChange}
+                                        />)
+                                        break;
 
-                                case 'date':
-                                    return ( <DatePickerComponent
-                                        index={i}
-                                        key={i}
-                                        showTime={false}
-                                        jalali={false}
-                                        readOnly={mode === 'view'}
-                                        value={row[col.name]}
-                                        name={col.name}
-                                        label={col.label}
-                                        placeholder={col.label}
-                                        onChange={onDateChange}
-                                    />)
-                                    break;
-                            }
+                                    case 'date':
+                                        return ( <DatePickerComponent
+                                            index={i}
+                                            key={i}
+                                            showTime={col.showTime}
+                                            jalali={col.showJalali}
+                                            readOnly={mode === 'view'}
+                                            value={row[col.name]}
+                                            name={col.name}
+                                            label={col.label}
+                                            placeholder={col.label}
+                                            onChange={onDateChange}
+                                        />)
+                                        break;
+                                }
 
+                            })}
+                        </div>
+                        </TabPanel>
+
+                        {!!imagesFields && imagesFields.map( (image, i) => {
+                            return (
+                                <TabPanel
+                                    key={i}
+                                    header={image.label}
+                                    headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
+                                >
+                                    <div className="p-grid">
+                                        <ImageComponent
+                                            index={i}
+                                            key={i}
+                                            value={imageParser(row, image)}
+                                            name={image.name}
+                                            label={image.label}
+                                            placeholder={image.label}
+                                            baseSrc={baseSrc}
+                                            src={src}
+                                            crop={crop}
+                                            onSelectFile={onSelectFile}
+                                            onCropRevert={onCropRevert}
+                                            onClearFile={onClearFile}
+                                            onImageLoaded={onImageLoaded}
+                                            onCropChange={onCropChange}
+                                            onCropComplete={onCropComplete}
+                                        />
+                                    </div>
+                                </TabPanel>
+                            )
                         })}
-                    </div>
-                    </TabPanel>
-
-                    {!!imagesFields && imagesFields.map( (image, i) => {
-                        return (
-                            <TabPanel
-                                key={i}
-                                header={image.label}
-                                headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
-                            >
-                                <div className="p-grid">
-                                    <ImageComponent
-                                        index={i}
-                                        key={i}
-                                        value={imageParser(row, image)}
-                                        name={image.name}
-                                        label={image.label}
-                                        placeholder={image.label}
-                                        baseSrc={baseSrc}
-                                        src={src}
-                                        crop={crop}
-                                        onSelectFile={onSelectFile}
-                                        onCropRevert={onCropRevert}
-                                        onClearFile={onClearFile}
-                                        onImageLoaded={onImageLoaded}
-                                        onCropChange={onCropChange}
-                                        onCropComplete={onCropComplete}
-                                    />
-                                </div>
-                            </TabPanel>
-                        )
-                    })}
-
-                </TabView>
-            </Dialog>
+                    </TabView>
+                    {footer}
+                </div>
+            </div>
 		)
 	}
 }
