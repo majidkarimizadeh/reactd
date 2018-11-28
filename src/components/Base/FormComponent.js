@@ -57,7 +57,7 @@ export default class FormComponent extends Component {
         if(mode) { modeFields = table[mode] }
 
         const footer = <div className="p-col-12 form-footer">
-            <Button label="لغو" onClick={() => onHideDialog()} className="p-button-secondary toolbar-btn" />
+            <Button label="لغو" onClick={() => onHideDialog()} className="p-button-secondary" />
             {mode !== 'view' &&
                 <Button onClick={(e) => onSubmit(mode)} label="اعمال" className="p-button-success p-button-raised" />
             }

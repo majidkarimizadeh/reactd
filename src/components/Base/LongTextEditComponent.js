@@ -20,7 +20,7 @@ export default class LongTextEditComponent extends Component {
 
         } = this.props;
         return (
-            <div className="p-col-12 p-md-6" style={{textAlign:'right'}}>
+            <div className="p-col-12 p-md-12" style={{textAlign:'right'}}>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     {label} 
                     {readOnly && 
