@@ -97,3 +97,150 @@ div.day-items.selected {
 	background: transparent !important;
 	border: none !important;
 }
+
+
+.card {	
+	-webkit-box-shadow: 0px 1px 15px 1px rgba(69,65,78,0.08);
+	box-shadow: 0px 1px 15px 1px rgba(69,65,78,0.08);
+	background-color: #fff;
+}
+
+.layout-topbar, .layout-footer {
+	-webkit-box-shadow: 0px 1px 15px 1px rgba(69,65,78,0.1);
+    box-shadow: 0px 1px 15px 1px rgba(69,65,78,0.1);
+}
+
+.card h1 {
+	margin: 0px;
+	border-bottom: 0px;
+	padding: 0px;
+}
+
+.card-heading {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	font-size: 1.3rem;
+	font-weight: 500;
+	margin: 0;
+	padding: 0;
+	justify-content: space-between;
+	margin-bottom: 0.8em !important;
+	border-bottom: 1px solid #eee;
+}
+
+.card-heading-caption {
+    padding: .1em;
+    font-size: 24px;
+    margin-bottom: 10px !important;
+}
+.card-heading-actions {
+	margin-bottom: 10px !important;
+}
+.card-heading-actions > button{
+	margin: 0px 2px;
+}
+
+.p-button-secondary {
+	border-color: #ddd !important;
+}
+
+.layout-topbar-item-text , 
+.layout-topbar-icon , 
+.layout-menu-button {
+	color: #b8bece !important
+}
+
+
+.layout-wrapper .layout-sidebar ul li a span,
+.layout-wrapper .layout-sidebar ul li a i {
+	font-weight: 400;
+    font-size: 14px;
+    text-transform: initial;
+}
+.layout-wrapper .layout-sidebar ul li a i {
+	font-size: 22px;
+	margin-left: 14px;
+}
+
+
+.p-highlight {
+	background-color: #5867dd !important;
+	border-color: #5867dd !important;
+}
+
+.p-sortable-column-icon > .pi-sort{
+	font-weight: 100 !important;
+	font-size: 1em !important;
+}
+
+body .p-tabview.p-tabview-top .p-tabview-nav li, 
+body .p-tabview.p-tabview-bottom .p-tabview-nav li,
+body .p-tabview.p-tabview-left .p-tabview-nav li,
+body .p-tabview.p-tabview-right .p-tabview-nav li {
+	border-radius: 6px !important;
+	background-color: transparent;
+	border-color: #ddd;
+	margin: 0px 0px 6px 6px !important;	
+	float: right;
+}
+
+body .p-tabview.p-tabview-top .p-tabview-nav li:hover, 
+body .p-tabview.p-tabview-bottom .p-tabview-nav li:hover,
+body .p-tabview.p-tabview-left .p-tabview-nav li:hover,
+body .p-tabview.p-tabview-right .p-tabview-nav li:hover {
+	background-color: #5867dd !important;
+	border-color: #5867dd !important;
+}
+
+body .p-tabview.p-tabview-top .p-tabview-nav li a, 
+body .p-tabview.p-tabview-bottom .p-tabview-nav li a,
+body .p-tabview.p-tabview-left .p-tabview-nav li a,
+body .p-tabview.p-tabview-right .p-tabview-nav li a {
+	color: #6f727d
+}
+
+body .p-tabview.p-tabview-top .p-tabview-nav li a:hover, 
+body .p-tabview.p-tabview-bottom .p-tabview-nav li a:hover,
+body .p-tabview.p-tabview-left .p-tabview-nav li a:hover,
+body .p-tabview.p-tabview-right .p-tabview-nav li a:hover {
+	color: #eee;
+}
+
+
+.p-tabview-panels  {
+	margin-top: 10px;
+	border-radius: 0px !important;
+}
+
+.tab-table-view > div.p-tabview-panels {
+	padding: 0px !important;
+}
+
+
+div.p-paginator.p-paginator-bottom {
+	display: inline-block;
+	background-color: #fff;
+	margin-top: 15px;
+	border:none !important;
+}
+
+a.p-paginator-element {
+	border-radius: 50% !important;
+}
+
+body .p-datatable .p-datatable-thead > tr > th,
+body .p-datatable .p-datatable-tbody > tr > td {
+	border-color: #eee;
+}
+
+body .p-datatable .p-datatable-thead > tr > th{
+	background-color: #f4f3f8;
+}
+
+.toolbar-btn {
+	background-color: #f4f3f8 !important;
+}

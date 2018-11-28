@@ -64,7 +64,7 @@ export default class FormComponent extends Component {
         </div>
 
 		return (
-            <div className="p-col-12" style={{padding:'0px'}}>
+            <div className="p-col-12">
                 <div className="card card-w-title">
                     <TabView>
                         <TabPanel 

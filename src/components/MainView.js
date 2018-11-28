@@ -15,6 +15,7 @@ import { TabView,TabPanel } from 'primereact/tabview';
 import { Growl } from 'primereact/growl';
 import { getPixelCrop } from 'react-image-crop';
 import { getGreDateByTimestamp } from '../parser/parser'
+import {Button} from 'primereact/button';
 import Loader from 'react-loader-spinner'
 
 import history from '../history'
@@ -539,7 +540,7 @@ class MainView extends Component {
         const { match } = this.props
 
         return (
-            <div className="p-grid">
+            <div>
                 <Growl ref={(el) => this.growl = el}></Growl>
                 <AlertDialogComponent
                     onHideAlertDialog={this.onHideAlertDialog}
@@ -576,24 +577,34 @@ class MainView extends Component {
                 }
 
                 {!mode && 
-                    <div className="p-col-12" style={{padding:'0px'}}>
+                    <div className="p-col-12">
                         <div className="p-col-12" style={{textAlign:'center', padding:'0px'}}>
                             <div className="card card-w-title">
                             {isLoading && 
                                 <Loader 
                                     type="Puff"
-                                    color="#00BFFF"
+                                    color="#5867dd"
                                     height="100"   
                                     width="100"
                                 />
                             }
                             {!isLoading &&
                                 <div>
-                                    <h1 style={{textAlign:'right'}}>{table.label}</h1>
-                                    <ToolBarComponent
-                                        onShowDialog={this.onShowDialog}
-                                        onShowAlertDialog={this.onShowAlertDialog}
-                                    />
+                                    <div className="card-heading">
+                                        <div className="card-heading-actions">
+                                            <Button onClick={() => this.onShowAlertDialog('delete')} label="Delete" icon="pi pi-trash" className="p-button-secondary toolbar-btn" />
+                                            <Button onClick={() => this.onShowDialog('view')} label="View" icon="pi pi-check" className="p-button-secondary toolbar-btn" />
+                                            <Button onClick={() => this.onShowDialog('edit')} label="Edit" icon="pi pi-pencil" className="p-button-secondary toolbar-btn" />
+                                            <Button onClick={() => this.onShowDialog('create')} label="New" icon="pi pi-plus" className="p-button-secondary toolbar-btn"/>
+
+                                            {/*<ToolBarComponent
+                                                onShowDialog={this.onShowDialog}
+                                                onShowAlertDialog={this.onShowAlertDialog}
+                                            />*/}
+
+                                        </div>
+                                        <h1 className="card-heading-caption">{table.label}</h1>
+                                    </div>
                                     <TableComponent 
                                         details={details}
                                         data={data}
@@ -614,14 +625,14 @@ class MainView extends Component {
                                         activeIndex={activeDetailIndex}
                                         onTabChange={this.onDetailTabChange}
                                         style={{textAlign: 'right'}}
+                                        className="tab-table-view"
                                     >
                                         {details.map( (item, index) => {
                                             return (
                                                 <TabPanel 
                                                     key={index}
-                                                    header={item.label} 
-                                                    contentStyle={{padding:'10px 0px'}}
-                                                    headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
+                                                    header={item.label}
+                                                    contentStyle={{borderColor:'red'}}
                                                 >
                                                     <Route
                                                         path={`${match.url}/:table`}

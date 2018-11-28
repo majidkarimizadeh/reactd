@@ -1,6 +1,7 @@
 /* General */
 $fontSize:14px;
-$bodyBgColor:#edf0f5;
+// $bodyBgColor:#edf0f5;
+$bodyBgColor:#f2f3f8;
 $textColor:#333333;
 $textSecondaryColor:#707070;
 $borderRadius:3px;
@@ -15,13 +16,17 @@ $menuitemBadgeColor:#ffffff;
 $submenuFontSize:13px;
 
 /* Menu Dark*/
-$menuDarkBgColorFirst:#4d505b;
-$menuDarkBgColorLast:#3b3e47;
-$menuitemDarkColor:#ffffff;
-$menuitemDarkHoverColor:#0388e5;
-$menuitemDarkActiveColor:#0388e5;
-$menuitemDarkActiveBgColor:#2e3035;
-$menuitemDarkBorderColor:rgba(52, 56, 65, 0.6);
+// $menuDarkBgColorFirst:#4d505b;
+// $menuDarkBgColorLast:#3b3e47;
+
+$menuDarkBgColorFirst:#2c2e3e;
+$menuDarkBgColorLast:#2c2e3e;
+$menuitemDarkColor:#eee;
+$menuitemDarkHoverColor:#ffffff;
+$menuitemDarkActiveColor:#ffffff;
+$menuitemDarkActiveBgColor:#292b3a;
+// $menuitemDarkBorderColor:rgba(52, 56, 65, 0.6);
+$menuitemDarkBorderColor:#292b3a;
 
 /* Menu Light*/
 $menuBgColorFirst:#f3f4f9;
@@ -33,8 +38,12 @@ $menuitemActiveBgColor:#ffffff;
 $menuitemBorderColor:rgba(207, 211, 224, 0.6);
 
 /* Topbar */
-$topbarLeftBgColor:#0388E5;
-$topbarRightBgColor:#07BDF4;
+// $topbarLeftBgColor:#0388E5;
+// $topbarRightBgColor:#07BDF4;
+
+$topbarLeftBgColor:#fff;
+$topbarRightBgColor:#fff;
+
 $topbarItemBadgeBgColor:#ef6262;
 $topbarItemBadgeColor:#ffffff;
 $topbarItemColor:#ffffff;
