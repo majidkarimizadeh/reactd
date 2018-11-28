@@ -52,10 +52,12 @@ export default class DatePickerComponent extends Component {
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     {label} 
                     {readOnly && 
-                        <span>{` : ${value}`}</span>
+                        <span>
+                            {` : ${jalali ? getJalDateByGreDate(value, showTime) : getGMTByGreDate(value)}`}
+                        </span>
                     }
                 </label>
-                {jalali && 
+                {(!readOnly && jalali) && 
                     <JalaliComponent
                         inputComponent={this.datePickerInput}
                         placeholder={placeholder}
@@ -64,7 +66,7 @@ export default class DatePickerComponent extends Component {
                         preSelected={getJalDateByGreDate(value, showTime)}
                     />
                 }
-                {!jalali && 
+                {(!readOnly && !jalali) && 
                     <Calendar
                         placeholder={placeholder}
                         showTime={showTime}
