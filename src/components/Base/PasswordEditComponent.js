@@ -15,7 +15,7 @@ export default class PasswordEditComponent extends Component {
             index, 
             name, 
             value, 
-            onChange,
+            onInputChange,
             readOnly,
             type
 
@@ -31,7 +31,7 @@ export default class PasswordEditComponent extends Component {
                         type={type}
                         id={`lbl-${index}`}
                         placeholder={placeholder}
-                        onChange={onChange}
+                        onChange={(e) => onInputChange(e.target.value, name)}
                         style={{textAlign:'right'}}
                         className="p-col-12 p-md-12"
                     />

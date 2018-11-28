@@ -38,7 +38,7 @@ export default class DatePickerComponent extends Component {
             name, 
             value, 
             jalali,
-            onChange,
+            onInputChange,
             readOnly,
             type
 
@@ -62,7 +62,7 @@ export default class DatePickerComponent extends Component {
                         inputComponent={this.datePickerInput}
                         placeholder={placeholder}
                         format={this.JalaliFormat}
-                        onChange={(unix, format) => onChange(getGreDateByTimestamp(unix, showTime), name) }
+                        onChange={(unix, format) => onInputChange(getGreDateByTimestamp(unix, showTime), name) }
                         preSelected={getJalDateByGreDate(value, showTime)}
                     />
                 }
@@ -79,7 +79,7 @@ export default class DatePickerComponent extends Component {
                         yearNavigator={true}
                         yearRange="2000:2030"
                         inputStyle={{width:'100%'}}
-                        onChange={(e) => onChange(getGreDateByGMT(e.value), name) }
+                        onChange={(e) => onInputChange(getGreDateByGMT(e.value), name) }
                     />
                 }
             </div>

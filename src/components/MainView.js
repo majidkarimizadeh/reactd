@@ -72,9 +72,7 @@ class MainView extends Component {
         this.onLookUp = this.onLookUp.bind(this)
         this.refreshDetailTab = this.refreshDetailTab.bind(this)
 
-        this.onDateChange = this.onDateChange.bind(this)
-        this.onSwitchChange = this.onSwitchChange.bind(this)
-        this.onTextChange = this.onTextChange.bind(this)
+        this.onInputChange = this.onInputChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)    
 
         this.isSelectedRow = this.isSelectedRow.bind(this)
@@ -140,21 +138,9 @@ class MainView extends Component {
         }
     }
 
-    onSwitchChange(e, name) {
-        let row = {...this.state.row}
-        row[name] = e.value
-        this.setState({ row })
-    }
-
-    onDateChange(date, name){
+    onInputChange(date, name) {
         let row = {...this.state.row}
         row[name] = date
-        this.setState({ row })
-    }
-
-    onTextChange(e) {
-        let { row } = this.state
-        row[e.target.name] = e.target.value
         this.setState({ row })
     }
 
@@ -163,8 +149,8 @@ class MainView extends Component {
         if(!isSelect) {
             this.growl.show({
                 severity: 'warn',
-                summary: 'Row not found',
-                detail: 'please select row'
+                summary: 'سطر انتخاب نشده است',
+                detail: 'لطفا ابتدا سطر مورد نظر خود را انتخاب کنید'
             });
             return false
         }
@@ -361,16 +347,6 @@ class MainView extends Component {
                 let row = {}
                 cols.map( (item, index) => row[item.name] = '' )
                 this.setState({ cols, table, data, details, row })
-
-                // this.tableService.getAllDetailData(table.details)
-                //     .then( ({ detailData, detailCols, detailTable, details }) => { 
-                //         this.setState({ 
-                //             detailData,
-                //             detailCols,
-                //             detailTable,
-                //             details
-                //         })
-                //     })
             })
     }
 
@@ -556,8 +532,7 @@ class MainView extends Component {
                         cols={cols}
                         mode={mode}
                         row={row}
-                        onSwitchChange={this.onSwitchChange}
-                        onChange={this.onTextChange}
+                        onInputChange={this.onInputChange}
                         onSubmit={this.onFormSubmit}
                         onHideDialog={this.onHideDialog}
                         onLookUp={this.onLookUp}
@@ -572,7 +547,6 @@ class MainView extends Component {
                         onImageLoaded={this.onImageLoaded}
                         onCropChange={this.onCropChange}
                         onCropComplete={this.onCropComplete}
-                        onDateChange={this.onDateChange}
                     />
                 }
 
@@ -596,12 +570,6 @@ class MainView extends Component {
                                             <Button onClick={() => this.onShowDialog('view')} label="مشاهده" icon="pi pi-file" className="p-button-secondary toolbar-btn" />
                                             <Button onClick={() => this.onShowDialog('edit')} label="ویرایش" icon="pi pi-pencil" className="p-button-secondary toolbar-btn" />
                                             <Button onClick={() => this.onShowDialog('create')} label="ایجاد" icon="pi pi-plus" className="p-button-secondary toolbar-btn"/>
-
-                                            {/*<ToolBarComponent
-                                                onShowDialog={this.onShowDialog}
-                                                onShowAlertDialog={this.onShowAlertDialog}
-                                            />*/}
-
                                         </div>
                                         <h1 className="card-heading-caption">{table.label}</h1>
                                     </div>

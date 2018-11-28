@@ -23,16 +23,18 @@ export default class DataFormComponent extends Component {
 
         let header = <div></div>
         let footer = <div></div>
+        let className = ""
         if(mode === 'delete') {
         	header = (
-        		"Delete"
+        		"حذف ؟"
         	)
         	footer = (
 			    <div>
-			        <Button label="Delete" icon="pi pi-check" onClick={() => {onSubmit(mode)}} />
-			        <Button label="Cancel" icon="pi pi-times" onClick={onCancel} />
+			        <Button label="بله" className="p-button-danger" icon="pi pi-check" onClick={() => {onSubmit(mode)}} />
+			        <Button label="لغو" className="p-button-secondary" icon="pi pi-times" onClick={onCancel} />
 			    </div>
 			);
+            className = "p-dialog-titlebar-danger"
         }
 
 
@@ -44,8 +46,12 @@ export default class DataFormComponent extends Component {
                 rtl={true} 
                 modal={true} 
                 onHide={() => onHideAlertDialog()}
+                width="25%"
+                className={className}
             >
-            	Are you sure?
+            	<h3>
+                    آیا مطمئن هستید ؟
+                </h3>
             </Dialog>
 		)
 	}

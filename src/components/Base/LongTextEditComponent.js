@@ -15,7 +15,7 @@ export default class LongTextEditComponent extends Component {
             index, 
             name, 
             value, 
-            onChange,
+            onInputChange,
             readOnly,
 
         } = this.props;
@@ -36,7 +36,7 @@ export default class LongTextEditComponent extends Component {
                         id={`lbl-${index}`} 
                         placeholder={placeholder} 
                         autoResize={true}
-                        onChange={onChange}
+                        onChange={(e) => onInputChange(e.target.value, name)}
                         style={{textAlign:'right'}}
                         className="p-col-12 p-md-12"
                     />

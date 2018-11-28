@@ -15,7 +15,7 @@ export default class BooleanComponent extends Component {
             index, 
             name, 
             value, 
-            onChange,
+            onInputChange,
             readOnly,
             type
 
@@ -35,7 +35,7 @@ export default class BooleanComponent extends Component {
                         type={type}
                         id={`lbl-${index}`}
                         placeholder={placeholder}
-                        onChange={(e) => onChange(e, name)}
+                        onChange={(e) => onInputChange(e.value, name)}
                         style={{textAlign:'right'}}
                         className="p-col-12 p-md-12"
                     />

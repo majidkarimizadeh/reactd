@@ -15,7 +15,7 @@ export default class SelectComponent extends Component {
             name, 
             options,
             value, 
-            onChange,
+            onInputChange,
             onMouseDown,
             readOnly,
 
@@ -38,9 +38,8 @@ export default class SelectComponent extends Component {
                         value={value}
                         autoWidth={false}
                         onMouseDown={onMouseDown}
-                        onChange={onChange}
+                        onChange={(e) => onInputChange(e.value, name)}
                         style={{textAlign:'right', width:'100%'}}
-                        // onChange={event => this.setState({dropdownCity: event.value})} 
                     />
                 }
             </div>

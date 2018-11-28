@@ -254,3 +254,19 @@ body .p-datatable .p-datatable-thead > tr > th{
 	font-size: 13px !important;
 	padding: 0.2em 0.6em 0.2em 2em !important;
 }
+
+body .p-dialog .p-dialog-content, 
+.p-dialog-titlebar {
+	text-align: right;
+}
+
+.p-dialog .p-dialog-titlebar-icons {
+	float: left;
+}
+
+.p-dialog-titlebar-danger > div.p-dialog-titlebar {
+	color: #ffffff !important;
+    background-color: #e91224 !important;
+    border: 1px solid #e91224 !important;
+    padding: 8px !important;
+}

@@ -31,7 +31,7 @@ export default class FormComponent extends Component {
             row,
             mode,
             onSubmit,
-            onChange,
+            onInputChange,
             onInputFileChange,
             cropWindowVisibles,
             onLookUp,
@@ -89,7 +89,7 @@ export default class FormComponent extends Component {
                                             name={col.name}
                                             label={col.label}
                                             placeholder={col.label}
-                                            onChange={onChange}
+                                            onInputChange={onInputChange}
                                             onMouseDown={() => {onLookUp(col.rdf)}}
                                         /> )
                                         break;
@@ -102,7 +102,7 @@ export default class FormComponent extends Component {
                                             name={col.name}
                                             label={col.label}                                    
                                             placeholder={col.label}
-                                            onChange={onChange}
+                                            onInputChange={onInputChange}
                                         /> )
                                         break;
 
@@ -120,7 +120,7 @@ export default class FormComponent extends Component {
                                             label={col.label}
                                             type='number'
                                             placeholder={col.label}
-                                            onChange={onChange}
+                                            onInputChange={onInputChange}
                                         /> )
                                         break;
 
@@ -133,7 +133,7 @@ export default class FormComponent extends Component {
                                             name={col.name}
                                             label={col.label}
                                             placeholder={col.label}
-                                            onChange={onChange}
+                                            onInputChange={onInputChange}
                                         /> )
                                         break;
 
@@ -146,7 +146,7 @@ export default class FormComponent extends Component {
                                             name={col.name}
                                             label={col.label}
                                             placeholder={col.label}
-                                            onChange={onChange}
+                                            onInputChange={onInputChange}
                                         />)
                                         break;
 
@@ -159,7 +159,7 @@ export default class FormComponent extends Component {
                                             name={col.name}
                                             label={col.label}
                                             placeholder={col.label}
-                                            onChange={onSwitchChange}
+                                            onInputChange={onInputChange}
                                         />)
                                         break;
 
@@ -174,7 +174,7 @@ export default class FormComponent extends Component {
                                             name={col.name}
                                             label={col.label}
                                             placeholder={col.label}
-                                            onChange={onDateChange}
+                                            onInputChange={onInputChange}
                                         />)
                                         break;
                                 }
