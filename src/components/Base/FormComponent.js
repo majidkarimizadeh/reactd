@@ -56,10 +56,10 @@ export default class FormComponent extends Component {
         let imagesFields = [];
         if(mode) { modeFields = table[mode] }
 
-        const footer = <div className="p-col-12" style={{textAlign:'left', marginTop:'20px'}}>
-            <Button label="Close" onClick={() => onHideDialog()} className="p-button-default p-button-raised" />
+        const footer = <div className="p-col-12 form-footer">
+            <Button label="لغو" onClick={() => onHideDialog()} className="p-button-secondary toolbar-btn" />
             {mode !== 'view' &&
-                <Button onClick={(e) => onSubmit(mode)} label="Success" className="p-button-success p-button-raised" />
+                <Button onClick={(e) => onSubmit(mode)} label="اعمال" className="p-button-success p-button-raised" />
             }
         </div>
 

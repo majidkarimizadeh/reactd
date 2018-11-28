@@ -15,14 +15,18 @@ export class MenuService {
     generateMenuItem(menuItems) {
         if(!menuItems) return;
         let menus = [];
-        for (var i = menuItems.length - 1; i >= 0; i--) {
+        for (var i = 0; i < menuItems.length; i++) {
             let menuItem = (typeof menuItems[i] === 'object') ? menuItems[i] : JSON.parse(menuItems[i])
-            let url = (menuItem.url && menuItem.url.startsWith('/')) ? '' + menuItem.url : '/' + menuItem.url
+            let url = menuItem.url ?  (menuItem.url.startsWith('/')) ? menuItem.url : '/' + menuItem.url  : null
             menus.push({
                 icon: menuItem.icon,
                 label: menuItem.label,
                 items: this.generateMenuItem(menuItem.items),
-                command: () => { history.push(url) }
+                command: () => { 
+                    if(url) {
+                        history.push(url) 
+                    }
+                }
             })
         }
         return menus;
