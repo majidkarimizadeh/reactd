@@ -270,3 +270,10 @@ body .p-dialog .p-dialog-content,
     border: 1px solid #e91224 !important;
     padding: 8px !important;
 }
+
+a.show-image, a.show-image:hover {
+    width: 100%;
+    display: block;
+    color: black;
+    background: #fff;
+}

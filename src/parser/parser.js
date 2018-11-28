@@ -86,3 +86,11 @@ export function getGMTByGreDate(date) {
 	}
 	return moment(date).toDate()
 }
+
+export function getFormatedGreDate(date, hasTime = false) {
+	let format = 'YYYY/M/D';
+	if(hasTime) {
+		format += ' HH:mm:ss'
+	}
+	return moment(date).format(format);
+}
