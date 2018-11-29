@@ -64,13 +64,13 @@ class MainView extends Component {
         this.onShowDialog = this.onShowDialog.bind(this)
         this.onFormSubmit = this.onFormSubmit.bind(this)
 
-        this.onDetailTabChange = this.onDetailTabChange.bind(this)
+        this.onTabChange = this.onTabChange.bind(this)
         this.onShowAlertDialog = this.onShowAlertDialog.bind(this)
         this.onHideAlertDialog = this.onHideAlertDialog.bind(this)
         this.onSubmitAlertDialog = this.onSubmitAlertDialog.bind(this)
         
         this.onLookUp = this.onLookUp.bind(this)
-        this.refreshDetailTab = this.refreshDetailTab.bind(this)
+        this.refreshTab = this.refreshTab.bind(this)
 
         this.onInputChange = this.onInputChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)    
@@ -108,16 +108,6 @@ class MainView extends Component {
     }
 
     componentDidUpdate(prevProps) {
-
-        if(prevProps.match.params.table !== this.props.match.params.table)
-        {
-            setTimeout(() => {
-                this.setState({ isLoading: false })
-            }, 500)
-            window.scrollTo(0, 0)
-            this.getAllTableData()
-        }
-
         const { data, table, cols, details } = this.props;
 
         if (prevProps.data !== data) 
@@ -135,6 +125,15 @@ class MainView extends Component {
         if (prevProps.details !== details) 
         {
             this.setState({ details })
+        }
+
+        if(prevProps.match.params.table !== this.props.match.params.table)
+        {
+            setTimeout(() => {
+                this.setState({ isLoading: false })
+            }, 500)
+            window.scrollTo(0, 0)
+            this.getAllTableData()
         }
     }
 
@@ -157,35 +156,17 @@ class MainView extends Component {
         return true
     }
 
-    onDetailTabChange(e) {
-        const { details, table, row } = this.state
+    onTabChange(e) {
+        const { details } = this.state
         const { match } = this.props
         const activeDetailIndex = e.index
         const detailTable = details[activeDetailIndex];
 
         this.setState({ activeDetailIndex })
         history.push(match.url + "/" + detailTable.url)
-
-        let rowPrimary = null
-        let foreignKey = null
-
-        if(row && detailTable.foreigns) {
-            foreignKey = detailTable.foreigns.find( (item) => item.table === table.name)
-            rowPrimary = row[table.pk]
-        }
-
-        this.tableService.getAllDataCol(detailTable.name, rowPrimary, foreignKey.key)
-            .then( ({ details, data, cols, table }) => { 
-                this.setState({ 
-                    detailDetails: details,
-                    detailData: data,
-                    detailCols: cols,
-                    detailTable: table,
-                })
-            })
     }
 
-    refreshDetailTab(row) {
+    refreshTab(row) {
         const { details, table, activeDetailIndex } = this.state;
 
         if(activeDetailIndex !== -1) {
@@ -332,7 +313,7 @@ class MainView extends Component {
             row: e.data,
             isSelect: true
         })
-        this.refreshDetailTab(e.data);
+        this.refreshTab(e.data);
     }
 
     getAllTableData(tName = null) {
@@ -591,7 +572,7 @@ class MainView extends Component {
                                 <div className="card card-w-title">
                                     <TabView
                                         activeIndex={activeDetailIndex}
-                                        onTabChange={this.onDetailTabChange}
+                                        onTabChange={this.onTabChange}
                                         style={{textAlign: 'right'}}
                                         className="tab-table-view"
                                     >

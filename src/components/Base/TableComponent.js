@@ -13,6 +13,10 @@ export default class TableComponent extends Component {
         super(props)
     }
 
+    lookUpTemplate(rowData, column, columnAttr ,thisClass = null) {
+        return rowData[ 'join_' + column.field ];
+    }
+
     booleanTemplate(rowData, column, columnAttr ,thisClass = null) {
         if(rowData[column.field]) {
             return <i className="pi pi-check" style={{color:'green'}}/>
@@ -82,6 +86,8 @@ export default class TableComponent extends Component {
                         body = this.imageTemplate;
                     } else if(col.controller === 'boolean') {
                         body = this.booleanTemplate;
+                    } else if(col.controller === 'lookup') {
+                        body = this.lookUpTemplate;
                     }
                     return (
 
