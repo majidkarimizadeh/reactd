@@ -91,7 +91,7 @@ class MainView extends Component {
     }
 
     componentWillMount() {
-        this.getAllTableData()
+        this.getTableInfo()
     }
 
     componentDidMount() {
@@ -133,7 +133,7 @@ class MainView extends Component {
                 this.setState({ isLoading: false })
             }, 500)
             window.scrollTo(0, 0)
-            this.getAllTableData()
+            this.getTableInfo()
         }
     }
 
@@ -180,12 +180,12 @@ class MainView extends Component {
             let foreignKey = null
             let rowPrimary = null
 
-            if(row && detailTable.foreigns) {
-                foreignKey = detailTable.foreigns.find( (item) => item.table === table.name)
+            if(row && detailTable.children) {
+                foreignKey = detailTable.children.find( (item) => item.table === table.name)
                 rowPrimary = row[table.pk]
             }
 
-            this.tableService.getAllDataCol(detailTable.url, rowPrimary, foreignKey.key)
+            this.tableService.getTableInfo(detailTable.url, rowPrimary, foreignKey.key)
                 .then( ({ details, data, cols, table }) => { 
                     this.setState({ 
                         detailDetails: details,
@@ -326,9 +326,9 @@ class MainView extends Component {
         this.refreshTab(e.data);
     }
 
-    getAllTableData() {
-        let tableName = this.props.match.params.table
-        this.tableService.getAllDataCol(tableName)
+    getTableInfo() {
+        let tableUrl = this.props.match.params.table
+        this.tableService.getTableInfo(tableUrl)
             .then(({data, table, cols, details })  =>  {
                 let row = {}
                 cols.map( (item, index) => row[item.name] = '' )
