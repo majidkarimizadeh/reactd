@@ -68,7 +68,7 @@ export default class TableComponent extends Component {
                 paginatorPosition="bottom"
                 autoLayout={true}
                 selectionMode="single"
-                
+                emptyMessage="اطلاعاتی وجود ندارد"
                 paginator={true}
                 rows={12}
                 responsive={true} 

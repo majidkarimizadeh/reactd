@@ -157,12 +157,17 @@ class MainView extends Component {
     }
 
     onTabChange(e) {
-        const { details } = this.state
+        const { details, cols } = this.state
         const { match } = this.props
         const activeDetailIndex = e.index
         const detailTable = details[activeDetailIndex];
-
-        this.setState({ activeDetailIndex })
+        let row = {}
+        cols.map( (item, index) => row[item.name] = '' )
+        this.setState({ 
+            activeDetailIndex,
+            row, 
+            isSelect: false
+        })
         history.push(match.url + "/" + detailTable.url)
     }
 
@@ -308,7 +313,6 @@ class MainView extends Component {
                 e.data[key] = ''
             }
         })
-
         this.setState({
             row: e.data,
             isSelect: true
@@ -316,13 +320,8 @@ class MainView extends Component {
         this.refreshTab(e.data);
     }
 
-    getAllTableData(tName = null) {
-
+    getAllTableData() {
         let tableName = this.props.match.params.table
-        if(tName) {
-            tableName = tName;
-        } 
-
         this.tableService.getAllDataCol(tableName)
             .then(({data, table, cols, details })  =>  {
                 let row = {}
