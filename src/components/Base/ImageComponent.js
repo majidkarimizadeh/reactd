@@ -30,9 +30,9 @@ export default class ImageComponent extends Component {
 
         return (
             <>
-                <div className="p-col-12 p-md-5" style={{textAlign:'center', marginTop:'10px'}}>
+                <div className="p-col-12 p-md-5" style={{textAlign:'center'}}>
                     {(value && !src[index])  &&
-                        <img style={{maxWidth:'100%'}} src={value} />
+                        <img style={{width:'100%'}} src={value} />
                     }
 
                     {src[index] && (
@@ -41,13 +41,13 @@ export default class ImageComponent extends Component {
                             crop={crop[index]}
                             onImageLoaded={(image, pixelCrop) => onImageLoaded(image, pixelCrop, index)}
                             onChange={(crop) => onCropChange(crop, index)}
-                            imageStyle={{maxWidth: '100%'}}
-                            style={{maxWidth: '100%'}}
+                            imageStyle={{width: '100%'}}
+                            style={{width: '100%'}}
                         />
                     )}
                 </div>
-                <div className="p-col-12 p-md-5" style={{textAlign:'center', marginTop:'10px'}}></div>
-                <div className="p-col-12 p-md-2" style={{textAlign:'center', marginTop:'10px'}}>
+                <div className="p-col-12 p-md-5" style={{textAlign:'center'}}></div>
+                <div className="p-col-12 p-md-2" style={{textAlign:'center'}}>
                     <div className="p-col-12 p-md-12 full-width-upload-btn">
                         <label className='lable' style={{textAlign:'right'}} htmlFor={`lbl-${index}`}> 
                             {label} 
@@ -56,6 +56,7 @@ export default class ImageComponent extends Component {
                             onSelect={(e) => onSelectFile(e, name, index)}
                             onClear={() => onClearFile(index)}
                             name={name} 
+                            chooseLabel="انتخاب تصویر"
                             id={`lbl-${index}`}
                             mode="basic"
                         />
@@ -66,7 +67,7 @@ export default class ImageComponent extends Component {
                                 <Button 
                                     onClick={() => onCropComplete(name, index)}
                                     style={{width:'100%'}}
-                                    label="Crop"
+                                    label="برش عکس"
                                     className="p-button-primary"
                                 />
                             </div>
@@ -74,7 +75,7 @@ export default class ImageComponent extends Component {
                                 <Button
                                     onClick={() => onCropRevert(index)}
                                     style={{width:'100%'}} 
-                                    label="Revert" 
+                                    label="بازگشت" 
                                     className="p-button-primary"
                                 />
                             </div>

@@ -68,7 +68,7 @@ export default class FormComponent extends Component {
                 <div className="card card-w-title">
                     <TabView>
                         <TabPanel 
-                            header="Information"
+                            header="اطلاعات"
                             headerStyle={{float:'right', margin:'0px 0px 0px 2px', top:'0px'}}
                         >
                         <div className="p-grid">
@@ -88,7 +88,7 @@ export default class FormComponent extends Component {
                                             value={row[col.name]}
                                             name={col.name}
                                             label={col.label}
-                                            placeholder={col.label}
+                                            placeholder={col.placeholder}
                                             onInputChange={onInputChange}
                                             onMouseDown={() => {onLookUp(col.rdf)}}
                                         /> )
@@ -101,7 +101,7 @@ export default class FormComponent extends Component {
                                             value={row[col.name]}
                                             name={col.name}
                                             label={col.label}                                    
-                                            placeholder={col.label}
+                                            placeholder={col.placeholder}
                                             onInputChange={onInputChange}
                                         /> )
                                         break;
@@ -119,7 +119,7 @@ export default class FormComponent extends Component {
                                             name={col.name}
                                             label={col.label}
                                             type='number'
-                                            placeholder={col.label}
+                                            placeholder={col.placeholder}
                                             onInputChange={onInputChange}
                                         /> )
                                         break;
@@ -132,7 +132,7 @@ export default class FormComponent extends Component {
                                             value={row[col.name]}
                                             name={col.name}
                                             label={col.label}
-                                            placeholder={col.label}
+                                            placeholder={col.placeholder}
                                             onInputChange={onInputChange}
                                         /> )
                                         break;
@@ -145,7 +145,7 @@ export default class FormComponent extends Component {
                                             value={row[col.name]}
                                             name={col.name}
                                             label={col.label}
-                                            placeholder={col.label}
+                                            placeholder={col.placeholder}
                                             onInputChange={onInputChange}
                                         />)
                                         break;
@@ -158,7 +158,7 @@ export default class FormComponent extends Component {
                                             value={row[col.name]}
                                             name={col.name}
                                             label={col.label}
-                                            placeholder={col.label}
+                                            placeholder={col.placeholder}
                                             onInputChange={onInputChange}
                                         />)
                                         break;
@@ -173,7 +173,7 @@ export default class FormComponent extends Component {
                                             value={row[col.name]}
                                             name={col.name}
                                             label={col.label}
-                                            placeholder={col.label}
+                                            placeholder={col.placeholder}
                                             onInputChange={onInputChange}
                                         />)
                                         break;
