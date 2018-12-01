@@ -11,7 +11,7 @@ import {
 export class TableService {
     
     getAllTableData(tableName) {
-        return axios.get(`${API_URL}/index/${tableName}`)
+        return axios.get(`${API_URL}/select/${tableName}`)
                 .then(res => {
                     return {
                         data: dataParser(res.data.data),
@@ -27,7 +27,7 @@ export class TableService {
             row_id: primary,
             foreign_table: foreignTable
         }
-        return axios.post(`${API_URL}/index/data-column/`, apiObject)
+        return axios.post(`${API_URL}/select/`, apiObject)
                 .then(res => {
                     return {
                         details: detailParser(res.data.details),
