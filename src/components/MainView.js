@@ -216,7 +216,10 @@ class MainView extends Component {
     onSubmitAlertDialog(mode) {
         if(mode === 'delete') {
             const { row, table } = this.state;
-            this.rowService.deleteRow(table.name, row[table.pk])
+            let apiObject = new FormData()
+            apiObject.append('url', table.url)
+            apiObject.append('primary', row[table.pk])
+            this.rowService.deleteRow(apiObject)
                 .then( (res) => { 
                     this.onHideAlertDialog()
                     if(res.status === 'error') {

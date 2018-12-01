@@ -4,21 +4,8 @@ import { API_URL } from '../config'
 
 export class RowService {
 
-    getRow(tableName, id) {
-        return axios.get(`${API_URL}/row/${tableName}/${id}`)
-                .then(res => {
-                    return {
-                        row: res.data.row,
-                    }    
-                });
-    }
-
-    deleteRow(tableName, primary) {
-        const apiObject = {
-            table_name: tableName,
-            table_id: primary
-        };
-        return axios.post(`${API_URL}/delete-row/`, {delete: apiObject})
+    deleteRow(apiObject) {
+        return axios.post(`${API_URL}/delete-row/`, apiObject)
                 .then(res => { return res.data })
     }
 
