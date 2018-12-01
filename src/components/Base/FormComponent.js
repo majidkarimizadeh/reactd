@@ -197,6 +197,7 @@ export default class FormComponent extends Component {
                                             value={imageParser(row, image)}
                                             name={image.name}
                                             label={image.label}
+                                            readOnly={mode === 'view'}
                                             placeholder={image.label}
                                             baseSrc={baseSrc}
                                             src={src}

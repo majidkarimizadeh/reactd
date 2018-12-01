@@ -285,7 +285,6 @@ class MainView extends Component {
             })
             this.rowService.storeRow(apiObject)
                 .then( res => {
-                    console.log(res.data)
                     this.setState({
                         data: [
                             res.data,
@@ -296,15 +295,18 @@ class MainView extends Component {
                 })
         } else if(mode === 'edit') {
             fields = table[mode];
-            apiObject.append('table_name', table.name)
-            apiObject.append('table_id', row[table.pk])
+            apiObject.append('url', table.url)
+            apiObject.append('primary', row[table.pk])
 
             fields.map( (item, index) => {
                 let col = cols.find( (col) => col.no === item)
                 apiObject.append(col.name, row[col.name])
             })
             this.rowService.updateRow(apiObject)
-                .then( (res) => {  this.setState({ mode: '' }) })
+                .then( (res) => {  
+                    console.log(res.data)
+                    this.setState({ mode: '' }) 
+                })
         }
     }
 

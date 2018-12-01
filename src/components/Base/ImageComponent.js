@@ -46,43 +46,44 @@ export default class ImageComponent extends Component {
                         />
                     )}
                 </div>
-                <div className="p-col-12 p-md-5" style={{textAlign:'center'}}></div>
-                <div className="p-col-12 p-md-2" style={{textAlign:'center'}}>
-                    <div className="p-col-12 p-md-12 full-width-upload-btn">
-                        <label className='lable' style={{textAlign:'right'}} htmlFor={`lbl-${index}`}> 
-                            {label} 
-                        </label>
-                        <FileUpload 
-                            onSelect={(e) => onSelectFile(e, name, index)}
-                            onClear={() => onClearFile(index)}
-                            name={name} 
-                            chooseLabel="انتخاب"
-                            id={`lbl-${index}`}
-                            mode="basic"
-                        />
-                    </div>
-                    {src[index] && 
-                        <div>
-                            <div className="p-col-12">
-                                <Button 
-                                    onClick={() => onCropComplete(name, index)}
-                                    style={{width:'100%'}}
-                                    label="برش عکس"
-                                    className="p-button-primary"
-                                />
-                            </div>
-                            <div className="p-col-12">
-                                <Button
-                                    onClick={() => onCropRevert(index)}
-                                    style={{width:'100%'}} 
-                                    label="بازگشت" 
-                                    className="p-button-primary"
-                                />
-                            </div>
+                <div className="p-col-12 p-md-4" style={{textAlign:'center'}}></div>
+                {!readOnly && 
+                    <div className="p-col-12 p-md-3" style={{textAlign:'center'}}>
+                        <div className="p-col-12 p-md-12 full-width-upload-btn">
+                            <label className='lable' style={{textAlign:'right'}} htmlFor={`lbl-${index}`}> 
+                                {label} 
+                            </label>
+                            <FileUpload 
+                                onSelect={(e) => onSelectFile(e, name, index)}
+                                onClear={() => onClearFile(index)}
+                                name={name} 
+                                chooseLabel="انتخاب"
+                                id={`lbl-${index}`}
+                                mode="basic"
+                            />
                         </div>
-                    }
-
-                </div>
+                        {src[index] && 
+                            <div>
+                                <div className="p-col-12">
+                                    <Button 
+                                        onClick={() => onCropComplete(name, index)}
+                                        style={{width:'100%'}}
+                                        label="برش عکس"
+                                        className="p-button-primary"
+                                    />
+                                </div>
+                                <div className="p-col-12">
+                                    <Button
+                                        onClick={() => onCropRevert(index)}
+                                        style={{width:'100%'}} 
+                                        label="بازگشت" 
+                                        className="p-button-primary"
+                                    />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
             </>
         );
     }
