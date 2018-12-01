@@ -56,7 +56,7 @@ export default class ImageComponent extends Component {
                             onSelect={(e) => onSelectFile(e, name, index)}
                             onClear={() => onClearFile(index)}
                             name={name} 
-                            chooseLabel="انتخاب تصویر"
+                            chooseLabel="انتخاب"
                             id={`lbl-${index}`}
                             mode="basic"
                         />

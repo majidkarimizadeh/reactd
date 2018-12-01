@@ -546,10 +546,10 @@ class MainView extends Component {
                                 <div>
                                     <div className="card-heading">
                                         <div className="card-heading-actions">
-                                            <Button onClick={() => this.onShowAlertDialog('delete')} label="حذف" icon="pi pi-trash" className="p-button-secondary toolbar-btn" />
-                                            <Button onClick={() => this.onShowDialog('view')} label="مشاهده" icon="pi pi-file" className="p-button-secondary toolbar-btn" />
-                                            <Button onClick={() => this.onShowDialog('edit')} label="ویرایش" icon="pi pi-pencil" className="p-button-secondary toolbar-btn" />
-                                            <Button onClick={() => this.onShowDialog('create')} label="ایجاد" icon="pi pi-plus" className="p-button-secondary toolbar-btn"/>
+                                            <Button onClick={() => this.onShowAlertDialog('delete')} icon="pi pi-trash" className="p-button-secondary toolbar-btn" />
+                                            <Button onClick={() => this.onShowDialog('view')} icon="pi pi-file" className="p-button-secondary toolbar-btn" />
+                                            <Button onClick={() => this.onShowDialog('edit')} icon="pi pi-pencil" className="p-button-secondary toolbar-btn" />
+                                            <Button onClick={() => this.onShowDialog('create')} icon="pi pi-plus" className="p-button-secondary toolbar-btn"/>
                                         </div>
                                         <h1 className="card-heading-caption">{table.label}</h1>
                                     </div>
