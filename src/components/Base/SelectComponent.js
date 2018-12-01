@@ -21,6 +21,8 @@ export default class SelectComponent extends Component {
 
         } = this.props;
 
+        console.log(value, options)
+
         return (
             <div className="p-col-12 p-md-6" style={{textAlign:'right'}}>
                 <label className='lable' htmlFor={`lbl-${index}`}>
@@ -36,7 +38,7 @@ export default class SelectComponent extends Component {
                         name={name}
                         placeholder={placeholder}
                         options={options[name]}
-                        value={value}
+                        value={parseInt(value)}
                         autoWidth={false}
                         onMouseDown={onMouseDown}
                         onChange={(e) => onInputChange(e.value, name)}

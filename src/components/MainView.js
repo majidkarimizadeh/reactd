@@ -274,14 +274,14 @@ class MainView extends Component {
         if(!this.isSelectedRow()) {
             return
         }
-        const { cols } = this.state;
+        const { cols, row } = this.state;
         cols.map( item => {
             if(item.controller === 'lookup') {
                 this.onLookUp(item.rdf, item.name)
             }
         })
         this.setState({ 
-            pureRow: this.state.row,
+            pureRow: row,
             mode
         })
     }
