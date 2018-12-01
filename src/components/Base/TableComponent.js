@@ -4,7 +4,7 @@ import {Column} from 'primereact/column'
 import {Button} from 'primereact/button';
 import {OverlayPanel} from 'primereact/overlaypanel';
 import {Lightbox} from 'primereact/lightbox';
-import { getJalDateByGreDate, getFormatedGreDate, imageParser } from '../../parser/parser'
+import { getJalDateByGreDate, getFormatedGreDate, imageParser, boolParser } from '../../parser/parser'
 import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
 
 export default class TableComponent extends Component {
@@ -18,11 +18,7 @@ export default class TableComponent extends Component {
     }
 
     booleanTemplate(rowData, column, columnAttr ,thisClass = null) {
-        if(rowData[column.field]) {
-            return <i className="pi pi-check" style={{color:'green'}}/>
-        } else {
-            return <i className="pi pi-times" style={{color:'red'}}/>
-        }
+        return boolParser(rowData[column.field])
     }
 
     imageTemplate(rowData, column, columnAttr, thisClass) {

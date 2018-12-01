@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {InputSwitch} from 'primereact/inputswitch';
+import { boolParser } from '../../parser/parser'
 
 export default class BooleanComponent extends Component {
 
@@ -23,10 +24,13 @@ export default class BooleanComponent extends Component {
         return (
             <div className="p-col-12 p-md-6" style={{textAlign:'right'}}>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
-                    {label} 
                     {readOnly && 
-                        <span>{` : ${value}`}</span>
+                        <span>
+                            {boolParser(value)}
+                            <span>:</span>
+                        </span>
                     }
+                    {label} 
                 </label>
                 {!readOnly &&
                     <InputSwitch

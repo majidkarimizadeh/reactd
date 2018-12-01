@@ -1,3 +1,4 @@
+import React from 'react'
 import { SITE_URL } from '../config'
 import * as JalaliMoment from 'moment-jalaali'
 import moment from 'moment'
@@ -94,4 +95,12 @@ export function getFormatedGreDate(date, hasTime = false) {
 		format += ' HH:mm:ss'
 	}
 	return moment(date).format(format);
+}
+
+export function boolParser(value) {
+	if(value) {
+        return <i className="pi pi-check" style={{color:'green', verticalAlign:'middle'}}/>
+    } else {
+        return <i className="pi pi-times" style={{color:'red', verticalAlign:'middle'}}/>
+    }
 }
