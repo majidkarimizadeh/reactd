@@ -66,14 +66,13 @@ export default class TableComponent extends Component {
                 value={data}
                 scrollable={true}
                 paginatorPosition="bottom"
-                autoLayout={true}
                 selectionMode="single"
                 emptyMessage="اطلاعاتی وجود ندارد"
                 paginator={true}
-                rows={12}
-                responsive={true} 
+                rows={10}
                 selection={row} 
-                onSelectionChange={onSelectionChange}>
+                onSelectionChange={onSelectionChange}
+            >
                 
                 {!!fields && fields.map( (item, i) => {
                     let col = cols.find(function(c) {

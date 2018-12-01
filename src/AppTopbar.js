@@ -22,7 +22,7 @@ export class AppTopbar extends Component {
                     {/*<span className="layout-topbar-search">
                         <InputText type="text" placeholder="Search" />
                         <span className="layout-topbar-search-icon pi pi-search"/>
-                    </span>*/}
+                    </span>
                     <a>
                         <span className="layout-topbar-item-text">Events</span>
                         <span className="layout-topbar-icon pi pi-calendar"/>
@@ -35,7 +35,7 @@ export class AppTopbar extends Component {
                     <a>
                         <span className="layout-topbar-item-text">User</span>
                         <span className="layout-topbar-icon pi pi-user"/>
-                    </a>
+                    </a>*/}
                 </div>
             </div>
         );

@@ -131,7 +131,8 @@ class App extends Component {
     }
 
     render() {
-        let logo = this.state.layoutColorMode === 'dark' ? 'assets/layout/images/logo-white.svg': 'assets/layout/images/logo.svg';
+        // let logo = this.state.layoutColorMode === 'dark' ? 'assets/layout/images/logo-white.svg': 'assets/layout/images/logo.svg';
+        let logo = 'assets/layout/images/logo-white.png';
 
         let wrapperClass = classNames('layout-wrapper', {
             'layout-overlay': this.state.layoutMode === 'overlay',
@@ -153,7 +154,7 @@ class App extends Component {
                     <ScrollPanel ref={(el) => this.layoutMenuScroller = el} style={{height:'100%'}}>
                         <div className="layout-sidebar-scroll-content" >
                             <div className="layout-logo">
-                                <img alt="Logo" src={logo} />
+                                <img alt="Logo" src={logo} style={{width:'50%'}} />
                             </div>
                             <AppInlineProfile />
                             <AppMenu model={this.state.menu} onMenuItemClick={this.onMenuItemClick} />

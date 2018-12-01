@@ -23,13 +23,15 @@ export class AppInlineProfile extends Component {
                     <img src="assets/layout/images/profile.png" alt="" />
                 </div>
                 <a className="profile-link" onClick={this.onClick}>
-                    <span className="username">Claire Williams</span>
+                    <span className="username">
+                        مجید کریمی زاده
+                    </span>
                     <i className="pi pi-fw pi-cog"/>
                 </a>
                 <ul className={classNames({'profile-expanded': this.state.expanded})}>
-                    <li><a><span>Account</span><i className="pi pi-fw pi-user"/></a></li>
-                    <li><a><span>Notifications</span><i className="pi pi-fw pi-inbox"/><span className="menuitem-badge">2</span></a></li>
-                    <li><a><span>Logout</span><i className="pi pi-fw pi-power-off"/></a></li>
+                    <li><a><span>حساب شما</span><i className="pi pi-fw pi-user"/></a></li>
+                    <li><a><span>پیغام ها</span><i className="pi pi-fw pi-inbox"/><span className="menuitem-badge">2</span></a></li>
+                    <li><a><span>خروج</span><i className="pi pi-fw pi-power-off"/></a></li>
                 </ul>
             </div>
         );

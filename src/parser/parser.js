@@ -1,3 +1,4 @@
+import { SITE_URL } from '../config'
 import * as JalaliMoment from 'moment-jalaali'
 import moment from 'moment'
 
@@ -47,11 +48,11 @@ export function imageParser(record, field) {
 	{
 		if(record[field.name] == 'jpeg' || record[field.name] == 'jpg' || record[field.name] == 'png') 
 		{
-			return "http://localhost:8000/images/profiles/" + record.id + "/p." + record[field.name]
+			return SITE_URL + "/images/profiles/" + record.id + "/p." + record[field.name]
 		}
 		else
 		{
-			return "http://localhost:8000/" + record[field.name]
+			return SITE_URL + "/" + record[field.name]
 		}
 	}
 	return false;

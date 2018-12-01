@@ -277,3 +277,9 @@ a.show-image, a.show-image:hover {
     color: black;
     background: #fff;
 }
+
+
+
+/*.p-datatable-scrollable-body > table, .p-datatable-thead {
+	table-layout: auto !important;
+}*/

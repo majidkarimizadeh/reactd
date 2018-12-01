@@ -277,7 +277,7 @@ class MainView extends Component {
 
         if(mode === 'create') {
             fields = table[mode];
-            apiObject.append('table_name', table.name)
+            apiObject.append('url', table.url)
 
             fields.map( (item, index) => {
                 let col = cols.find( (col) => col.no === item)
@@ -285,6 +285,7 @@ class MainView extends Component {
             })
             this.rowService.storeRow(apiObject)
                 .then( res => {
+                    console.log(res.data)
                     this.setState({
                         data: [
                             res.data,
