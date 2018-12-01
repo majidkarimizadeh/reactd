@@ -8,7 +8,7 @@ export default class SelectComponent extends Component {
     }
 
     render() {
-        const {            
+        const {
             label, 
             placeholder, 
             index, 
@@ -20,6 +20,7 @@ export default class SelectComponent extends Component {
             readOnly,
 
         } = this.props;
+
         return (
             <div className="p-col-12 p-md-6" style={{textAlign:'right'}}>
                 <label className='lable' htmlFor={`lbl-${index}`}>
@@ -34,7 +35,7 @@ export default class SelectComponent extends Component {
                         id={`lbl-${index}`}
                         name={name}
                         placeholder={placeholder}
-                        options={options}
+                        options={options[name]}
                         value={value}
                         autoWidth={false}
                         onMouseDown={onMouseDown}

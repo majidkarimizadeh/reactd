@@ -34,7 +34,7 @@ export default class BooleanComponent extends Component {
                 </label>
                 {!readOnly &&
                     <InputSwitch
-                        checked={value} 
+                        checked={value == 1 ? true : false} 
                         name={name} 
                         type={type}
                         id={`lbl-${index}`}

@@ -90,7 +90,7 @@ export default class FormComponent extends Component {
                                             label={col.label}
                                             placeholder={col.placeholder}
                                             onInputChange={onInputChange}
-                                            onMouseDown={() => {onLookUp(col.rdf)}}
+                                            onMouseDown={() => {onLookUp(col.rdf, col.name)}}
                                         /> )
                                         break;
 

@@ -32,6 +32,7 @@ class MainView extends Component {
             cols: [],
             table: {},
             row: {},
+            pureRow: {},
 
             detailDetails: [],
             detailData: [],
@@ -197,9 +198,13 @@ class MainView extends Component {
         }
     }
 
-    onLookUp(rdf) {
+    onLookUp(rdf, name) {
         this.lookUpService.getLookUpByRdf(rdf)
-            .then( options => this.setState({ options }) )
+            .then( opts => {
+                let options = this.state.options;
+                options[name] = opts;
+                this.setState({ options }) 
+            })
     }
 
     onShowAlertDialog(mode) {
@@ -269,16 +274,26 @@ class MainView extends Component {
         if(!this.isSelectedRow()) {
             return
         }
-        this.setState({ mode })
+        const { cols } = this.state;
+        cols.map( item => {
+            if(item.controller === 'lookup') {
+                this.onLookUp(item.rdf, item.name)
+            }
+        })
+        this.setState({ 
+            pureRow: this.state.row,
+            mode
+        })
     }
 
     onFormSubmit(mode) {
-        const { row, table, cols } = this.state
+        const { pureRow, row, table, cols } = this.state
 
         let fields = [];
         let apiObject = new FormData();
 
-        if(mode === 'create') {
+        if(mode === 'create') 
+        {
             fields = table[mode];
             apiObject.append('url', table.url)
 
@@ -296,7 +311,9 @@ class MainView extends Component {
                         mode: ''
                     })
                 })
-        } else if(mode === 'edit') {
+        } 
+        else if(mode === 'edit') 
+        {
             fields = table[mode];
             apiObject.append('url', table.url)
             apiObject.append('primary', row[table.pk])
@@ -307,8 +324,23 @@ class MainView extends Component {
             })
             this.rowService.updateRow(apiObject)
                 .then( (res) => {  
-                    console.log(res.data)
-                    this.setState({ mode: '' }) 
+                    let data = [...this.state.data];
+                    let index = data.indexOf(pureRow);
+                    if(index !== -1) 
+                    {
+                        let updatedRow = Object.assign({}, pureRow, res.data)
+                        data.splice(index, 1, updatedRow)
+                        this.setState({ 
+                            data,
+                            mode: '', 
+                            pureRow: updatedRow,
+                            row:updatedRow
+                        }) 
+                    } 
+                    else 
+                    {
+                        this.setState({ mode: '' }) 
+                    }
                 })
         }
     }
