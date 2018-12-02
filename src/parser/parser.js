@@ -107,3 +107,12 @@ export function boolParser(value) {
         return <i className="pi pi-times" style={{color:'red', verticalAlign:'middle'}}/>
     }
 }
+
+
+export function validationErrorParser(errors) {
+	console.log(errors)
+	let errorList = errors.map((item, index) => {
+		return <li key={index}> {item} - </li>
+	})
+	return <ul>{errorList}</ul>
+}

@@ -293,3 +293,16 @@ a.show-image, a.show-image:hover {
 .p-growl-message-error {
 	background-color: #f8b7bd !important
 }
+
+div.validation-error span.p-messages-icon {
+	display: none !important
+}
+
+div.validation-error div.p-messages-wrapper {
+	text-align: right;
+}
+
+div.validation-error .p-messages .p-messages-close{
+	left: 0.5em;
+	right: auto !important;
+}

@@ -8,8 +8,10 @@ import { RowService } from '../service/RowService'
 import { LookUpService } from '../service/LookUpService'
 import { TabView,TabPanel } from 'primereact/tabview'
 import { Growl } from 'primereact/growl'
+import { Messages } from 'primereact/messages';
+import { Message } from 'primereact/message';
 import { getPixelCrop } from 'react-image-crop'
-import { getGreDateByTimestamp } from '../parser/parser'
+import { getGreDateByTimestamp, validationErrorParser } from '../parser/parser'
 import { Button } from 'primereact/button'
 import Loader from 'react-loader-spinner'
 import history from '../history'
@@ -324,7 +326,7 @@ class MainView extends Component {
                 apiObject.append(col.name, row[col.name])
             })
             this.rowService.updateRow(apiObject)
-                .then( (res) => {  
+                .then( res => {  
                     let data = [...this.state.data]
                     let index = data.indexOf(pureRow)
                     if(index !== -1) 
@@ -342,13 +344,22 @@ class MainView extends Component {
                     {
                         this.setState({ mode: '' }) 
                     }
-                })
 
-            this.growl.show({
-                severity: 'success',
-                summary: 'ویرایش',
-                detail: 'عملیات با موفقیت انجام شد'
-            })
+                    this.growl.show({
+                        severity: 'success',
+                        summary: 'ویرایش',
+                        detail: 'عملیات با موفقیت انجام شد'
+                    })
+
+                })
+                .catch( err => {
+                    window.scrollTo(0, 0)
+                    this.messages.show({
+                        severity: 'error',
+                        sticky: true,
+                        detail: validationErrorParser(err.response.data)
+                    })
+                })
         }
     }
 
@@ -543,6 +554,7 @@ class MainView extends Component {
         return (
             <div>
                 <Growl ref={(el) => this.growl = el}></Growl>
+                <Messages className='validation-error' ref={(el) => this.messages = el}></Messages>
                 <AlertDialogComponent
                     onHideAlertDialog={this.onHideAlertDialog}
                     onCancel={this.onHideAlertDialog}

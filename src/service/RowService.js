@@ -16,7 +16,6 @@ export class RowService {
             }
         }
     	return axios.post(`${API_URL}/update/`, apiObject, config)
-    			.then(res => { return res })
     }
 
     storeRow(apiObject) {
