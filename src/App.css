@@ -278,8 +278,18 @@ a.show-image, a.show-image:hover {
     background: #fff;
 }
 
+.p-growl-message-warn {
+	background-color: #fde4a2 !important
+}
 
+.p-growl-message-success {
+	background-color: #b7d8b7 !important
+}
 
-/*.p-datatable-scrollable-body > table, .p-datatable-thead {
-	table-layout: auto !important;
-}*/
+.p-growl-message-info {
+	background-color: #7fbcec !important
+}
+
+.p-growl-message-error {
+	background-color: #f8b7bd !important
+}

@@ -1,11 +1,16 @@
-import React, {Component} from 'react';
-import {DataTable} from 'primereact/datatable';
-import {Column} from 'primereact/column'
-import {Button} from 'primereact/button';
-import {OverlayPanel} from 'primereact/overlaypanel';
-import {Lightbox} from 'primereact/lightbox';
-import { getJalDateByGreDate, getFormatedGreDate, imageParser, boolParser } from '../../parser/parser'
-import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
+import React, { Component } from 'react'
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
+import { Button } from 'primereact/button'
+import { OverlayPanel } from 'primereact/overlaypanel'
+import { Lightbox } from 'primereact/lightbox'
+import { DataView, DataViewLayoutOptions } from 'primereact/dataview'
+import { 
+    getJalDateByGreDate, 
+    getFormatedGreDate, 
+    imageParser, 
+    boolParser 
+} from '../../parser/parser'
 
 export default class TableComponent extends Component {
 
@@ -14,7 +19,7 @@ export default class TableComponent extends Component {
     }
 
     lookUpTemplate(rowData, column, columnAttr ,thisClass = null) {
-        return rowData[ 'join_' + column.field ];
+        return rowData[ 'join_' + column.field ]
     }
 
     booleanTemplate(rowData, column, columnAttr ,thisClass = null) {
@@ -22,8 +27,8 @@ export default class TableComponent extends Component {
     }
 
     imageTemplate(rowData, column, columnAttr, thisClass) {
-        let src = imageParser(rowData, columnAttr);
-        let component = <div> --- </div>;
+        let src = imageParser(rowData, columnAttr)
+        let component = <div> --- </div>
         if(src) 
         {
             // src = "http://destription.com/home-images/iran-attractions.jpg"
@@ -32,30 +37,31 @@ export default class TableComponent extends Component {
                             <img src={src} />
                         </Lightbox>
         } 
-        return component;
+        return component
     }
 
     dateTemplate(rowData, column, columnAttr, thisClass = null) {
-        if(columnAttr.showJalali) {
+        if(columnAttr.showJalali) 
+        {
             return getJalDateByGreDate(rowData[column.field], columnAttr.showTime) 
-        } else {
-            return getFormatedGreDate(rowData[column.field], columnAttr.showTime);
+        } 
+        else 
+        {
+            return getFormatedGreDate(rowData[column.field], columnAttr.showTime)
         }
     }
 
 	render() {
 
 		const {
-
             data,
             cols,
             table,
             row,
             onSelectionChange,
-
         } = this.props
 
-        let fields = table['list'];
+        let fields = table['list']
 
 		return (
 			<DataTable 
@@ -69,23 +75,28 @@ export default class TableComponent extends Component {
                 selection={row} 
                 onSelectionChange={onSelectionChange}
             >
-                
                 {!!fields && fields.map( (item, i) => {
                     let col = cols.find(function(c) {
-                        return c.no === item;
-                    });
-                    let body = null;
-                    if(col.controller === 'date') {
-                        body = this.dateTemplate;
-                    } else if(col.controller === 'image') {
-                        body = this.imageTemplate;
-                    } else if(col.controller === 'boolean') {
-                        body = this.booleanTemplate;
-                    } else if(col.controller === 'lookup') {
-                        body = this.lookUpTemplate;
+                        return c.no === item
+                    })
+                    let body = null
+                    if(col.controller === 'date') 
+                    {
+                        body = this.dateTemplate
+                    } 
+                    else if(col.controller === 'image') 
+                    {
+                        body = this.imageTemplate
+                    } 
+                    else if(col.controller === 'boolean') 
+                    {
+                        body = this.booleanTemplate
+                    } 
+                    else if(col.controller === 'lookup') 
+                    {
+                        body = this.lookUpTemplate
                     }
                     return (
-
                         <Column 
                             field={col.name} 
                             key={i} 

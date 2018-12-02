@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {InputSwitch} from 'primereact/inputswitch';
+import React, { Component } from 'react'
+import { InputSwitch } from 'primereact/inputswitch'
 import { boolParser } from '../../parser/parser'
 
 export default class BooleanComponent extends Component {
@@ -9,42 +9,36 @@ export default class BooleanComponent extends Component {
     }
 
     render() {
-        const { 
-            
+
+        const {
             label, 
             placeholder, 
             index, 
             name, 
             value, 
             onInputChange,
-            readOnly,
-            type
+            readOnly
+        } = this.props
 
-        } = this.props;
         return (
-            <div className="p-col-12 p-md-6" style={{textAlign:'right'}}>
+            <div className='p-col-12 p-md-6'>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
+                    <span>{label}</span>
                     {readOnly && 
-                        <span>
-                            {boolParser(+value)}
-                            <span>:</span>
-                        </span>
+                        <span> : {boolParser(+value)}</span>
                     }
-                    {label} 
                 </label>
                 {!readOnly &&
                     <InputSwitch
                         checked={!!+value} 
                         name={name} 
-                        type={type}
                         id={`lbl-${index}`}
                         placeholder={placeholder}
                         onChange={(e) => onInputChange(+e.value, name)}
-                        style={{textAlign:'right'}}
-                        className="p-col-12 p-md-12"
+                        className='p-col-12 p-md-12'
                     />
                 }
             </div>
-        );
+        )
     }
 }

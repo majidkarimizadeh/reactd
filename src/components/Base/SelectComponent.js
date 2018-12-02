@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {Dropdown} from 'primereact/dropdown';
+import React, { Component } from 'react'
+import { Dropdown } from 'primereact/dropdown'
 
 export default class SelectComponent extends Component {
 
@@ -8,6 +8,7 @@ export default class SelectComponent extends Component {
     }
 
     render() {
+
         const {
             label, 
             placeholder, 
@@ -18,17 +19,14 @@ export default class SelectComponent extends Component {
             onInputChange,
             onMouseDown,
             readOnly,
-
-        } = this.props;
-
-        console.log(value, options)
+        } = this.props
 
         return (
-            <div className="p-col-12 p-md-6" style={{textAlign:'right'}}>
+            <div className='p-col-12 p-md-6'>
                 <label className='lable' htmlFor={`lbl-${index}`}>
-                    {label} 
+                    <span> {label} </span>
                     {readOnly && 
-                        <span>{` : ${value}`}</span>
+                        <span>{value ? ' : ' + value : ' : ---'}</span>
                     }
                 </label>
                 {/* should be multi col */}
@@ -39,13 +37,12 @@ export default class SelectComponent extends Component {
                         placeholder={placeholder}
                         options={options[name]}
                         value={parseInt(value)}
-                        autoWidth={false}
                         onMouseDown={onMouseDown}
                         onChange={(e) => onInputChange(e.value, name)}
-                        style={{textAlign:'right', width:'100%'}}
+                        style={{width:'100%'}}
                     />
                 }
             </div>
-        );
+        )
     }
 }

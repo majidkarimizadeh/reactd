@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {InputTextarea} from 'primereact/inputtextarea';
+import React, { Component } from 'react'
+import { InputTextarea } from 'primereact/inputtextarea'
 
 export default class LongTextEditComponent extends Component {
 
@@ -8,8 +8,8 @@ export default class LongTextEditComponent extends Component {
     }
 
     render() {
+
         const { 
-            
             label, 
             placeholder, 
             index, 
@@ -17,31 +17,28 @@ export default class LongTextEditComponent extends Component {
             value, 
             onInputChange,
             readOnly,
+        } = this.props
 
-        } = this.props;
         return (
-            <div className="p-col-12 p-md-12" style={{textAlign:'right'}}>
+            <div className='p-col-12 p-md-12'>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
-                    {label} 
+                    <span> {label} </span>
                     {readOnly && 
-                        <span>{` : ${value}`}</span>
+                        <span>{value ? ' : ' + value : ' : ---'}</span>
                     }
                 </label>
                 {!readOnly &&
                     <InputTextarea 
                         value={value} 
                         name={name} 
-                        rows={3} 
-                        cols={30} 
-                        id={`lbl-${index}`} 
-                        placeholder={placeholder} 
-                        autoResize={true}
+                        rows={3}
+                        id={`lbl-${index}`}
+                        placeholder={placeholder}
                         onChange={(e) => onInputChange(e.target.value, name)}
-                        style={{textAlign:'right'}}
-                        className="p-col-12 p-md-12"
+                        className='p-col-12 p-md-12'
                     />
                 }
             </div>
-        );
+        )
     }
 }

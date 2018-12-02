@@ -1,29 +1,23 @@
 import React, { Component } from 'react'
-
 import { Route, withRouter } from 'react-router-dom'
-
 import AlertDialogComponent from './Base/AlertDialogComponent'
 import TableComponent from './Base/TableComponent'
 import FormComponent from './Base/FormComponent'
-import ToolBarComponent from './Base/ToolBarComponent'
-
-import { TableService } from '../service/TableService';
-import { RowService } from '../service/RowService';
-import { LookUpService } from '../service/LookUpService';
-
-import { TabView,TabPanel } from 'primereact/tabview';
-import { Growl } from 'primereact/growl';
-import { getPixelCrop } from 'react-image-crop';
+import { TableService } from '../service/TableService'
+import { RowService } from '../service/RowService'
+import { LookUpService } from '../service/LookUpService'
+import { TabView,TabPanel } from 'primereact/tabview'
+import { Growl } from 'primereact/growl'
+import { getPixelCrop } from 'react-image-crop'
 import { getGreDateByTimestamp } from '../parser/parser'
-import {Button} from 'primereact/button';
+import { Button } from 'primereact/button'
 import Loader from 'react-loader-spinner'
-
 import history from '../history'
 
 class MainView extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             lookups: [],
 
@@ -109,7 +103,7 @@ class MainView extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { data, table, cols, details } = this.props;
+        const { data, table, cols, details } = this.props
 
         if (prevProps.data !== data) 
         {
@@ -151,7 +145,7 @@ class MainView extends Component {
                 severity: 'warn',
                 summary: 'سطر انتخاب نشده است',
                 detail: 'لطفا ابتدا سطر مورد نظر خود را انتخاب کنید'
-            });
+            })
             return false
         }
         return true
@@ -161,7 +155,7 @@ class MainView extends Component {
         const { details, cols } = this.state
         const { match } = this.props
         const activeDetailIndex = e.index
-        const detailTable = details[activeDetailIndex];
+        const detailTable = details[activeDetailIndex]
         let row = {}
         cols.map( (item, index) => row[item.name] = '' )
         this.setState({ 
@@ -173,11 +167,11 @@ class MainView extends Component {
     }
 
     refreshTab(row) {
-        const { details, table, activeDetailIndex } = this.state;
+        const { details, table, activeDetailIndex } = this.state
 
         if(activeDetailIndex !== -1) {
 
-            const detailTable = details[activeDetailIndex];
+            const detailTable = details[activeDetailIndex]
             let foreignKey = null
             let rowPrimary = null
 
@@ -201,8 +195,8 @@ class MainView extends Component {
     onLookUp(rdf, name) {
         this.lookUpService.getLookUpByRdf(rdf)
             .then( opts => {
-                let options = this.state.options;
-                options[name] = opts;
+                let options = this.state.options
+                options[name] = opts
                 this.setState({ options }) 
             })
     }
@@ -219,8 +213,9 @@ class MainView extends Component {
     }
 
     onSubmitAlertDialog(mode) {
-        if(mode === 'delete') {
-            const { row, table } = this.state;
+        if(mode === 'delete') 
+        {
+            const { row, table } = this.state
             let apiObject = new FormData()
             apiObject.append('url', table.url)
             apiObject.append('primary', row[table.pk])
@@ -230,19 +225,19 @@ class MainView extends Component {
                     if(res.status === 'error') {
                         this.growl.show({
                             severity: 'error',
-                            summary: 'Error Message',
+                            summary: 'خطا !',
                             detail: res.data
-                        });
+                        })
                         return false
                     } else {
                         this.growl.show({
                             severity: 'success',
-                            summary: 'Success Message',
+                            summary: 'حذف',
                             detail: res.data
-                        });
+                        })
 
-                        let data = [...this.state.data];
-                        let index = data.indexOf(row);
+                        let data = [...this.state.data]
+                        let index = data.indexOf(row)
                         if(index !== -1) {
                             data.splice(index, 1)
                             let { cols } = this.state
@@ -274,7 +269,7 @@ class MainView extends Component {
         if(!this.isSelectedRow()) {
             return
         }
-        const { cols, row } = this.state;
+        const { cols, row } = this.state
         cols.map( item => {
             if(item.controller === 'lookup') {
                 this.onLookUp(item.rdf, item.name)
@@ -289,12 +284,12 @@ class MainView extends Component {
     onFormSubmit(mode) {
         const { pureRow, row, table, cols } = this.state
 
-        let fields = [];
-        let apiObject = new FormData();
+        let fields = []
+        let apiObject = new FormData()
 
         if(mode === 'create') 
         {
-            fields = table[mode];
+            fields = table[mode]
             apiObject.append('url', table.url)
 
             fields.map( (item, index) => {
@@ -311,10 +306,16 @@ class MainView extends Component {
                         mode: ''
                     })
                 })
+
+            this.growl.show({
+                severity: 'success',
+                summary: 'ایجاد',
+                detail: 'عملیات با موفقیت انجام شد'
+            })
         } 
         else if(mode === 'edit') 
         {
-            fields = table[mode];
+            fields = table[mode]
             apiObject.append('url', table.url)
             apiObject.append('primary', row[table.pk])
 
@@ -324,8 +325,8 @@ class MainView extends Component {
             })
             this.rowService.updateRow(apiObject)
                 .then( (res) => {  
-                    let data = [...this.state.data];
-                    let index = data.indexOf(pureRow);
+                    let data = [...this.state.data]
+                    let index = data.indexOf(pureRow)
                     if(index !== -1) 
                     {
                         let updatedRow = Object.assign({}, pureRow, res.data)
@@ -342,6 +343,12 @@ class MainView extends Component {
                         this.setState({ mode: '' }) 
                     }
                 })
+
+            this.growl.show({
+                severity: 'success',
+                summary: 'ویرایش',
+                detail: 'عملیات با موفقیت انجام شد'
+            })
         }
     }
 
@@ -355,7 +362,7 @@ class MainView extends Component {
             row: e.data,
             isSelect: true
         })
-        this.refreshTab(e.data);
+        this.refreshTab(e.data)
     }
 
     getTableInfo() {
@@ -371,10 +378,10 @@ class MainView extends Component {
 
     onClearFile(index) {
         let src = [...this.state.src]
-        src[index] = null;
+        src[index] = null
 
         let baseSrc = [...this.state.baseSrc]
-        baseSrc[index] = null;
+        baseSrc[index] = null
 
         this.setState({
             src, baseSrc
@@ -383,7 +390,7 @@ class MainView extends Component {
 
     onSelectFile(e, name, index) {
         if (e.files && e.files.length > 0) {
-            const reader = new FileReader();
+            const reader = new FileReader()
             reader.addEventListener('load', () => {
                 let src = [...this.state.src]
                 src[index] = reader.result
@@ -400,27 +407,27 @@ class MainView extends Component {
                     [name]: e.files[0]
                 }
             })
-            reader.readAsDataURL(e.files[0]);
+            reader.readAsDataURL(e.files[0])
         }
     }
 
     onImageLoaded(image, pixelCrop, index) {
-        this.imageRef = image;
+        this.imageRef = image
 
-        const { crop } = this.state;
+        const { crop } = this.state
 
         if (crop[index] && crop[index].aspect && crop[index].height && crop[index].width) {
             let crops = [...this.state.crop]
-            crops[index] = { ...crop, height: null };
-            this.setState({ crop: crops });
+            crops[index] = { ...crop, height: null }
+            this.setState({ crop: crops })
         } else {
-            this.makeClientCrop(crop[index], pixelCrop, index);
+            this.makeClientCrop(crop[index], pixelCrop, index)
         }
     }
 
     onCropComplete(colName, index) {
-        const { crop } = this.state;
-        this.makeClientCrop(crop[index], getPixelCrop(this.imageRef, crop[index]), colName, index);
+        const { crop } = this.state
+        this.makeClientCrop(crop[index], getPixelCrop(this.imageRef, crop[index]), colName, index)
     }
 
     onCropRevert(index) {
@@ -441,7 +448,7 @@ class MainView extends Component {
     onCropChange(cr, index) {
         let crop = [...this.state.crop]
         crop[index] = cr
-        this.setState({ crop });
+        this.setState({ crop })
     }
 
     async makeClientCrop(crop, pixelCrop, colName, index) {
@@ -451,7 +458,7 @@ class MainView extends Component {
                 pixelCrop,
                 'newFile.jpeg',
                 colName
-            );
+            )
 
             let src = [...this.state.src]
             src[index] = croppedImageUrl
@@ -463,15 +470,15 @@ class MainView extends Component {
                 width: 50,
                 height:null
             }
-            this.setState({ src, crop:crops });
+            this.setState({ src, crop:crops })
         }
     }
 
     getCroppedImg(image, pixelCrop, fileName, colName) {
-        const canvas = document.createElement('canvas');
-        canvas.width = pixelCrop.width;
-        canvas.height = pixelCrop.height;
-        const ctx = canvas.getContext('2d');
+        const canvas = document.createElement('canvas')
+        canvas.width = pixelCrop.width
+        canvas.height = pixelCrop.height
+        const ctx = canvas.getContext('2d')
 
         ctx.drawImage(
             image,
@@ -483,7 +490,7 @@ class MainView extends Component {
             0,
             pixelCrop.width,
             pixelCrop.height,
-        );
+        )
 
         return new Promise((resolve, reject) => {
             canvas.toBlob(blob => {
@@ -493,11 +500,11 @@ class MainView extends Component {
                         [colName]: blob
                     }  
                 })
-                blob.name = fileName;
-                window.URL.revokeObjectURL(this.fileUrl);
-                this.fileUrl = window.URL.createObjectURL(blob);
-                resolve(this.fileUrl);
-            }, 'image/jpeg');
+                blob.name = fileName
+                window.URL.revokeObjectURL(this.fileUrl)
+                this.fileUrl = window.URL.createObjectURL(blob)
+                resolve(this.fileUrl)
+            }, 'image/jpeg')
         })
     }
 
@@ -643,7 +650,7 @@ class MainView extends Component {
                     </div>
                 }
             </div>
-        );
+        )
     }
 }
 

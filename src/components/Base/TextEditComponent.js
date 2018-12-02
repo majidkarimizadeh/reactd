@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {InputText} from 'primereact/inputtext';
+import React, { Component } from 'react'
+import { InputText } from 'primereact/inputtext'
 
 export default class TextEditComponent extends Component {
 
@@ -8,24 +8,24 @@ export default class TextEditComponent extends Component {
     }
 
     render() {
-        const { 
-            
+
+        const {
             label, 
-            placeholder, 
-            index, 
-            name, 
-            value, 
+            placeholder,
+            index,
+            name,
+            value,
             onInputChange,
             readOnly,
-            type
+            type,
+        } = this.props
 
-        } = this.props;
         return (
-            <div className="p-col-12 p-md-6" style={{textAlign:'right'}}>
+            <div className='p-col-12 p-md-6'>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
-                    {label} 
+                    <span> {label} </span>
                     {readOnly && 
-                        <span>{` : ${value}`}</span>
+                        <span>{value ? ' : ' + value : ' : ---'}</span>
                     }
                 </label>
                 {!readOnly &&
@@ -36,15 +36,14 @@ export default class TextEditComponent extends Component {
                         id={`lbl-${index}`}
                         placeholder={placeholder}
                         onChange={(e) => onInputChange(e.target.value, name)}
-                        style={{textAlign:'right'}}
-                        className="p-col-12 p-md-12"
+                        className='p-col-12 p-md-12'
                     />
                 }
             </div>
-        );
+        )
     }
 }
 
 TextEditComponent.defaultProps = {
     type: 'text'
-};
+}
