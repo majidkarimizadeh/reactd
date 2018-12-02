@@ -26,7 +26,7 @@ export default class BooleanComponent extends Component {
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     {readOnly && 
                         <span>
-                            {boolParser(value)}
+                            {boolParser(+value)}
                             <span>:</span>
                         </span>
                     }
@@ -34,12 +34,12 @@ export default class BooleanComponent extends Component {
                 </label>
                 {!readOnly &&
                     <InputSwitch
-                        checked={value == 1 ? true : false} 
+                        checked={!!+value} 
                         name={name} 
                         type={type}
                         id={`lbl-${index}`}
                         placeholder={placeholder}
-                        onChange={(e) => onInputChange(e.value ? 1 : 0, name)}
+                        onChange={(e) => onInputChange(+e.value, name)}
                         style={{textAlign:'right'}}
                         className="p-col-12 p-md-12"
                     />

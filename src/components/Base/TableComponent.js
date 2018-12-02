@@ -18,12 +18,7 @@ export default class TableComponent extends Component {
     }
 
     booleanTemplate(rowData, column, columnAttr ,thisClass = null) {
-
-        if(rowData[column.field] == '1') {
-            return <i className="pi pi-check" style={{color:'green', verticalAlign:'middle'}}/>
-        } else {
-            return <i className="pi pi-times" style={{color:'red', verticalAlign:'middle'}}/>
-        }
+        return boolParser(+rowData[column.field])
     }
 
     imageTemplate(rowData, column, columnAttr, thisClass) {

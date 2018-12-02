@@ -98,9 +98,12 @@ export function getFormatedGreDate(date, hasTime = false) {
 }
 
 export function boolParser(value) {
-	if(value) {
+	if(value) 
+	{
         return <i className="pi pi-check" style={{color:'green', verticalAlign:'middle'}}/>
-    } else {
+    } 
+    else 
+    {
         return <i className="pi pi-times" style={{color:'red', verticalAlign:'middle'}}/>
     }
 }
