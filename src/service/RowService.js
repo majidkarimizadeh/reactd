@@ -6,7 +6,6 @@ export class RowService {
 
     deleteRow(apiObject) {
         return axios.post(`${API_URL}/delete/`, apiObject)
-                .then(res => { return res.data })
     }
 
     updateRow(apiObject) {
@@ -25,7 +24,6 @@ export class RowService {
             }
         }
     	return axios.post(`${API_URL}/store/`, apiObject, config)
-    			.then(res => { return res })
     }
 
 }

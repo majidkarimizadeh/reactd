@@ -222,37 +222,36 @@ class MainView extends Component {
             apiObject.append('url', table.url)
             apiObject.append('primary', row[table.pk])
             this.rowService.deleteRow(apiObject)
-                .then( (res) => { 
-                    this.onHideAlertDialog()
-                    if(res.status === 'error') {
-                        this.growl.show({
-                            severity: 'error',
-                            summary: 'خطا !',
-                            detail: res.data
-                        })
-                        return false
-                    } else {
-                        this.growl.show({
-                            severity: 'success',
-                            summary: 'حذف',
-                            detail: res.data
-                        })
+                .then( (res) => {
+                    this.growl.show({
+                        severity: 'success',
+                        summary: 'حذف',
+                        detail: res.data
+                    })
 
-                        let data = [...this.state.data]
-                        let index = data.indexOf(row)
-                        if(index !== -1) {
-                            data.splice(index, 1)
-                            let { cols } = this.state
-                            let emptyRow = {}
-                            cols.map( (item, index) => emptyRow[item.name] = '' )
-                            this.setState({ 
-                                data,
-                                isSelect: false,
-                                row: emptyRow
-                            })
-                        }
+                    let data = [...this.state.data]
+                    let index = data.indexOf(row)
+                    if(index !== -1) {
+                        data.splice(index, 1)
+                        let { cols } = this.state
+                        let emptyRow = {}
+                        cols.map( (item, index) => emptyRow[item.name] = '' )
+                        this.setState({ 
+                            data,
+                            isSelect: false,
+                            row: emptyRow
+                        })
                     }
                 })
+                .catch( err => {
+                    window.scrollTo(0, 0)
+                    this.messages.show({
+                        severity: 'error',
+                        sticky: true,
+                        detail: validationErrorParser(err.response.data)
+                    })
+                })
+            this.onHideAlertDialog()
         }
     }
 
@@ -285,9 +284,9 @@ class MainView extends Component {
 
     onFormSubmit(mode) {
         const { pureRow, row, table, cols } = this.state
-
         let fields = []
         let apiObject = new FormData()
+        this.messages.clear();
 
         if(mode === 'create') 
         {
@@ -307,13 +306,20 @@ class MainView extends Component {
                         ],
                         mode: ''
                     })
+                    this.growl.show({
+                        severity: 'success',
+                        summary: 'ایجاد',
+                        detail: 'عملیات با موفقیت انجام شد'
+                    })
                 })
-
-            this.growl.show({
-                severity: 'success',
-                summary: 'ایجاد',
-                detail: 'عملیات با موفقیت انجام شد'
-            })
+                .catch( err => {
+                    window.scrollTo(0, 0)
+                    this.messages.show({
+                        severity: 'error',
+                        sticky: true,
+                        detail: validationErrorParser(err.response.data)
+                    })
+                })
         } 
         else if(mode === 'edit') 
         {
