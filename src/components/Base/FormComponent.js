@@ -58,6 +58,11 @@ export default class FormComponent extends Component {
 		return (
             <div className='p-col-12'>
                 <div className='card card-w-title'>
+                    <div className="card-heading">
+                        <div className="card-heading-actions">
+                        </div>
+                        <h1 className="card-heading-caption">{table.label}</h1>
+                    </div>
                     <TabView>
                         <TabPanel header='اطلاعات'>
                             <div className='p-grid' style={{direction:'rtl'}}>

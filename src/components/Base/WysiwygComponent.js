@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Parser from 'html-react-parser';
 import { WYSIWYG_UPLOAD_URL } from '../../config'
 import { WysiwygService } from '../../service/WysiwygService'
 import FroalaEditor from 'react-froala-wysiwyg';
@@ -39,7 +40,9 @@ export default class WysiwygComponent extends Component {
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     <span> {label} </span>
                     {readOnly && 
-                        <span>{value ? ' : ' + value : ' : ---'}</span>
+                        <span>
+                            : {value ? Parser(value) : ' ---'}
+                        </span>
                     }
                 </label>
                 {!readOnly &&

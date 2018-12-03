@@ -9,6 +9,7 @@
     "classnames": "^2.2.5",
     "font-awesome": "^4.7.0",
     "fullcalendar": "4.0.0-alpha",
+    "html-react-parser": "^0.4.7",
     "moment": "^2.22.2",
     "moment-jalaali": "^0.8.1",
     "node-sass-chokidar": "^1.3.0",
