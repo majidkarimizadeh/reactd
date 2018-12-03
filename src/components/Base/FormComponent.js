@@ -139,7 +139,7 @@ export default class FormComponent extends Component {
                                                 onInputChange={onInputChange}
                                             />)
 
-                                        case 'rich_text_edit':
+                                        case 'wysiwyg':
                                             return ( <WysiwygComponent 
                                                 index={i}
                                                 key={i}
