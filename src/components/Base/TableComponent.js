@@ -12,7 +12,7 @@ import {
 export default class TableComponent extends Component {
 
     richTextEditTemplate(rowData, column, columnAttr ,thisClass = null) {
-        const regex = /(<([^>]+)>)/ig
+        const regex = /(<([^>]+)>)/ig;
         return rowData[column.field] ? rowData[column.field].replace(regex, '') : ''
     }
 
@@ -94,7 +94,7 @@ export default class TableComponent extends Component {
                     {
                         body = this.lookUpTemplate
                     }
-                    else if(col.controller === 'rich_text_edit') 
+                    else if(col.controller === 'wysiwyg') 
                     {
                         body = this.richTextEditTemplate
                     }
