@@ -3,38 +3,28 @@ import SelectComponent from './SelectComponent'
 import TextEditComponent from './TextEditComponent'
 import DatePickerComponent from './DatePickerComponent'
 import LongTextEditComponent from './LongTextEditComponent'
+import WysiwygComponent from './WysiwygComponent'
 import PasswordEditComponent from './PasswordEditComponent'
 import ImageComponent from './ImageComponent'
 import BooleanComponent from './BooleanComponent'
 import { imageParser } from '../../parser/parser'
 import { TabView, TabPanel } from 'primereact/tabview'
 import { Button } from 'primereact/button'
-import { Dialog } from 'primereact/dialog'
 
 export default class FormComponent extends Component {
-
-	constructor(props) {
-        super(props)
-    }
 
 	render() {
 
 		const {
-            label,
             table,
-            visible,
             cols,
             onHideDialog,
             row,
             mode,
             onSubmit,
             onInputChange,
-            onInputFileChange,
-            cropWindowVisibles,
             onLookUp,
             options,
-            imageUrls,
-            onSwitchChange,
             onSelectFile,
             onCropRevert,
             onClearFile,
@@ -44,7 +34,6 @@ export default class FormComponent extends Component {
             baseSrc,
             src,
             crop,
-            onDateChange,
         } = this.props
 
         let modeFields = []
@@ -76,7 +65,7 @@ export default class FormComponent extends Component {
                                     let col = cols.find(function(c) {
                                         return c.no === item
                                     })
-
+                                    let required = (('valid' in col) && ('required' in col.valid));
                                     switch(col.controller) 
                                     {
                                         case 'lookup':
@@ -88,11 +77,11 @@ export default class FormComponent extends Component {
                                                 value={row[col.name]}
                                                 name={col.name}
                                                 label={col.label}
+                                                required={required}
                                                 placeholder={col.placeholder}
                                                 onInputChange={onInputChange}
                                                 onMouseDown={() => {onLookUp(col.rdf, col.name)}}
                                             /> )
-                                            break
 
                                         case 'password':
                                             return ( <PasswordEditComponent 
@@ -101,13 +90,13 @@ export default class FormComponent extends Component {
                                                 value={row[col.name]}
                                                 name={col.name}
                                                 label={col.label}
+                                                required={required}
                                                 placeholder={col.placeholder}
                                                 onInputChange={onInputChange}
                                             /> )
-                                            break
 
                                         case 'image':
-                                            {imagesFields.push(col)}
+                                            imagesFields.push(col)
                                             break
 
                                         case 'number':
@@ -119,10 +108,10 @@ export default class FormComponent extends Component {
                                                 name={col.name}
                                                 label={col.label}
                                                 type='number'
+                                                required={required}
                                                 placeholder={col.placeholder}
                                                 onInputChange={onInputChange}
                                             /> )
-                                            break
 
                                         case 'text_edit':
                                             return ( <TextEditComponent 
@@ -131,11 +120,11 @@ export default class FormComponent extends Component {
                                                 readOnly={mode === 'view'}
                                                 value={row[col.name]}
                                                 name={col.name}
+                                                required={required}
                                                 label={col.label}
                                                 placeholder={col.placeholder}
                                                 onInputChange={onInputChange}
                                             /> )
-                                            break
 
                                         case 'long_text':
                                             return ( <LongTextEditComponent 
@@ -144,12 +133,25 @@ export default class FormComponent extends Component {
                                                 readOnly={mode === 'view'}
                                                 value={row[col.name]}
                                                 name={col.name}
+                                                required={required}
                                                 label={col.label}
                                                 placeholder={col.placeholder}
                                                 onInputChange={onInputChange}
                                             />)
-                                            break
 
+                                        case 'rich_text_edit':
+                                            return ( <WysiwygComponent 
+                                                index={i}
+                                                key={i}
+                                                readOnly={mode === 'view'}
+                                                value={row[col.name]}
+                                                name={col.name}
+                                                required={required}
+                                                label={col.label}
+                                                placeholder={col.placeholder}
+                                                onInputChange={onInputChange}
+                                            />)
+                                            
                                         case 'boolean':
                                             return ( <BooleanComponent 
                                                 index={i}
@@ -158,10 +160,10 @@ export default class FormComponent extends Component {
                                                 value={row[col.name]}
                                                 name={col.name}
                                                 label={col.label}
+                                                required={required}
                                                 placeholder={col.placeholder}
                                                 onInputChange={onInputChange}
                                             />)
-                                            break
 
                                         case 'date':
                                             return ( <DatePickerComponent
@@ -172,11 +174,12 @@ export default class FormComponent extends Component {
                                                 readOnly={mode === 'view'}
                                                 value={row[col.name]}
                                                 name={col.name}
+                                                required={required}
                                                 label={col.label}
                                                 placeholder={col.placeholder}
                                                 onInputChange={onInputChange}
                                             />)
-                                            break
+                                        default:
                                     }
 
                                 })}

@@ -4,10 +4,6 @@ import { boolParser } from '../../parser/parser'
 
 export default class BooleanComponent extends Component {
 
-    constructor(props) {
-        super(props)
-    }
-
     render() {
 
         const {

@@ -3,10 +3,6 @@ import { InputText } from 'primereact/inputtext'
 
 export default class TextEditComponent extends Component {
 
-    constructor(props) {
-        super(props)
-    }
-
     render() {
 
         const {
@@ -16,6 +12,7 @@ export default class TextEditComponent extends Component {
             name,
             value,
             onInputChange,
+            required,
             readOnly,
             type,
         } = this.props
@@ -23,7 +20,12 @@ export default class TextEditComponent extends Component {
         return (
             <div className='p-col-12 p-md-6'>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
-                    <span> {label} </span>
+                    <span> 
+                        {label}
+                        {(!readOnly && required) &&
+                            <span className='required'>(این فیلد اجباری است)</span>
+                        }
+                    </span>
                     {readOnly && 
                         <span>{value ? ' : ' + value : ' : ---'}</span>
                     }

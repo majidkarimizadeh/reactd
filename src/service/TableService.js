@@ -1,5 +1,4 @@
 import axios from 'axios';
-import history from '../history'
 import { API_URL } from '../config'
 import { 
     dataParser,

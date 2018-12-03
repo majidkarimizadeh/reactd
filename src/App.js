@@ -22,14 +22,14 @@ import MainView from './components/MainView';
 
 import {ScrollPanel} from 'primereact/components/scrollpanel/ScrollPanel';
 import {MenuService} from './service/MenuService';
-import history from './history'
+import 'font-awesome/css/font-awesome.min.css';
 import 'primereact/resources/themes/nova-colored/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import 'fullcalendar/dist/fullcalendar.css';
 import './layout/layout.css';
-import './App.css';
+import './App.css'
 
 class App extends Component {
 

@@ -306,3 +306,9 @@ div.validation-error .p-messages .p-messages-close{
 	left: 0.5em;
 	right: auto !important;
 }
+
+.required {
+	font-size: 10px;
+	margin: 0px 8px;
+	color: red;
+}

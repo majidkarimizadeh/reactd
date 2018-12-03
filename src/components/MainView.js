@@ -9,12 +9,13 @@ import { LookUpService } from '../service/LookUpService'
 import { TabView,TabPanel } from 'primereact/tabview'
 import { Growl } from 'primereact/growl'
 import { Messages } from 'primereact/messages';
-import { Message } from 'primereact/message';
 import { getPixelCrop } from 'react-image-crop'
-import { getGreDateByTimestamp, validationErrorParser } from '../parser/parser'
+import { validationErrorParser } from '../parser/parser'
 import { Button } from 'primereact/button'
 import Loader from 'react-loader-spinner'
 import history from '../history'
+import $ from 'jquery';
+window.$ = $;
 
 class MainView extends Component {
 
@@ -134,9 +135,9 @@ class MainView extends Component {
         }
     }
 
-    onInputChange(date, name) {
+    onInputChange(data, name) {
         let row = {...this.state.row}
-        row[name] = date
+        row[name] = data
         this.setState({ row })
     }
 
@@ -271,7 +272,7 @@ class MainView extends Component {
             return
         }
         const { cols, row } = this.state
-        cols.map( item => {
+        cols.forEach((item, index) => {
             if(item.controller === 'lookup') {
                 this.onLookUp(item.rdf, item.name)
             }
@@ -293,7 +294,7 @@ class MainView extends Component {
             fields = table[mode]
             apiObject.append('url', table.url)
 
-            fields.map( (item, index) => {
+            fields.forEach( (item, index) => {
                 let col = cols.find( (col) => col.no === item)
                 apiObject.append(col.name, row[col.name])
             })
@@ -327,7 +328,7 @@ class MainView extends Component {
             apiObject.append('url', table.url)
             apiObject.append('primary', row[table.pk])
 
-            fields.map( (item, index) => {
+            fields.forEach( (item, index) => {
                 let col = cols.find( (col) => col.no === item)
                 apiObject.append(col.name, row[col.name])
             })
@@ -545,8 +546,6 @@ class MainView extends Component {
             detailCols,
             detailTable,
             detailRow,
-            cropWindowVisibles,
-            imageUrls,
 
             baseSrc,
             src,
@@ -567,10 +566,8 @@ class MainView extends Component {
                     onSubmit={this.onSubmitAlertDialog}
                     mode={alertMode}
                 />
-
                 {mode &&
                     <FormComponent
-                        label={table.label}
                         table={table}
                         cols={cols}
                         mode={mode}

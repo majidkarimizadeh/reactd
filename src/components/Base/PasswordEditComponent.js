@@ -3,10 +3,6 @@ import { Password } from 'primereact/password'
 
 export default class PasswordEditComponent extends Component {
 
-    constructor(props) {
-        super(props)
-    }
-
     render() {
 
         const { 

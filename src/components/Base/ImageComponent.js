@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactCrop, { getPixelCrop } from 'react-image-crop'
+import ReactCrop from 'react-image-crop'
 import { FileUpload } from 'primereact/fileupload'
 import { Button } from 'primereact/button'
 import 'react-image-crop/dist/ReactCrop.css'
@@ -9,12 +9,10 @@ export default class ImageComponent extends Component {
     render() {
 
         const { 
-            label, 
             index, 
             name, 
             readOnly,
             value,
-            baseSrc,
             src,
             crop,
             onSelectFile,
@@ -29,7 +27,7 @@ export default class ImageComponent extends Component {
             <>
                 <div className='p-col-12 p-md-5' style={{textAlign:'center'}}>
                     {(value && !src[index])  &&
-                        <img style={{width:'100%'}} src={value} />
+                        <img style={{width:'100%'}} src={value} alt='' />
                     }
 
                     {src[index] && (
@@ -47,9 +45,9 @@ export default class ImageComponent extends Component {
                 {!readOnly && 
                     <div className='p-col-12 p-md-3' style={{textAlign:'center'}}>
                         <div className='p-col-12 p-md-12 full-width-upload-btn'>
-                            <label className='lable' style={{textAlign:'right'}} htmlFor={`lbl-${index}`}> 
+                            {/*<label className='lable' style={{textAlign:'right'}} htmlFor={`lbl-${index}`}> 
                                 {label} 
-                            </label>
+                            </label>*/}
                             <FileUpload 
                                 onSelect={(e) => onSelectFile(e, name, index)}
                                 onClear={() => onClearFile(index)}

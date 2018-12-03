@@ -3,10 +3,6 @@ import { InputTextarea } from 'primereact/inputtextarea'
 
 export default class LongTextEditComponent extends Component {
 
-    constructor(props) {
-        super(props)
-    }
-
     render() {
 
         const { 

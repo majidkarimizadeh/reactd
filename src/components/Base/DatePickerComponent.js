@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { InputText } from 'primereact/inputtext'
 import { Calendar } from 'primereact/calendar'
-import moment from 'moment'
-import * as JalaliMoment from 'moment-jalaali'
 import { 
     getJalDateByGreDate, 
     getGreDateByTimestamp, 
@@ -11,17 +9,11 @@ import {
 } from '../../parser/parser'
 import {
     DatePicker,
-    DateTimePicker,
-    DateRangePicker,
-    DateTimeRangePicker
+    DateTimePicker
 } from 'react-advance-jalaali-datepicker'
 
 
 export default class DatePickerComponent extends Component {
-
-    constructor(props) {
-        super(props)
-    }
 
     datePickerInput(props) {
         return <InputText 
@@ -43,7 +35,6 @@ export default class DatePickerComponent extends Component {
             jalali,
             onInputChange,
             readOnly,
-            type
         } = this.props
 
         let JalaliComponent = showTime ? DateTimePicker : DatePicker
@@ -63,7 +54,7 @@ export default class DatePickerComponent extends Component {
                     <JalaliComponent
                         inputComponent={this.datePickerInput}
                         placeholder={placeholder}
-                        format={this.JalaliFormat}
+                        format={JalaliFormat}
                         onChange={(unix, format) => onInputChange(getGreDateByTimestamp(unix, showTime), name) }
                         preSelected={getJalDateByGreDate(value, showTime)}
                     />
