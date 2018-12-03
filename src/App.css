@@ -313,3 +313,10 @@ div.validation-error .p-messages .p-messages-close{
 	margin: 0px 8px;
 	color: red;
 }
+
+.table-column {
+	width:225px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

@@ -105,7 +105,7 @@ export default class TableComponent extends Component {
                             body={body ? (rowData, column) => body(rowData, column, col, this) : null}
                             header={col.label}
                             sortable={true}
-                            style={{width:'225px', overflow:'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}} 
+                            className="table-column"
                         />
                     )
                 })}
