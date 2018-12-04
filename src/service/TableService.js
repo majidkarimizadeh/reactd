@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { API_URL } from '../config'
+import { API_URL } from '../utils/config'
 import { 
     dataParser,
     colParser, 
     tableParser,
     detailParser
-} from '../parser/parser'
+} from '../utils/parser'
 
 export class TableService {
 

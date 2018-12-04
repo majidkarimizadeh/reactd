@@ -1,25 +1,11 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {AppTopbar} from './AppTopbar';
-import {AppFooter} from './AppFooter';
-import {AppMenu} from './AppMenu';
-import {AppInlineProfile} from './AppInlineProfile';
+import {AppTopbar} from './components/partial/AppTopbar';
+import {AppFooter} from './components/partial/AppFooter';
+import {AppMenu} from './components/partial/AppMenu';
+import {AppInlineProfile} from './components/partial/AppInlineProfile';
 import {Route, withRouter} from 'react-router-dom';
 import MainView from './components/MainView';
-
-// import {Dashboard} from './components/Dashboard';
-// import {FormsDemo} from './components/FormsDemo';
-// import {SampleDemo} from './components/SampleDemo';
-// import {DataDemo} from './components/DataDemo';
-// import {PanelsDemo} from './components/PanelsDemo';
-// import {OverlaysDemo} from './components/OverlaysDemo';
-// import {MenusDemo} from './components/MenusDemo';
-// import {MessagesDemo} from './components/MessagesDemo';
-// import {ChartsDemo} from './components/ChartsDemo';
-// import {MiscDemo} from './components/MiscDemo';
-// import {EmptyPage} from './components/EmptyPage';
-// import {Documentation} from "./components/Documentation";
-
 import {ScrollPanel} from 'primereact/components/scrollpanel/ScrollPanel';
 import {MenuService} from './service/MenuService';
 import 'font-awesome/css/font-awesome.min.css';
@@ -29,7 +15,7 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import 'fullcalendar/dist/fullcalendar.css';
 import './layout/layout.css';
-import './App.css'
+import './layout/App.css'
 
 class App extends Component {
 

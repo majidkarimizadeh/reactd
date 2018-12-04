@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { InputSwitch } from 'primereact/inputswitch'
-import { boolParser } from '../../parser/parser'
+import { boolParser } from '../../utils/parser'
 
 export default class BooleanComponent extends Component {
 

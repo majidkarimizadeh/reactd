@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Parser from 'html-react-parser';
-import { WYSIWYG_UPLOAD_URL } from '../../config'
+import { WYSIWYG_UPLOAD_URL } from '../../utils/config'
 import { WysiwygService } from '../../service/WysiwygService'
 import FroalaEditor from 'react-froala-wysiwyg';
 import 'froala-editor/js/froala_editor.pkgd.min.js';

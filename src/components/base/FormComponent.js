@@ -7,7 +7,7 @@ import WysiwygComponent from './WysiwygComponent'
 import PasswordEditComponent from './PasswordEditComponent'
 import ImageComponent from './ImageComponent'
 import BooleanComponent from './BooleanComponent'
-import { imageParser } from '../../parser/parser'
+import { imageParser } from '../../utils/parser'
 import { TabView, TabPanel } from 'primereact/tabview'
 import { Button } from 'primereact/button'
 

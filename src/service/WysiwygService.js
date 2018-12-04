@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { WYSIWYG_REMOVE_URL } from '../config'
+import { WYSIWYG_REMOVE_URL } from '../utils/config'
 
 export class WysiwygService {
 

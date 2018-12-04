@@ -1,7 +1,7 @@
 import axios from 'axios';
-import history from '../history'
-import { menuParser } from '../parser/parser'
-import { API_URL } from '../config'
+import history from '../utils/history'
+import { menuParser } from '../utils/parser'
+import { API_URL } from '../utils/config'
 
 export class MenuService {
     

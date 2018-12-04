@@ -1,5 +1,5 @@
 import React from 'react'
-import { SITE_URL } from '../config'
+import { SITE_URL } from '../utils/config'
 import * as JalaliMoment from 'moment-jalaali'
 import moment from 'moment'
 

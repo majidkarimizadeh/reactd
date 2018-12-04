@@ -6,7 +6,7 @@ import {
     getGreDateByTimestamp, 
     getGreDateByGMT, 
     getGMTByGreDate 
-} from '../../parser/parser'
+} from '../../utils/parser'
 import {
     DatePicker,
     DateTimePicker

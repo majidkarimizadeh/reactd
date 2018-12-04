@@ -7,7 +7,7 @@ import {
     getFormatedGreDate, 
     imageParser, 
     boolParser 
-} from '../../parser/parser'
+} from '../../utils/parser'
 
 export default class TableComponent extends Component {
 

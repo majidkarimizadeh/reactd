@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
-import AlertDialogComponent from './Base/AlertDialogComponent'
-import TableComponent from './Base/TableComponent'
-import FormComponent from './Base/FormComponent'
+import AlertDialogComponent from './base/AlertDialogComponent'
+import TableComponent from './base/TableComponent'
+import FormComponent from './base/FormComponent'
 import { TableService } from '../service/TableService'
 import { RowService } from '../service/RowService'
 import { LookUpService } from '../service/LookUpService'
@@ -10,10 +10,10 @@ import { TabView,TabPanel } from 'primereact/tabview'
 import { Growl } from 'primereact/growl'
 import { Messages } from 'primereact/messages';
 import { getPixelCrop } from 'react-image-crop'
-import { validationErrorParser } from '../parser/parser'
+import { validationErrorParser } from '../utils/parser'
 import { Button } from 'primereact/button'
 import Loader from 'react-loader-spinner'
-import history from '../history'
+import history from '../utils/history'
 import $ from 'jquery';
 window.$ = $;
 
