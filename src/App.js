@@ -129,7 +129,7 @@ class App extends Component {
         let sidebarClassName = classNames("layout-sidebar", {'layout-sidebar-dark': this.state.layoutColorMode === 'dark'})
 
         const { match } = this.props
-
+        console.log(match)
         return (
             <div className={wrapperClass} onClick={this.onWrapperClick}>
                 <AppTopbar onToggleMenu={this.onToggleMenu}/>
@@ -151,7 +151,7 @@ class App extends Component {
 
                     {/*<Route path="/" exact component={Dashboard} />*/}
                     <Route 
-                        path={`${match.url}:table`}
+                        path={`${match.url}/:table`}
                         render={props => <MainView {...props} />}
                     />
 
