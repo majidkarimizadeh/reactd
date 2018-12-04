@@ -101,7 +101,12 @@ class MainView extends Component {
     componentWillUpdate(prevProps) {
         if(prevProps.match.params.table !== this.props.match.params.table)
         {
-            this.setState({ isLoading: true })
+            this.setState({ 
+                isLoading: true,
+                mode: '',
+                isSelect: false
+            })
+            this.messages.clear()
         }
     }
 
@@ -287,7 +292,7 @@ class MainView extends Component {
         const { pureRow, row, table, cols } = this.state
         let fields = []
         let apiObject = new FormData()
-        this.messages.clear();
+        this.messages.clear()
 
         if(mode === 'create') 
         {
