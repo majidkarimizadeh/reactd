@@ -1,26 +1,26 @@
-import React, {Component} from 'react';
-import classNames from 'classnames';
-import {AppTopbar} from './components/partial/AppTopbar';
-import {AppFooter} from './components/partial/AppFooter';
-import {AppMenu} from './components/partial/AppMenu';
-import {AppInlineProfile} from './components/partial/AppInlineProfile';
-import {Route, withRouter} from 'react-router-dom';
-import MainView from './components/MainView';
-import {ScrollPanel} from 'primereact/components/scrollpanel/ScrollPanel';
-import {MenuService} from './service/MenuService';
-import 'font-awesome/css/font-awesome.min.css';
-import 'primereact/resources/themes/nova-colored/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-import 'primeflex/primeflex.css';
-import 'fullcalendar/dist/fullcalendar.css';
-import './layout/layout.css';
+import React, {Component} from 'react'
+import MainView from './components/MainView'
+import classNames from 'classnames'
+import { AppTopbar } from './components/partial/AppTopbar'
+import { AppFooter } from './components/partial/AppFooter'
+import { AppMenu } from './components/partial/AppMenu'
+import { AppInlineProfile } from './components/partial/AppInlineProfile'
+import { Route, withRouter } from 'react-router-dom'
+import { ScrollPanel } from 'primereact/components/scrollpanel/ScrollPanel'
+import { MenuService } from './service/MenuService'
+import 'font-awesome/css/font-awesome.min.css'
+import 'primereact/resources/themes/nova-colored/theme.css'
+import 'primereact/resources/primereact.min.css'
+import 'primeicons/primeicons.css'
+import 'primeflex/primeflex.css'
+import 'fullcalendar/dist/fullcalendar.css'
+import './layout/layout.css'
 import './layout/App.css'
 
 class App extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             menu: [],
             layoutMode: 'static',
@@ -28,17 +28,17 @@ class App extends Component {
             staticMenuInactive: false,
             overlayMenuActive: false,
             mobileMenuActive: false
-        };
+        }
 
-        this.menuService = new MenuService();
-        this.onWrapperClick = this.onWrapperClick.bind(this);
-        this.onToggleMenu = this.onToggleMenu.bind(this);
-        this.onSidebarClick = this.onSidebarClick.bind(this);
-        this.onMenuItemClick = this.onMenuItemClick.bind(this);
+        this.menuService = new MenuService()
+        this.onWrapperClick = this.onWrapperClick.bind(this)
+        this.onToggleMenu = this.onToggleMenu.bind(this)
+        this.onSidebarClick = this.onSidebarClick.bind(this)
+        this.onMenuItemClick = this.onMenuItemClick.bind(this)
     }
 
     componentDidMount() {
-        this.menuService.getMenuItem().then(menu => this.setState({ menu }));
+        this.menuService.getMenuItem().then(menu => this.setState({ menu }))
     }
 
     onWrapperClick(event) {
@@ -46,40 +46,40 @@ class App extends Component {
             this.setState({
                 overlayMenuActive: false,
                 mobileMenuActive: false
-            });
+            })
         }
 
-        this.menuClick = false;
+        this.menuClick = false
     }
 
     onToggleMenu(event) {
-        this.menuClick = true;
+        this.menuClick = true
 
         if (this.isDesktop()) {
             if (this.state.layoutMode === 'overlay') {
                 this.setState({
                     overlayMenuActive: !this.state.overlayMenuActive
-                });
+                })
             }
             else if (this.state.layoutMode === 'static') {
                 this.setState({
                     staticMenuInactive: !this.state.staticMenuInactive
-                });
+                })
             }
         }
         else {
-            const mobileMenuActive = this.state.mobileMenuActive;
+            const mobileMenuActive = this.state.mobileMenuActive
             this.setState({
                 mobileMenuActive: !mobileMenuActive
-            });
+            })
         }
        
-        event.preventDefault();
+        event.preventDefault()
     }
 
     onSidebarClick(event) {
-        this.menuClick = true;
-        setTimeout(() => {this.layoutMenuScroller.moveBar(); }, 500);
+        this.menuClick = true
+        setTimeout(() => {this.layoutMenuScroller.moveBar() }, 500)
     }
 
     onMenuItemClick(event) {
@@ -93,32 +93,31 @@ class App extends Component {
 
     addClass(element, className) {
         if (element.classList)
-            element.classList.add(className);
+            element.classList.add(className)
         else
-            element.className += ' ' + className;
+            element.className += ' ' + className
     }
 
     removeClass(element, className) {
         if (element.classList)
-            element.classList.remove(className);
+            element.classList.remove(className)
         else
-            element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+            element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ')
     }
 
     isDesktop() {
-        return window.innerWidth > 1024;
+        return window.innerWidth > 1024
     }
 
     componentDidUpdate() {
         if (this.state.mobileMenuActive)
-            this.addClass(document.body, 'body-overflow-hidden');
+            this.addClass(document.body, 'body-overflow-hidden')
         else
-            this.removeClass(document.body, 'body-overflow-hidden');
+            this.removeClass(document.body, 'body-overflow-hidden')
     }
 
     render() {
-        // let logo = this.state.layoutColorMode === 'dark' ? 'assets/layout/images/logo-white.svg': 'assets/layout/images/logo.svg';
-        let logo = 'assets/layout/images/logo-white.png';
+        let logo = 'assets/layout/images/logo-white.png'
 
         let wrapperClass = classNames('layout-wrapper', {
             'layout-overlay': this.state.layoutMode === 'overlay',
@@ -126,8 +125,8 @@ class App extends Component {
             'layout-static-sidebar-inactive': this.state.staticMenuInactive && this.state.layoutMode === 'static',
             'layout-overlay-sidebar-active': this.state.overlayMenuActive && this.state.layoutMode === 'overlay',
             'layout-mobile-sidebar-active': this.state.mobileMenuActive
-        });
-        let sidebarClassName = classNames("layout-sidebar", {'layout-sidebar-dark': this.state.layoutColorMode === 'dark'});
+        })
+        let sidebarClassName = classNames("layout-sidebar", {'layout-sidebar-dark': this.state.layoutColorMode === 'dark'})
 
         const { match } = this.props
 
@@ -150,32 +149,18 @@ class App extends Component {
 
                 <div className="layout-main">
 
-                    {/*<Route path="/" exact component={Dashboard} />
-                    <Route path="/forms" component={FormsDemo} />
-                    <Route path="/sample" component={SampleDemo} />
-                    <Route path="/data" component={DataDemo} />
-                    <Route path="/panels" component={PanelsDemo} />
-                    <Route path="/overlays" component={OverlaysDemo} />
-                    <Route path="/menus" component={MenusDemo} />
-                    <Route path="/messages" component={MessagesDemo} />
-                    <Route path="/charts" component={ChartsDemo} />
-                    <Route path="/misc" component={MiscDemo} />
-                    <Route path="/empty" component={EmptyPage} />
-                    <Route path="/documentation" component={Documentation} />*/}
-
+                    {/*<Route path="/" exact component={Dashboard} />*/}
                     <Route 
                         path={`${match.url}:table`}
                         render={props => <MainView {...props} />}
                     />
 
                 </div>
-
                 <AppFooter />
-
                 <div className="layout-mask"></div>
             </div>
-        );
+        )
     }
 }
 
-export default withRouter(App);
+export default withRouter(App)
