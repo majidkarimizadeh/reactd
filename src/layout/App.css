@@ -1,4 +1,7 @@
 /* Place your extensions here to make migration to a new release easier. */
+html, body, #root{
+  	height:100%;
+}
 
 .full-width-upload-btn > span {
 	width: 100% !important;

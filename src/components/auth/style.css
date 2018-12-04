@@ -1,13 +1,11 @@
-body {
-	background-color: #364150 !important;
-	direction: rtl;
-}
-
 .container {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
 	align-items: center;
+    background-color: #364150;
+    direction: rtl;
+    height: 100%;
 }
 
 .login-container {
@@ -62,6 +60,11 @@ body {
 
 .p-message-error {
     width: 100% !important;
+    padding: 8px 12px !important;
+}
+
+.p-message-icon {
+    display: none;
 }
 
 .bottom-layout {
@@ -90,4 +93,12 @@ body {
 .bottom-layout a:hover{
     color: #c3cedd;
     text-decoration: underline;
+}
+.powered {
+    font-size: 12px;
+    margin-top: 6px;
+    color: #7a8ca5 !important;
+}
+.powered a {
+    color: #7a8ca5 !important;
 }

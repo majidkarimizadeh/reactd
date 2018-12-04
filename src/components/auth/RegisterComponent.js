@@ -93,6 +93,12 @@ export default class RegisterComponent extends Component {
 			        		ورود
 		        		</Link>
 		        	</div>
+		        	<span className='powered'>
+		        		Powered by&#160;
+		        		<Link target="_blank" to="//github.com/majidkarimizadeh/reactd">
+			        		Reactd
+		        		</Link>
+		        	</span>
 	        	</div>
         	</div>
         )

@@ -9,8 +9,5 @@ export class AuthService {
         apiObject.append('password', password)
 
         return axios.post(`${API_URL}/login`, apiObject)
-                .then(res => {
-                	console.log(res.data)
-                });
     }
 }

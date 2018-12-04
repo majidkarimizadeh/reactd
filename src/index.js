@@ -12,9 +12,9 @@ import RegisterComponent from './components/auth/RegisterComponent'
 ReactDOM.render(
     <Router history={history}>
 	   	<Switch>
+	      	<PrivateRoute path='/admin' component={App} />
 	      	<Route exact path='/login' component={LoginComponent} />
 	      	<Route exact path='/register' component={RegisterComponent} />
-	      	<PrivateRoute path='/admin' component={App} />
 	   	</Switch>
     </Router>,
     document.getElementById('root')
