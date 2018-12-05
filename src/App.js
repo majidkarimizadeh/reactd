@@ -117,7 +117,7 @@ class App extends Component {
     }
 
     render() {
-        let logo = 'assets/layout/images/logo-white.png'
+        let logo = '/assets/layout/images/logo-white.png'
 
         let wrapperClass = classNames('layout-wrapper', {
             'layout-overlay': this.state.layoutMode === 'overlay',
@@ -129,7 +129,6 @@ class App extends Component {
         let sidebarClassName = classNames("layout-sidebar", {'layout-sidebar-dark': this.state.layoutColorMode === 'dark'})
 
         const { match } = this.props
-        console.log(match)
         return (
             <div className={wrapperClass} onClick={this.onWrapperClick}>
                 <AppTopbar onToggleMenu={this.onToggleMenu}/>
