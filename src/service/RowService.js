@@ -1,13 +1,16 @@
 import axios from 'axios';
+import Service from './Service'
 import { API_URL } from '../utils/config'
 
 export class RowService {
 
     deleteRow(apiObject) {
+        Service.setToken(apiObject)
         return axios.post(`${API_URL}/delete/`, apiObject)
     }
 
     updateRow(apiObject) {
+        Service.setToken(apiObject)
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -17,6 +20,7 @@ export class RowService {
     }
 
     storeRow(apiObject) {
+        Service.setToken(apiObject)
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'

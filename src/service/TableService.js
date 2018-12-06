@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Service from './Service'
 import { API_URL } from '../utils/config'
 import { 
     dataParser,
@@ -9,12 +10,12 @@ import {
 
 export class TableService {
 
-    getTableInfo(url, primary = null, children = null) {
-        let apiObject = {
-            url: url,
-            primary: primary,
-            children: children
-        }
+    getTableInfo(url, primary = '', children = '') {
+        let apiObject = new FormData();
+        apiObject.append('url', url)
+        apiObject.append('primary', primary)
+        apiObject.append('children', children)
+        Service.setToken(apiObject)
         return axios.post(`${API_URL}/select/`, apiObject)
                 .then(res => {
                     return {

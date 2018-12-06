@@ -1,12 +1,15 @@
 import axios from 'axios';
 import history from '../utils/history'
+import Service from './Service'
 import { menuParser } from '../utils/parser'
 import { API_URL } from '../utils/config'
 
 export class MenuService {
     
     getMenuItem() {
-        return axios.get(`${API_URL}/menubar`)
+        let apiObject = new FormData();
+        Service.setToken(apiObject)
+        return axios.get(`${API_URL}/menubar`, apiObject)
                 .then(res => {
                     return this.generateMenuItem(menuParser(res.data))
                 });
