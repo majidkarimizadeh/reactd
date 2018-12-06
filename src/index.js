@@ -8,6 +8,7 @@ import PrivateRoute from './utils/privateRoute'
 import App from './App';
 import LoginComponent from './components/auth/LoginComponent'
 import RegisterComponent from './components/auth/RegisterComponent'
+import ErrorBoundary from './utils/errorBoundary'
 
 ReactDOM.render(
     <Router history={history}>

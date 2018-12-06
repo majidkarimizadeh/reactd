@@ -343,3 +343,28 @@ body .p-checkbox-label {
 	font-size: 128px;
 	color: #f3bf00
 }
+
+.error-page {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.error-page .status {
+    font-size: 150px !important;
+    font-weight: 600 !important;
+    color: #6587C6;
+}
+
+.error-page .message {
+	font-size: 1.5rem;
+    color: #898b96
+}
+
+.error-page .back {
+	font-size: 14px !important;
+	cursor: pointer;
+}

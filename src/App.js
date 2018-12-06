@@ -5,7 +5,7 @@ import { AppTopbar } from './components/partial/AppTopbar'
 import { AppFooter } from './components/partial/AppFooter'
 import { AppMenu } from './components/partial/AppMenu'
 import { AppInlineProfile } from './components/partial/AppInlineProfile'
-import { Route, withRouter } from 'react-router-dom'
+import { Route, withRouter, Redirect } from 'react-router-dom'
 import { ScrollPanel } from 'primereact/components/scrollpanel/ScrollPanel'
 import { MenuService } from './service/MenuService'
 import 'font-awesome/css/font-awesome.min.css'
@@ -23,6 +23,7 @@ class App extends Component {
         super(props)
         this.state = {
             menu: [],
+            err: null,
             layoutMode: 'static',
             layoutColorMode: 'dark',
             staticMenuInactive: false,
@@ -38,7 +39,9 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.menuService.getMenuItem().then(menu => this.setState({ menu }))
+        this.menuService.getMenuItem()
+        .then(menu => this.setState({ menu }))
+        .catch(err => this.setState({ err: err.response })  ) 
     }
 
     onWrapperClick(event) {
@@ -117,6 +120,12 @@ class App extends Component {
     }
 
     render() {
+
+        const { err } = this.state
+        if (err) {
+            throw err
+        }
+
         let logo = '/assets/layout/images/logo-white.png'
 
         let wrapperClass = classNames('layout-wrapper', {
@@ -132,9 +141,7 @@ class App extends Component {
         return (
             <div className={wrapperClass} onClick={this.onWrapperClick}>
                 <AppTopbar onToggleMenu={this.onToggleMenu}/>
-
                 <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
-
                     <ScrollPanel ref={(el) => this.layoutMenuScroller = el} style={{height:'100%'}}>
                         <div className="layout-sidebar-scroll-content" >
                             <div className="layout-logo">
@@ -145,15 +152,11 @@ class App extends Component {
                         </div>
                     </ScrollPanel>
                 </div>
-
                 <div className="layout-main">
-
-                    {/*<Route path="/" exact component={Dashboard} />*/}
                     <Route 
                         path={`${match.url}/:table`}
                         render={props => <MainView {...props} />}
                     />
-
                 </div>
                 <AppFooter />
                 <div className="layout-mask"></div>
@@ -161,5 +164,4 @@ class App extends Component {
         )
     }
 }
-
 export default withRouter(App)

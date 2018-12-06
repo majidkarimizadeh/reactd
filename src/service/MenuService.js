@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 import history from '../utils/history'
 import Service from './Service'
 import { menuParser } from '../utils/parser'
@@ -7,17 +7,17 @@ import { API_URL } from '../utils/config'
 export class MenuService {
     
     getMenuItem() {
-        let apiObject = new FormData();
+        let apiObject = new FormData()
         Service.setToken(apiObject)
-        return axios.get(`${API_URL}/menubar`, apiObject)
+        return axios.post(`${API_URL}/menubar`, apiObject)
                 .then(res => {
                     return this.generateMenuItem(menuParser(res.data))
-                });
+                })
     }
 
     generateMenuItem(menuItems) {
-        if(!menuItems) return;
-        let menus = [];
+        if(!menuItems) return
+        let menus = []
         for (var i = 0; i < menuItems.length; i++) {
             let menuItem = (typeof menuItems[i] === 'object') ? menuItems[i] : JSON.parse(menuItems[i])
             let url = menuItem.url ?  (menuItem.url.startsWith('/')) ? '/admin' + menuItem.url : '/admin/' + menuItem.url  : null
@@ -32,7 +32,7 @@ export class MenuService {
                 }
             })
         }
-        return menus;
+        return menus
     }
 
 }

@@ -56,7 +56,8 @@ class MainView extends Component {
                 //     width: 50,
                 // }
             ],
-            customComponent: null
+            customComponent: null,
+            err: null
 
         }
 
@@ -204,6 +205,7 @@ class MainView extends Component {
                         detailTable: table,
                     })
                 })
+                .catch(err => this.setState({ err: err.response })  ) 
         }
     }
 
@@ -403,6 +405,7 @@ class MainView extends Component {
                 cols.map( (item, index) => row[item.name] = '' )
                 this.setState({ cols, table, data, details, row })
             })
+            .catch(err => this.setState({ err: err.response })  ) 
     }
 
 
@@ -540,9 +543,9 @@ class MainView extends Component {
 
 
     render() {
-
+    
         const { 
-
+            err,
             data, 
             cols, 
             table,
@@ -568,6 +571,10 @@ class MainView extends Component {
         } = this.state
 
         const { match } = this.props
+
+        if (err) {
+            throw err
+        }
 
         return (
             <div>
