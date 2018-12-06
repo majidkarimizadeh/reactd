@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import TreeComponent from './TreeComponent'
 import SelectComponent from './SelectComponent'
 import TextEditComponent from './TextEditComponent'
 import DatePickerComponent from './DatePickerComponent'

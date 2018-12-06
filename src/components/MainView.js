@@ -12,6 +12,7 @@ import { Messages } from 'primereact/messages';
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
 import { Button } from 'primereact/button'
+import { hasCustomFun } from './custom'
 import Loader from 'react-loader-spinner'
 import history from '../utils/history'
 import $ from 'jquery';
@@ -55,6 +56,7 @@ class MainView extends Component {
                 //     width: 50,
                 // }
             ],
+            customComponent: null
 
         }
 
@@ -71,7 +73,8 @@ class MainView extends Component {
         this.refreshTab = this.refreshTab.bind(this)
 
         this.onInputChange = this.onInputChange.bind(this)
-        this.onSelectionChange = this.onSelectionChange.bind(this)    
+        this.onSelectionChange = this.onSelectionChange.bind(this)
+        this.onCustomChange = this.onCustomChange.bind(this)
 
         this.isSelectedRow = this.isSelectedRow.bind(this)
         this.tableService = new TableService()
@@ -138,6 +141,10 @@ class MainView extends Component {
             window.scrollTo(0, 0)
             this.getTableInfo()
         }
+    }
+
+    onCustomChange( newState ) {
+        this.setState(newState) 
     }
 
     onInputChange(data, name) {
@@ -555,7 +562,8 @@ class MainView extends Component {
             baseSrc,
             src,
             crop,
-            isLoading
+            isLoading,
+            customComponent
 
         } = this.state
 
@@ -571,7 +579,7 @@ class MainView extends Component {
                     onSubmit={this.onSubmitAlertDialog}
                     mode={alertMode}
                 />
-                {mode &&
+                {(mode && mode !== 'custom') &&
                     <FormComponent
                         table={table}
                         cols={cols}
@@ -595,6 +603,10 @@ class MainView extends Component {
                     />
                 }
 
+                {(mode && mode === 'custom') &&
+                    <div> {customComponent} </div>
+                }
+
                 {!mode && 
                     <div className="p-col-12">
                         <div className="p-col-12" style={{textAlign:'center', padding:'0px'}}>
@@ -615,6 +627,7 @@ class MainView extends Component {
                                             <Button onClick={() => this.onShowDialog('view')} icon="pi pi-file" className="p-button-secondary toolbar-btn" />
                                             <Button onClick={() => this.onShowDialog('edit')} icon="pi pi-pencil" className="p-button-secondary toolbar-btn" />
                                             <Button onClick={() => this.onShowDialog('create')} icon="pi pi-plus" className="p-button-secondary toolbar-btn"/>
+                                            {hasCustomFun(table.name, this.onCustomChange, this.state, this.growl)}
                                         </div>
                                         <h1 className="card-heading-caption">{table.label}</h1>
                                     </div>

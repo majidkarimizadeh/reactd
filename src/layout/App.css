@@ -323,3 +323,23 @@ div.validation-error .p-messages .p-messages-close{
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+
+body .p-checkbox-label {
+    margin: 0 0.5em 0 0.5em !important;
+}
+
+.custom-tree {
+	width: auto !important;
+}
+
+.ic-warning {
+    display: flex;
+	height: 100% !important;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+}
+.ic-warning i{
+	font-size: 128px;
+	color: #f3bf00
+}

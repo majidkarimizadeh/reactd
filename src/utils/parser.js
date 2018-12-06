@@ -116,3 +116,35 @@ export function validationErrorParser(errors) {
 	})
 	return <ul>{errorList}</ul>
 }
+
+
+export function roleParser(roles) {
+	let roleObjects = []
+	let tableName = null;
+	for (var i = 0; i < roles.length; i++) {
+		let meta_value = JSON.parse(roles[i].meta_value);
+		if(meta_value.table == undefined) 
+		{
+			tableName = i;
+			roleObjects[tableName] = {
+				key: i,
+				label: meta_value.label,
+				data: 'data ' + i,
+				icon: 'pi pi-fw pi-lock',
+				children: [],
+			}
+		}
+		// else 
+		// {
+		// 	if(tableName === 0 || tableName) {
+		// 		roleObjects[tableName].children.push({
+		// 			key: i,
+		// 			label: meta_value.label,
+		// 			data: 'data ' + i,
+		// 			icon: 'pi pi-fw pi-lock',
+		// 		})
+		// 	}
+		// }
+	}
+	return roleObjects
+}
