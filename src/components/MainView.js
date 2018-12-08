@@ -191,7 +191,7 @@ class MainView extends Component {
             let foreignKey = null
             let rowPrimary = null
 
-            if(row && detailTable.children) {
+            if(row && detailTable && detailTable.children) {
                 foreignKey = detailTable.children.find( (item) => item.table === table.name)
                 rowPrimary = row[table.pk]
             }
