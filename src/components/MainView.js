@@ -24,6 +24,7 @@ class MainView extends Component {
         super(props)
         this.state = {
             lookups: [],
+            perm: {},
 
             details: [],
             data: [],
@@ -260,11 +261,22 @@ class MainView extends Component {
                 })
                 .catch( err => {
                     window.scrollTo(0, 0)
-                    this.messages.show({
-                        severity: 'error',
-                        sticky: true,
-                        detail: validationErrorParser(err.response.data)
-                    })
+                    if(err.response.status === 422) 
+                    {
+                        this.messages.show({
+                            severity: 'error',
+                            sticky: true,
+                            detail: validationErrorParser(err.response.data)
+                        })
+                    } 
+                    else 
+                    {
+                        this.growl.show({
+                            severity: 'error',
+                            summary: 'حذف',
+                            detail: err.response.data
+                        })
+                    }
                 })
             this.onHideAlertDialog()
         }
@@ -329,11 +341,22 @@ class MainView extends Component {
                 })
                 .catch( err => {
                     window.scrollTo(0, 0)
-                    this.messages.show({
-                        severity: 'error',
-                        sticky: true,
-                        detail: validationErrorParser(err.response.data)
-                    })
+                    if(err.response.status === 422) 
+                    {
+                        this.messages.show({
+                            severity: 'error',
+                            sticky: true,
+                            detail: validationErrorParser(err.response.data)
+                        })
+                    } 
+                    else
+                    {
+                        this.growl.show({
+                            severity: 'error',
+                            summary: 'ایجاد',
+                            detail: err.response.data
+                        })
+                    }
                 })
         } 
         else if(mode === 'edit') 
@@ -375,11 +398,23 @@ class MainView extends Component {
                 })
                 .catch( err => {
                     window.scrollTo(0, 0)
-                    this.messages.show({
-                        severity: 'error',
-                        sticky: true,
-                        detail: validationErrorParser(err.response.data)
-                    })
+                    if(err.response.status === 422) 
+                    {
+                        this.messages.show({
+                            severity: 'error',
+                            sticky: true,
+                            detail: validationErrorParser(err.response.data)
+                        })
+                    } 
+                    else 
+                    {
+                        this.growl.show({
+                            severity: 'error',
+                            summary: 'ویرایش',
+                            detail: err.response.data
+                        })
+                    }
+
                 })
         }
     }
@@ -400,10 +435,10 @@ class MainView extends Component {
     getTableInfo() {
         let tableUrl = this.props.match.params.table
         this.tableService.getTableInfo(tableUrl)
-            .then(({data, table, cols, details })  =>  {
+            .then(({data, table, cols, details, perm })  =>  {
                 let row = {}
                 cols.map( (item, index) => row[item.name] = '' )
-                this.setState({ cols, table, data, details, row })
+                this.setState({ cols, table, data, details, row, perm })
             })
             .catch(err => this.setState({ err: err.response })  ) 
     }
@@ -566,7 +601,9 @@ class MainView extends Component {
             src,
             crop,
             isLoading,
-            customComponent
+            customComponent,
+
+            perm,
 
         } = this.state
 
@@ -630,10 +667,34 @@ class MainView extends Component {
                                 <div>
                                     <div className="card-heading">
                                         <div className="card-heading-actions">
-                                            <Button onClick={() => this.onShowAlertDialog('delete')} icon="pi pi-trash" className="p-button-secondary toolbar-btn" />
-                                            <Button onClick={() => this.onShowDialog('view')} icon="pi pi-file" className="p-button-secondary toolbar-btn" />
-                                            <Button onClick={() => this.onShowDialog('edit')} icon="pi pi-pencil" className="p-button-secondary toolbar-btn" />
-                                            <Button onClick={() => this.onShowDialog('create')} icon="pi pi-plus" className="p-button-secondary toolbar-btn"/>
+                                            {perm.delete && 
+                                                <Button 
+                                                    onClick={() => this.onShowAlertDialog('delete')}
+                                                    icon="pi pi-trash"
+                                                    className="p-button-secondary toolbar-btn"
+                                                />
+                                            }
+                                            {perm.select &&
+                                                <Button 
+                                                    onClick={() => this.onShowDialog('view')}
+                                                    icon="pi pi-file"
+                                                    className="p-button-secondary toolbar-btn"
+                                                />
+                                            }
+                                            {perm.update &&
+                                                <Button
+                                                    onClick={() => this.onShowDialog('edit')}
+                                                    icon="pi pi-pencil"
+                                                    className="p-button-secondary toolbar-btn"
+                                                />
+                                            }
+                                            {perm.insert &&
+                                                <Button 
+                                                    onClick={() => this.onShowDialog('create')}
+                                                    icon="pi pi-plus"
+                                                    className="p-button-secondary toolbar-btn"
+                                                />
+                                            }
                                             {hasCustomFun(table.name, this.onCustomChange, this.state, this.growl)}
                                         </div>
                                         <h1 className="card-heading-caption">{table.label}</h1>

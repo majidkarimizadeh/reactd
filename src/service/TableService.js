@@ -5,7 +5,7 @@ import {
     dataParser,
     colParser, 
     tableParser,
-    detailParser
+    detailParser,
 } from '../utils/parser'
 
 export class TableService {
@@ -22,7 +22,8 @@ export class TableService {
                         details: detailParser(res.data.details),
                         data: dataParser(res.data.data),
                         table: tableParser(res.data.table),
-                        cols: colParser(res.data.cols)
+                        cols: colParser(res.data.cols),
+                        perm: res.data.perm
                     }    
                 });
     }
