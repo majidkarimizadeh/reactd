@@ -26,7 +26,12 @@ function onClick(dispatch, state, growl)
 	{
 		dispatch({
 			mode: 'custom',
-			customComponent: <RoleComponent {...state} dispatch={dispatch} />
+			customComponent: 
+				<RoleComponent 
+					{...state} 
+					dispatch={dispatch}
+					growl={growl}
+				/>
 		})
 	}
 }

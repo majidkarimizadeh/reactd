@@ -60,6 +60,8 @@ export class RoleComponent extends Component {
 
         } = this.state
 
+        const { growl } = this.props
+
         let perm = select << 3 | insert << 2 | update << 1 | del
         let apiObject = new FormData()
         apiObject.append('perm', perm)
@@ -68,9 +70,19 @@ export class RoleComponent extends Component {
         apiObject.append('role_id', selectedRole.role_id)
         this.service.post('roles/update', apiObject)
             .then( res => {
-                console.log(res)
+                growl.show({
+                    severity: 'success',
+                    summary: 'ویرایش',
+                    detail: 'عملیات با موفقیت انجام شده'
+                })
             })
-
+            .catch( err => {
+                growl.show({
+                    severity: 'danger',
+                    summary: 'خطا!',
+                    detail: err.response.data
+                })
+            })
 
     }
 
