@@ -1,4 +1,4 @@
-/* Place your extensions here to make migration to a new release easier. */
+
 html, body, #root{
   	height:100%;
 }
@@ -321,6 +321,8 @@ div.validation-error .p-messages .p-messages-close{
 	width:225px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+td.table-column {
 	white-space: nowrap;
 }
 
@@ -367,4 +369,19 @@ body .p-checkbox-label {
 .error-page .back {
 	font-size: 14px !important;
 	cursor: pointer;
+}
+
+.filter-dropdown {
+	width: 100% !important;
+	position: static;
+}
+
+.filter-dropdown .p-dropdown-panel {
+	left: auto !important;
+	top: auto !important;
+	min-width: 198px !important;
+}
+
+.filter-dropdown .p-dropdown-trigger {
+	display: none;
 }

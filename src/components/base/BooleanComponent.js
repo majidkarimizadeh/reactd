@@ -17,7 +17,7 @@ export default class BooleanComponent extends Component {
         } = this.props
 
         return (
-            <div className='p-col-12 p-md-6'>
+            <div>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     <span>{label}</span>
                     {readOnly && 

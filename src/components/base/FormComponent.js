@@ -75,75 +75,85 @@ export default class FormComponent extends Component {
                                     switch(col.controller) 
                                     {
                                         case 'lookup':
-                                            return ( <SelectComponent 
-                                                index={i}
-                                                key={i}
-                                                options={options}
-                                                readOnly={mode === 'view'}
-                                                value={row[col.name]}
-                                                name={col.name}
-                                                label={col.label}
-                                                required={required}
-                                                placeholder={col.placeholder}
-                                                onInputChange={onInputChange}
-                                                onMouseDown={() => {onLookUp(col.rdf, col.name)}}
-                                            /> )
+                                            return ( <div className='p-col-12 p-md-6'>
+                                                <SelectComponent 
+                                                    index={i}
+                                                    key={i}
+                                                    options={options}
+                                                    readOnly={mode === 'view'}
+                                                    value={row[col.name]}
+                                                    name={col.name}
+                                                    label={col.label}
+                                                    required={required}
+                                                    placeholder={col.placeholder}
+                                                    onInputChange={onInputChange}
+                                                    onMouseDown={() => {onLookUp(col.rdf, col.name)}}
+                                                /> 
+                                            </div>)
 
                                         case 'password':
-                                            return ( <PasswordEditComponent 
-                                                index={i}
-                                                key={i}
-                                                value={row[col.name]}
-                                                name={col.name}
-                                                label={col.label}
-                                                required={required}
-                                                placeholder={col.placeholder}
-                                                onInputChange={onInputChange}
-                                            /> )
+                                            return ( <div className='p-col-12 p-md-6'>
+                                                <PasswordEditComponent 
+                                                    index={i}
+                                                    key={i}
+                                                    value={row[col.name]}
+                                                    name={col.name}
+                                                    label={col.label}
+                                                    required={required}
+                                                    placeholder={col.placeholder}
+                                                    onInputChange={onInputChange}
+                                                /> 
+                                            </div>)
 
                                         case 'image':
                                             imagesFields.push(col)
                                             break
 
                                         case 'number':
-                                            return ( <TextEditComponent 
-                                                index={i}
-                                                key={i}
-                                                readOnly={mode === 'view'}
-                                                value={row[col.name]}
-                                                name={col.name}
-                                                label={col.label}
-                                                type='number'
-                                                required={required}
-                                                placeholder={col.placeholder}
-                                                onInputChange={onInputChange}
-                                            /> )
+                                            return ( <div className='p-col-12 p-md-6'>
+                                                <TextEditComponent 
+                                                    index={i}
+                                                    key={i}
+                                                    readOnly={mode === 'view'}
+                                                    value={row[col.name]}
+                                                    name={col.name}
+                                                    label={col.label}
+                                                    type='number'
+                                                    required={required}
+                                                    placeholder={col.placeholder}
+                                                    onInputChange={onInputChange}
+                                                /> 
+                                            </div>)
 
                                         case 'text_edit':
-                                            return ( <TextEditComponent 
-                                                index={i}
-                                                key={i}
-                                                readOnly={mode === 'view'}
-                                                value={row[col.name]}
-                                                name={col.name}
-                                                required={required}
-                                                label={col.label}
-                                                placeholder={col.placeholder}
-                                                onInputChange={onInputChange}
-                                            /> )
+                                            return ( <div className='p-col-12 p-md-6'>
+                                                <TextEditComponent 
+                                                    index={i}
+                                                    key={i}
+                                                    readOnly={mode === 'view'}
+                                                    value={row[col.name]}
+                                                    name={col.name}
+                                                    required={required}
+                                                    label={col.label}
+                                                    placeholder={col.placeholder}
+                                                    onInputChange={onInputChange}
+                                                /> 
+                                            </div>)
 
                                         case 'long_text':
-                                            return ( <LongTextEditComponent 
-                                                index={i}
-                                                key={i}
-                                                readOnly={mode === 'view'}
-                                                value={row[col.name]}
-                                                name={col.name}
-                                                required={required}
-                                                label={col.label}
-                                                placeholder={col.placeholder}
-                                                onInputChange={onInputChange}
-                                            />)
+                                            return ( <div className='p-col-12 p-md-6'>
+                                                <LongTextEditComponent 
+                                                    index={i}
+                                                    key={i}
+                                                    readOnly={mode === 'view'}
+                                                    value={row[col.name]}
+                                                    name={col.name}
+                                                    required={required}
+                                                    label={col.label}
+                                                    placeholder={col.placeholder}
+                                                    onInputChange={onInputChange}
+                                                />
+                                            </div>)
 
                                         case 'wysiwyg':
                                             return ( <WysiwygComponent 
@@ -159,32 +169,36 @@ export default class FormComponent extends Component {
                                             />)
                                             
                                         case 'boolean':
-                                            return ( <BooleanComponent 
-                                                index={i}
-                                                key={i}
-                                                readOnly={mode === 'view'}
-                                                value={row[col.name]}
-                                                name={col.name}
-                                                label={col.label}
-                                                required={required}
-                                                placeholder={col.placeholder}
-                                                onInputChange={onInputChange}
-                                            />)
+                                            return ( <div className='p-col-12 p-md-6'>
+                                                <BooleanComponent 
+                                                    index={i}
+                                                    key={i}
+                                                    readOnly={mode === 'view'}
+                                                    value={row[col.name]}
+                                                    name={col.name}
+                                                    label={col.label}
+                                                    required={required}
+                                                    placeholder={col.placeholder}
+                                                    onInputChange={onInputChange}
+                                                />
+                                            </div>)
 
                                         case 'date':
-                                            return ( <DatePickerComponent
-                                                index={i}
-                                                key={i}
-                                                showTime={col.showTime}
-                                                jalali={col.showJalali}
-                                                readOnly={mode === 'view'}
-                                                value={row[col.name]}
-                                                name={col.name}
-                                                required={required}
-                                                label={col.label}
-                                                placeholder={col.placeholder}
-                                                onInputChange={onInputChange}
-                                            />)
+                                            return ( <div className='p-col-12 p-md-6'>
+                                                <DatePickerComponent
+                                                    index={i}
+                                                    key={i}
+                                                    showTime={col.showTime}
+                                                    jalali={col.showJalali}
+                                                    readOnly={mode === 'view'}
+                                                    value={row[col.name]}
+                                                    name={col.name}
+                                                    required={required}
+                                                    label={col.label}
+                                                    placeholder={col.placeholder}
+                                                    onInputChange={onInputChange}
+                                                />
+                                            </div>)
                                         default:
                                     }
 

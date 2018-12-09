@@ -31,6 +31,7 @@ class MainView extends Component {
             cols: [],
             table: {},
             row: {},
+            filterRow: {},
             pureRow: {},
 
             detailDetails: [],
@@ -63,7 +64,8 @@ class MainView extends Component {
             dataLoading: false,
             firstRow: 0,
             numRows: 9,
-            totalRows: 0
+            totalRows: 0,
+            filter: {}
         }
 
         this.onHideDialog = this.onHideDialog.bind(this)
@@ -77,6 +79,8 @@ class MainView extends Component {
         
         this.onLookUp = this.onLookUp.bind(this)
         this.refreshTab = this.refreshTab.bind(this)
+
+        this.onFilterInputChange = this.onFilterInputChange.bind(this)
 
         this.onInputChange = this.onInputChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)
@@ -154,6 +158,13 @@ class MainView extends Component {
         this.setState(newState) 
     }
 
+    onFilterInputChange(data, name) {
+        let filterRow = {...this.state.filterRow}
+        console.log(filterRow, data, name)
+        filterRow[name] = data
+        this.setState({ filterRow })
+    }
+
     onInputChange(data, name) {
         let row = {...this.state.row}
         row[name] = data
@@ -202,10 +213,12 @@ class MainView extends Component {
         const activeDetailIndex = e.index
         const detailTable = details[activeDetailIndex]
         let row = {}
-        cols.map( (item, index) => row[item.name] = '' )
+        let filterRow = {}
+        cols.map( (item, index) => filterRow[item.name] = row[item.name] = '' )
         this.setState({ 
             activeDetailIndex,
             row, 
+            filterRow,
             isSelect: false
         })
         history.push(match.url + "/" + detailTable.url)
@@ -644,6 +657,8 @@ class MainView extends Component {
             numRows,
             totalRows,
 
+            filterRow,
+
         } = this.state
 
         const { match } = this.props
@@ -744,12 +759,16 @@ class MainView extends Component {
                                         cols={cols}
                                         table={table}
                                         row={row}
+                                        filterRow={filterRow}
                                         onSelectionChange={this.onSelectionChange}
                                         dataLoading={dataLoading}
                                         firstRow={firstRow}
                                         numRows={numRows}
                                         totalRows={totalRows}
                                         onLoadData={this.onLoadData}
+                                        onLookUp={this.onLookUp}
+                                        onFilterInputChange={this.onFilterInputChange}
+                                        options={options}
                                     />
                                 </div>
                             }

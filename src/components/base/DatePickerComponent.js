@@ -41,7 +41,7 @@ export default class DatePickerComponent extends Component {
         let JalaliFormat = showTime ? 'jYYYY/jMM/jDD HH:mm:00' : 'jYYYY/jMM/jDD'
 
         return (
-            <div className='p-col-12 p-md-6' style={{textAlign:'right'}}>
+            <div style={{textAlign:'right'}}>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     {label} 
                     {readOnly && 

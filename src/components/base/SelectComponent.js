@@ -15,10 +15,11 @@ export default class SelectComponent extends Component {
             onInputChange,
             onMouseDown,
             readOnly,
+            className
         } = this.props
 
         return (
-            <div className='p-col-12 p-md-6'>
+            <div>
                 <label className='lable' htmlFor={`lbl-${index}`}>
                     <span> {label} </span>
                     {readOnly && 
@@ -36,6 +37,7 @@ export default class SelectComponent extends Component {
                         onMouseDown={onMouseDown}
                         onChange={(e) => onInputChange(e.value, name)}
                         style={{width:'100%'}}
+                        className={className}
                     />
                 }
             </div>

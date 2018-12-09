@@ -16,7 +16,7 @@ export default class LongTextEditComponent extends Component {
         } = this.props
 
         return (
-            <div className='p-col-12 p-md-12'>
+            <div>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     <span> {label} </span>
                     {readOnly && 
