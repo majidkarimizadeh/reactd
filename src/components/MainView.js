@@ -8,15 +8,15 @@ import { RowService } from '../service/RowService'
 import { LookUpService } from '../service/LookUpService'
 import { TabView,TabPanel } from 'primereact/tabview'
 import { Growl } from 'primereact/growl'
-import { Messages } from 'primereact/messages';
+import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
 import { Button } from 'primereact/button'
 import { hasCustomFun } from './custom'
 import Loader from 'react-loader-spinner'
 import history from '../utils/history'
-import $ from 'jquery';
-window.$ = $;
+import $ from 'jquery'
+window.$ = $
 
 class MainView extends Component {
 
@@ -58,8 +58,12 @@ class MainView extends Component {
                 // }
             ],
             customComponent: null,
-            err: null
+            err: null,
 
+            dataLoading: false,
+            firstRow: 0,
+            numRows: 9,
+            totalRows: 0
         }
 
         this.onHideDialog = this.onHideDialog.bind(this)
@@ -77,6 +81,7 @@ class MainView extends Component {
         this.onInputChange = this.onInputChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)
         this.onCustomChange = this.onCustomChange.bind(this)
+        this.onLoadData = this.onLoadData.bind(this)
 
         this.isSelectedRow = this.isSelectedRow.bind(this)
         this.tableService = new TableService()
@@ -155,6 +160,29 @@ class MainView extends Component {
         this.setState({ row })
     }
 
+    onLoadData(tableUrl, first) {
+        this.setState({ dataLoading: true })
+        console.log(first)
+        setTimeout(() => {
+            const startIndex = first
+            const limitIndex = this.state.numRows
+        
+            this.tableService.getTableData(tableUrl, startIndex, limitIndex)
+                .then( res => {
+                    this.setState({
+                        firstRow: startIndex,
+                        data: res.data,
+                        dataLoading: false
+                    })    
+                })
+                .catch( err => {
+                    this.setState({ dataLoading: false })
+                })
+
+        }, 250)
+
+    }
+
     isSelectedRow() {
         let { isSelect } = this.state
         if(!isSelect) {
@@ -197,14 +225,17 @@ class MainView extends Component {
                 rowPrimary = row[table.pk]
             }
 
-            this.tableService.getTableInfo(detailTable.url, rowPrimary, foreignKey.key)
-                .then( ({ details, data, cols, table }) => { 
+            this.tableService.getTableInfo(detailTable.url)
+                .then( ({ details, cols, table, totalRows }) => { 
                     this.setState({ 
                         detailDetails: details,
-                        detailData: data,
                         detailCols: cols,
                         detailTable: table,
+                        totalRows: totalRows
                     })
+                    this.tableService.getTableData(detailTable.url, 0, 9, rowPrimary, foreignKey.key)
+                        .then( res => this.setState({ detailData: res.data }))
+                        .catch(err => this.setState({ err: err.response })  ) 
                 })
                 .catch(err => this.setState({ err: err.response })  ) 
         }
@@ -435,10 +466,13 @@ class MainView extends Component {
     getTableInfo() {
         let tableUrl = this.props.match.params.table
         this.tableService.getTableInfo(tableUrl)
-            .then(({data, table, cols, details, perm })  =>  {
+            .then(({ table, cols, details, perm, totalRows })  =>  {
                 let row = {}
                 cols.map( (item, index) => row[item.name] = '' )
-                this.setState({ cols, table, data, details, row, perm })
+                this.setState({ cols, table, details, row, perm, totalRows })
+                this.tableService.getTableData(tableUrl)
+                    .then( res => this.setState({ data: res.data }))
+                    .catch(err => this.setState({ err: err.response })  ) 
             })
             .catch(err => this.setState({ err: err.response })  ) 
     }
@@ -605,6 +639,11 @@ class MainView extends Component {
 
             perm,
 
+            dataLoading,
+            firstRow,
+            numRows,
+            totalRows,
+
         } = this.state
 
         const { match } = this.props
@@ -706,6 +745,11 @@ class MainView extends Component {
                                         table={table}
                                         row={row}
                                         onSelectionChange={this.onSelectionChange}
+                                        dataLoading={dataLoading}
+                                        firstRow={firstRow}
+                                        numRows={numRows}
+                                        totalRows={totalRows}
+                                        onLoadData={this.onLoadData}
                                     />
                                 </div>
                             }

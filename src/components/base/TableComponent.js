@@ -57,9 +57,15 @@ export default class TableComponent extends Component {
             table,
             row,
             onSelectionChange,
+            dataLoading,
+            firstRow,
+            numRows,
+            totalRows,
+            onLoadData
         } = this.props
 
-        let fields = table['list']
+        const fields = table.list
+        const tableUrl = table.url
 
 		return (
 			<DataTable 
@@ -68,10 +74,16 @@ export default class TableComponent extends Component {
                 paginatorPosition="bottom"
                 selectionMode="single"
                 emptyMessage="اطلاعاتی وجود ندارد"
-                paginator={true}
-                rows={10}
                 selection={row} 
                 onSelectionChange={onSelectionChange}
+
+                paginator={true}
+                rows={numRows}
+                totalRecords={totalRows}
+                lazy={true}
+                first={firstRow}
+                loading={dataLoading}
+                onPage={(e) => onLoadData(tableUrl, e.first)}
             >
                 {!!fields && fields.map( (item, i) => {
                     let col = cols.find(function(c) {
