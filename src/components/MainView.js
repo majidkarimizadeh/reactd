@@ -65,7 +65,8 @@ class MainView extends Component {
             firstRow: 0,
             numRows: 9,
             totalRows: 0,
-            filter: {}
+            filter: {},
+            showFilter: false
         }
 
         this.onHideDialog = this.onHideDialog.bind(this)
@@ -81,6 +82,7 @@ class MainView extends Component {
         this.refreshTab = this.refreshTab.bind(this)
 
         this.onFilterInputChange = this.onFilterInputChange.bind(this)
+        this.onFilterVisibilityChange = this.onFilterVisibilityChange.bind(this)
 
         this.onInputChange = this.onInputChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)
@@ -152,6 +154,12 @@ class MainView extends Component {
             window.scrollTo(0, 0)
             this.getTableInfo()
         }
+    }
+
+    onFilterVisibilityChange() {
+        this.setState({
+            showFilter: !this.state.showFilter
+        }) 
     }
 
     onCustomChange( newState ) {
@@ -658,6 +666,7 @@ class MainView extends Component {
             totalRows,
 
             filterRow,
+            showFilter
 
         } = this.state
 
@@ -749,6 +758,13 @@ class MainView extends Component {
                                                     className="p-button-secondary toolbar-btn"
                                                 />
                                             }
+                                            {perm.select &&
+                                                <Button 
+                                                    onClick={() => this.onFilterVisibilityChange() }
+                                                    icon="pi pi-filter"
+                                                    className="p-button-secondary toolbar-btn"
+                                                />
+                                            }
                                             {hasCustomFun(table.name, this.onCustomChange, this.state, this.growl)}
                                         </div>
                                         <h1 className="card-heading-caption">{table.label}</h1>
@@ -769,6 +785,7 @@ class MainView extends Component {
                                         onLookUp={this.onLookUp}
                                         onFilterInputChange={this.onFilterInputChange}
                                         options={options}
+                                        showFilter={showFilter}
                                     />
                                 </div>
                             }

@@ -126,7 +126,8 @@ export default class TableComponent extends Component {
             firstRow,
             numRows,
             totalRows,
-            onLoadData
+            onLoadData,
+            showFilter
         } = this.props
 
         const fields = table.list
@@ -156,47 +157,47 @@ export default class TableComponent extends Component {
                         return c.no === item
                     })
                     let body = null
-                    let filter = false
                     let filterElement = null
-                    
                     if(col.controller === 'number') 
                     {
                         filterElement = this.textFilterTemplate(col.name, 'number')
-                        filter = true
                     } 
                     else if(col.controller === 'date') 
                     {
                         body = this.dateTemplate
-                        filterElement = this.dateFilterTemplate(col.showTime, col.showJalali, col.name)
-                        filter = true
+                        showFilter 
+                        ? filterElement = this.dateFilterTemplate(col.showTime, col.showJalali, col.name)
+                        : filterElement = null
+
                     } 
                     else if(col.controller === 'text_edit') 
                     {
                         filterElement = this.textFilterTemplate(col.name)
-                        filter = true
                     } 
                     else if(col.controller === 'image') 
                     {
                         body = this.imageTemplate
-                        filterElement = this.imageFilterTemplate(col.name)
-                        filter = true
+                        showFilter 
+                        ? filterElement = this.imageFilterTemplate(col.name)
+                        : filterElement = null
                     } 
                     else if(col.controller === 'boolean') 
                     {
                         body = this.booleanTemplate
-                        filterElement = this.booleanFilterTemplate(col.name)
-                        filter = true
+                        showFilter
+                        ? filterElement = this.booleanFilterTemplate(col.name)
+                        : filterElement = null
                     } 
                     else if(col.controller === 'lookup') 
                     {
                         body = this.lookUpTemplate
-                        filterElement = this.lookUpFilterTemplate(col.rdf, col.name)
-                        filter = true
+                        showFilter
+                        ? filterElement = this.lookUpFilterTemplate(col.rdf, col.name)
+                        : filterElement = null
                     }
                     else if(col.controller === 'wysiwyg') 
                     {
                         body = this.wysiwygTemplate
-                        filter = true
                     }
                     return (
                         <Column 
@@ -204,8 +205,8 @@ export default class TableComponent extends Component {
                             key={i} 
                             body={body ? (rowData, column) => body(rowData, column, col, this) : null}
                             header={col.label}
-                            sortable={true}
-                            filter={filter}
+                            sortable={!showFilter}
+                            filter={showFilter}
                             filterElement={filterElement}
                             className="table-column"
                         />
