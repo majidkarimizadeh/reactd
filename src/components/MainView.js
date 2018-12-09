@@ -746,42 +746,42 @@ class MainView extends Component {
                                             {perm.delete && 
                                                 <Button 
                                                     onClick={() => this.onShowAlertDialog('delete')}
-                                                    icon="pi pi-trash"
+                                                    icon="fa fa-trash"
                                                     className="p-button-secondary toolbar-btn"
                                                 />
                                             }
                                             {perm.select &&
                                                 <Button 
                                                     onClick={() => this.onShowDialog('view')}
-                                                    icon="pi pi-file"
+                                                    icon="fa fa-eye"
                                                     className="p-button-secondary toolbar-btn"
                                                 />
                                             }
                                             {perm.update &&
                                                 <Button
                                                     onClick={() => this.onShowDialog('edit')}
-                                                    icon="pi pi-pencil"
+                                                    icon="fa fa-pencil"
                                                     className="p-button-secondary toolbar-btn"
                                                 />
                                             }
                                             {perm.insert &&
                                                 <Button 
                                                     onClick={() => this.onShowDialog('create')}
-                                                    icon="pi pi-plus"
+                                                    icon="fa fa-plus"
                                                     className="p-button-secondary toolbar-btn"
                                                 />
                                             }
                                             {perm.select &&
                                                 <Button 
                                                     onClick={() => this.onFilterVisibilityChange() }
-                                                    icon="pi pi-filter"
+                                                    icon="fa fa-filter"
                                                     className="p-button-secondary toolbar-btn"
                                                 />
                                             }
                                             {perm.select &&
                                                 <Button 
                                                     onClick={() => this.onRefreshTableData() }
-                                                    icon="pi pi-refresh"
+                                                    icon="fa fa-refresh"
                                                     className="p-button-secondary toolbar-btn"
                                                 />
                                             }
