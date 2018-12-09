@@ -81,6 +81,8 @@ class MainView extends Component {
         this.onLookUp = this.onLookUp.bind(this)
         this.refreshTab = this.refreshTab.bind(this)
 
+        this.onRefreshTableData = this.onRefreshTableData.bind(this)
+
         this.onFilterInputChange = this.onFilterInputChange.bind(this)
         this.onFilterVisibilityChange = this.onFilterVisibilityChange.bind(this)
 
@@ -157,8 +159,15 @@ class MainView extends Component {
     }
 
     onFilterVisibilityChange() {
+        const { cols, showFilter } = this.state
+        let filterRow = {}
+        if(!showFilter)
+        {
+            cols.map( (item, index) => filterRow[item.name] = '' )
+        }
         this.setState({
-            showFilter: !this.state.showFilter
+            showFilter: !showFilter,
+            filterRow
         }) 
     }
 
@@ -199,7 +208,11 @@ class MainView extends Component {
                 })
 
         }, 250)
+    }
 
+    onRefreshTableData() {
+        const { table, firstRow } = this.state
+        this.onLoadData(table.url, firstRow)
     }
 
     isSelectedRow() {
@@ -762,6 +775,13 @@ class MainView extends Component {
                                                 <Button 
                                                     onClick={() => this.onFilterVisibilityChange() }
                                                     icon="pi pi-filter"
+                                                    className="p-button-secondary toolbar-btn"
+                                                />
+                                            }
+                                            {perm.select &&
+                                                <Button 
+                                                    onClick={() => this.onRefreshTableData() }
+                                                    icon="pi pi-refresh"
                                                     className="p-button-secondary toolbar-btn"
                                                 />
                                             }
