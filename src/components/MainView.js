@@ -13,6 +13,7 @@ import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
 import { Button } from 'primereact/button'
 import { hasCustomFun } from './custom'
+import { EQ } from '../utils/config'
 import Loader from 'react-loader-spinner'
 import history from '../utils/history'
 import $ from 'jquery'
@@ -251,12 +252,19 @@ class MainView extends Component {
         if(activeDetailIndex !== -1) {
 
             const detailTable = details[activeDetailIndex]
-            let foreignKey = null
-            let rowPrimary = null
+            let conditions = [];
 
             if(row && detailTable && detailTable.children) {
-                foreignKey = detailTable.children.find( (item) => item.table === table.name)
-                rowPrimary = row[table.pk]
+                const foreignKey = detailTable.children.find( (item) => item.table === table.name)
+                const rowPrimary = row[table.pk]
+                conditions = [{
+                    logic: 'AND',
+                    cluse: [{
+                        key: foreignKey.key,
+                        op: EQ,
+                        value: rowPrimary
+                    }]
+                }]
             }
 
             this.tableService.getTableInfo(detailTable.url)
@@ -267,7 +275,7 @@ class MainView extends Component {
                         detailTable: table,
                         totalRows: totalRows
                     })
-                    this.tableService.getTableData(detailTable.url, 0, 9, rowPrimary, foreignKey.key)
+                    this.tableService.getTableData(detailTable.url, 0, 9, conditions)
                         .then( res => this.setState({ detailData: res.data }))
                         .catch(err => this.setState({ err: err.response })  ) 
                 })

@@ -17,6 +17,7 @@ export class TableService {
         Service.setToken(apiObject)
         return axios.post(`${API_URL}/select-table/`, apiObject)
                 .then(res => {
+                    console.log(res)
                     return {
                         details: detailParser(res.data.details),
                         data: dataParser(res.data.data),
@@ -28,14 +29,13 @@ export class TableService {
                 });
     }
 
-    getTableData(url, startIndex = 0, limitIndex = 9, primary = '', children = '') 
+    getTableData(url, startIndex = 0, limitIndex = 9, conditions = []) 
     {
         let apiObject = new FormData();
         apiObject.append('url', url)
         apiObject.append('start', startIndex)
         apiObject.append('limit', limitIndex)
-        apiObject.append('primary', primary)
-        apiObject.append('children', children)
+        apiObject.append('conditions', JSON.stringify(conditions))
         Service.setToken(apiObject)
         return axios.post(`${API_URL}/select-data/`, apiObject)
                 .then(res => {
