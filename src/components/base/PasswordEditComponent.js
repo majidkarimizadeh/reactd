@@ -11,22 +11,28 @@ export default class PasswordEditComponent extends Component {
             index, 
             name, 
             value, 
+            readOnly,
             onInputChange,
         } = this.props
 
         return (
             <div>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
-                    {label}
+                    <span>{label}</span>
+                    {readOnly && 
+                        <span> : ---</span>
+                    }
                 </label>
-                    <Password 
-                        value={value} 
-                        name={name} 
-                        id={`lbl-${index}`}
-                        placeholder={placeholder}
-                        onChange={(e) => onInputChange(e.target.value, name)}
-                        className='p-col-12 p-md-12'
-                    />
+                    {!readOnly &&
+                        <Password 
+                            value={value} 
+                            name={name} 
+                            id={`lbl-${index}`}
+                            placeholder={placeholder}
+                            onChange={(e) => onInputChange(e.target.value, name)}
+                            className='p-col-12 p-md-12'
+                        />
+                    }
             </div>
         )
     }

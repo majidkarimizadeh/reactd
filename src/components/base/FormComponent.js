@@ -97,6 +97,7 @@ export default class FormComponent extends Component {
                                                     index={i}
                                                     key={i}
                                                     value={row[col.name]}
+                                                    readOnly={mode === 'view'}
                                                     name={col.name}
                                                     label={col.label}
                                                     required={required}
