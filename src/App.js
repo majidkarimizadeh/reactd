@@ -23,6 +23,7 @@ class App extends Component {
         super(props)
         this.state = {
             menu: [],
+            user: {},
             err: null,
             layoutMode: 'static',
             layoutColorMode: 'dark',
@@ -40,7 +41,7 @@ class App extends Component {
 
     componentDidMount() {
         this.menuService.getMenuItem()
-        .then(menu => this.setState({ menu }))
+        .then(res => this.setState({ menu: res.menu, user: res.user }))
         .catch(err => this.setState({ err: err.response })  ) 
     }
 
@@ -147,7 +148,7 @@ class App extends Component {
                             <div className="layout-logo">
                                 <img alt="Logo" src={logo} style={{width:'50%'}} />
                             </div>
-                            <AppInlineProfile />
+                            <AppInlineProfile user={this.state.user} />
                             <AppMenu model={this.state.menu} onMenuItemClick={this.onMenuItemClick} />
                         </div>
                     </ScrollPanel>

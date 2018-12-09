@@ -17,6 +17,7 @@ export class AppInlineProfile extends Component {
     }
 
     render() {
+        const { user } = this.props
         return  (
             <div className="profile">
                 <div>
@@ -24,7 +25,7 @@ export class AppInlineProfile extends Component {
                 </div>
                 <a className="profile-link" onClick={this.onClick}>
                     <span className="username">
-                        مجید کریمی زاده
+                        {user.name}
                     </span>
                     <i className="pi pi-fw pi-cog"/>
                 </a>

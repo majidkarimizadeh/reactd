@@ -2,6 +2,7 @@ import axios from 'axios'
 import history from '../utils/history'
 import Service from './Service'
 import { API_URL } from '../utils/config'
+import { userParser } from '../utils/parser'
 
 export class MenuService {
     
@@ -10,7 +11,10 @@ export class MenuService {
         Service.setToken(apiObject)
         return axios.post(`${API_URL}/menubar`, apiObject)
                 .then(res => {
-                    return this.generateMenuItem(res.data)
+                    return {
+                        menu: this.generateMenuItem(res.data.menu),
+                        user: userParser(res.data.user)
+                    }
                 })
     }
 

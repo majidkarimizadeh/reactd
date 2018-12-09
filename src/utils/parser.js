@@ -3,6 +3,12 @@ import { SITE_URL } from '../utils/config'
 import * as JalaliMoment from 'moment-jalaali'
 import moment from 'moment'
 
+export function userParser(user) {
+	return {
+		name: `${user.first_name} ${user.last_name}`
+	}
+}
+
 export function colParser(cols) {
 	if(!cols) return [];
 
