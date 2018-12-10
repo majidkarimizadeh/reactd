@@ -279,7 +279,8 @@ class MainView extends Component {
             const detailTable = details[activeDetailIndex]
             let conditions = [];
 
-            if(row && detailTable && detailTable.children) {
+            if(row && detailTable && detailTable.children) 
+            {
                 const foreignKey = detailTable.children.find( (item) => item.table === table.name)
                 const rowPrimary = row[table.pk]
                 conditions = [{
@@ -290,28 +291,29 @@ class MainView extends Component {
                         value: rowPrimary
                     }]
                 }]
+
+                this.tableService.getTableInfo(detailTable.url)
+                    .then( ({ details, cols, table, totalRows }) => { 
+                        this.setState({ 
+                            detailDetails: details,
+                            detailCols: cols,
+                            detailTable: table,
+                            totalRows: totalRows
+                        })
+                        this.tableService.getTableData(detailTable.url, 0, 9, conditions)
+                            .then( res => this.setState({ detailData: res.data }))
+                            .catch(err => this.setState({ err: err.response })  ) 
+                    })
+                    .catch(err => this.setState({ err: err.response })  ) 
             }
 
-            this.tableService.getTableInfo(detailTable.url)
-                .then( ({ details, cols, table, totalRows }) => { 
-                    this.setState({ 
-                        detailDetails: details,
-                        detailCols: cols,
-                        detailTable: table,
-                        totalRows: totalRows
-                    })
-                    this.tableService.getTableData(detailTable.url, 0, 9, conditions)
-                        .then( res => this.setState({ detailData: res.data }))
-                        .catch(err => this.setState({ err: err.response })  ) 
-                })
-                .catch(err => this.setState({ err: err.response })  ) 
         }
     }
 
     onLookUp(rdf, name) {
+        let { options } = this.state
         this.lookUpService.getLookUpByRdf(rdf)
             .then( opts => {
-                let options = this.state.options
                 options[name] = opts
                 this.setState({ options }) 
             })
