@@ -14,6 +14,7 @@ import { validationErrorParser } from '../utils/parser'
 import { Button } from 'primereact/button'
 import { hasCustomFun } from './custom'
 import { EQ } from '../utils/config'
+import QueryBuilder from '../utils/queryBuilder'
 import Loader from 'react-loader-spinner'
 import history from '../utils/history'
 import $ from 'jquery'
@@ -96,6 +97,7 @@ class MainView extends Component {
         this.tableService = new TableService()
         this.rowService = new RowService()
         this.lookUpService = new LookUpService()
+        this.queryBuilder = new QueryBuilder()
 
         this.onSelectFile = this.onSelectFile.bind(this)
         this.onCropRevert = this.onCropRevert.bind(this)
@@ -177,10 +179,29 @@ class MainView extends Component {
     }
 
     onFilterInputChange(data, name) {
-        let filterRow = {...this.state.filterRow}
-        console.log(filterRow, data, name)
-        filterRow[name] = data
-        this.setState({ filterRow })
+        const { filterRow, table, firstRow, numRows } = this.state
+        let filter = {...filterRow}
+        filter[name] = data
+        this.setState({ 
+            filterRow:filter,
+            dataLoading: true
+        })
+        
+        let conditions = this.queryBuilder.getCondition(filter);
+        this.tableService.getTableData(table.url, 0, numRows, conditions)
+            .then( res => {
+                this.setState({ 
+                    data: res.data,
+                    totalRows: res.totalRows,
+                    dataLoading: false
+                })   
+            })
+            .catch(err => {
+                this.setState({ 
+                    err: err.response,
+                    dataLoading: false
+                })
+            }) 
     }
 
     onInputChange(data, name) {
@@ -191,7 +212,6 @@ class MainView extends Component {
 
     onLoadData(tableUrl, first) {
         this.setState({ dataLoading: true })
-        console.log(first)
         setTimeout(() => {
             const startIndex = first
             const limitIndex = this.state.numRows

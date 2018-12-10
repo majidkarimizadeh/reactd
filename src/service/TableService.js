@@ -17,7 +17,6 @@ export class TableService {
         Service.setToken(apiObject)
         return axios.post(`${API_URL}/select-table/`, apiObject)
                 .then(res => {
-                    console.log(res)
                     return {
                         details: detailParser(res.data.details),
                         data: dataParser(res.data.data),
@@ -41,6 +40,7 @@ export class TableService {
                 .then(res => {
                     return {
                         data: dataParser(res.data.data),
+                        totalRows: res.data.totalRows
                     }    
                 });
     }
