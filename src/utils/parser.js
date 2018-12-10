@@ -64,7 +64,7 @@ export function getJalDateByGreDate(date, hasTime = false) {
 	if(!date) {
 		return date
 	}
-	let format = 'jYYYY/jM/jD';
+	let format = 'jYYYY-jMM-jDD';
 	if(hasTime) {
 		format += ' HH:mm:ss'
 	}
@@ -72,7 +72,7 @@ export function getJalDateByGreDate(date, hasTime = false) {
 }
 
 export function getGreDateByTimestamp(timestamp, hasTime = false) {
-	let format = 'YYYY/M/D';
+	let format = 'YYYY-MM-DD';
 	if(hasTime) {
 		format += ' HH:mm:ss'
 	}
@@ -91,7 +91,7 @@ export function getGMTByGreDate(date) {
 }
 
 export function getFormatedGreDate(date, hasTime = false) {
-	let format = 'YYYY/M/D';
+	let format = 'YYYY-MM-DD';
 	if(hasTime) {
 		format += ' HH:mm:ss'
 	}

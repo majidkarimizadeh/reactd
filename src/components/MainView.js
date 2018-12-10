@@ -180,13 +180,15 @@ class MainView extends Component {
 
     onFilterInputChange(data, name) {
         const { filterRow, table, firstRow, numRows } = this.state
+
+        console.log(data, name)
         let filter = {...filterRow}
         filter[name] = data
         this.setState({ 
             filterRow:filter,
             dataLoading: true
         })
-        
+
         let conditions = this.queryBuilder.getCondition(filter);
         this.tableService.getTableData(table.url, 0, numRows, conditions)
             .then( res => {

@@ -38,7 +38,7 @@ export default class DatePickerComponent extends Component {
         } = this.props
 
         let JalaliComponent = showTime ? DateTimePicker : DatePicker
-        let JalaliFormat = showTime ? 'jYYYY/jMM/jDD HH:mm:00' : 'jYYYY/jMM/jDD'
+        let JalaliFormat = showTime ? 'jYYYY-jMM-jDD HH:mm:00' : 'jYYYY-jMM-jDD'
 
         return (
             <div style={{textAlign:'right'}}>
