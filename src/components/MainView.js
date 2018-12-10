@@ -234,7 +234,10 @@ class MainView extends Component {
     }
 
     onRefreshTableData() {
-        const { table, firstRow } = this.state
+        const { table, firstRow, cols } = this.state
+        let filterRow = {}
+        cols.map( (item, index) => filterRow[item.name] = '' )
+        this.setState({ filterRow }) 
         this.onLoadData(table.url, firstRow)
     }
 
