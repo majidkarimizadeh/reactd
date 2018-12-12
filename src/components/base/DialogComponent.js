@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 
-export default class DataFormComponent extends Component {
+export default class DialogComponent extends Component {
 
 	render() {
 

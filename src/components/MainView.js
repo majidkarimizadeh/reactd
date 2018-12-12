@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
-import AlertDialogComponent from './base/AlertDialogComponent'
+import DialogComponent from './base/DialogComponent'
 import TableComponent from './base/TableComponent'
 import FormComponent from './base/FormComponent'
 import { TableService } from '../service/TableService'
@@ -728,7 +728,7 @@ class MainView extends Component {
             <div>
                 <Growl ref={(el) => this.growl = el}></Growl>
                 <Messages className='validation-error' ref={(el) => this.messages = el}></Messages>
-                <AlertDialogComponent
+                <DialogComponent
                     onHideAlertDialog={this.onHideAlertDialog}
                     onCancel={this.onHideAlertDialog}
                     onSubmit={this.onSubmitAlertDialog}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import DatePickerComponent from './DatePickerComponent'
 import SelectComponent from './SelectComponent'
-import TextEditComponent from './TextEditComponent'
+import TextComponent from './TextComponent'
 import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
@@ -22,7 +22,7 @@ export default class TableComponent extends Component {
 
     textFilterTemplate(name, type = null) {
         const { onFilterInputChange, filterRow } = this.props
-        return <TextEditComponent 
+        return <TextComponent 
                     value={filterRow[name]}
                     name={name}
                     type={type}

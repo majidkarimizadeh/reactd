@@ -1,33 +1,40 @@
 import React, { Component } from 'react'
-import { InputTextarea } from 'primereact/inputtextarea'
+import { InputText } from 'primereact/inputtext'
 
-export default class LongTextEditComponent extends Component {
+export default class TextComponent extends Component {
 
     render() {
 
-        const { 
+        const {
             label, 
-            placeholder, 
-            index, 
-            name, 
-            value, 
+            placeholder,
+            index,
+            name,
+            value,
             onInputChange,
+            required,
             readOnly,
+            type,
         } = this.props
 
         return (
             <div>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
-                    <span> {label} </span>
+                    <span> 
+                        {label}
+                        {(!readOnly && required) &&
+                            <span className='required'>(این فیلد اجباری است)</span>
+                        }
+                    </span>
                     {readOnly && 
                         <span>{value ? ' : ' + value : ' : ---'}</span>
                     }
                 </label>
                 {!readOnly &&
-                    <InputTextarea 
+                    <InputText 
                         value={value} 
                         name={name} 
-                        rows={3}
+                        type={type}
                         id={`lbl-${index}`}
                         placeholder={placeholder}
                         onChange={(e) => onInputChange(e.target.value, name)}
@@ -37,4 +44,8 @@ export default class LongTextEditComponent extends Component {
             </div>
         )
     }
+}
+
+TextComponent.defaultProps = {
+    type: 'text'
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import TreeComponent from '../../base/TreeComponent'
-import LongTextEditComponent from '../../base/LongTextEditComponent'
-import BooleanComponent from '../../base/BooleanComponent'
+import TextAreaComponent from '../../base/TextAreaComponent'
+import SwitchComponent from '../../base/SwitchComponent'
 import { Button } from 'primereact/button'
 import { ScrollPanel } from 'primereact/components/scrollpanel/ScrollPanel'
 import { CustomService } from '../../../service/CustomService'
@@ -161,7 +161,7 @@ export class RoleComponent extends Component {
                                     </h2>
                                     <div className="p-grid">
                                         <div className="p-col-12 p-md-3">
-                                            <BooleanComponent 
+                                            <SwitchComponent 
                                                 value={select}
                                                 name='select'
                                                 onInputChange={this.onInputChange}
@@ -169,7 +169,7 @@ export class RoleComponent extends Component {
                                             />
                                         </div>
                                         <div className="p-col-12 p-md-3">
-                                            <BooleanComponent 
+                                            <SwitchComponent 
                                                 value={insert}
                                                 name='insert'
                                                 onInputChange={this.onInputChange}
@@ -177,7 +177,7 @@ export class RoleComponent extends Component {
                                             />
                                         </div>
                                         <div className="p-col-12 p-md-3">
-                                            <BooleanComponent 
+                                            <SwitchComponent 
                                                 value={update}
                                                 name='update'
                                                 onInputChange={this.onInputChange}
@@ -185,7 +185,7 @@ export class RoleComponent extends Component {
                                             />
                                         </div>
                                         <div className="p-col-12 p-md-3">
-                                            <BooleanComponent 
+                                            <SwitchComponent 
                                                 value={del}
                                                 name='del'
                                                 onInputChange={this.onInputChange}
@@ -193,7 +193,7 @@ export class RoleComponent extends Component {
                                             />
                                         </div>
                                         <div className="p-col-12 p-md-12">
-                                            <LongTextEditComponent
+                                            <TextAreaComponent
                                                 onInputChange={this.onInputChange}
                                                 name='condition'
                                                 value={condition}

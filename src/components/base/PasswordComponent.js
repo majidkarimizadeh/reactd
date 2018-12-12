@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Password } from 'primereact/password'
+import { Password as PrimePassword } from 'primereact/password'
 
-export default class PasswordEditComponent extends Component {
+export default class PasswordComponent extends Component {
 
     render() {
 
@@ -24,7 +24,7 @@ export default class PasswordEditComponent extends Component {
                     }
                 </label>
                     {!readOnly &&
-                        <Password 
+                        <PrimePassword 
                             value={value} 
                             name={name} 
                             id={`lbl-${index}`}

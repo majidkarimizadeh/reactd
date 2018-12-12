@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { InputSwitch } from 'primereact/inputswitch'
 import { boolParser } from '../../utils/parser'
 
-export default class BooleanComponent extends Component {
+export default class SwitchComponent extends Component {
 
     render() {
 

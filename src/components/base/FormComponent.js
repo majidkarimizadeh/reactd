@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import TreeComponent from './TreeComponent'
 import SelectComponent from './SelectComponent'
-import TextEditComponent from './TextEditComponent'
+import TextComponent from './TextComponent'
 import DatePickerComponent from './DatePickerComponent'
-import LongTextEditComponent from './LongTextEditComponent'
+import TextAreaComponent from './TextAreaComponent'
 import WysiwygComponent from './WysiwygComponent'
-import PasswordEditComponent from './PasswordEditComponent'
+import PasswordComponent from './PasswordComponent'
 import ImageComponent from './ImageComponent'
-import BooleanComponent from './BooleanComponent'
+import SwitchComponent from './SwitchComponent'
+import GeoPointComponent from './GeoPointComponent'
 import { imageParser } from '../../utils/parser'
 import { TabView, TabPanel } from 'primereact/tabview'
 import { Button } from 'primereact/button'
@@ -75,10 +76,9 @@ export default class FormComponent extends Component {
                                     switch(col.controller) 
                                     {
                                         case 'lookup':
-                                            return ( <div className='p-col-12 p-md-6'>
+                                            return ( <div key={i} className='p-col-12 p-md-6'>
                                                 <SelectComponent 
                                                     index={i}
-                                                    key={i}
                                                     options={options}
                                                     readOnly={mode === 'view'}
                                                     value={row[col.name]}
@@ -92,10 +92,9 @@ export default class FormComponent extends Component {
                                             </div>)
 
                                         case 'password':
-                                            return ( <div className='p-col-12 p-md-6'>
-                                                <PasswordEditComponent 
+                                            return ( <div key={i} className='p-col-12 p-md-6'>
+                                                <PasswordComponent 
                                                     index={i}
-                                                    key={i}
                                                     value={row[col.name]}
                                                     readOnly={mode === 'view'}
                                                     name={col.name}
@@ -111,10 +110,9 @@ export default class FormComponent extends Component {
                                             break
 
                                         case 'number':
-                                            return ( <div className='p-col-12 p-md-6'>
-                                                <TextEditComponent 
+                                            return ( <div key={i} className='p-col-12 p-md-6'>
+                                                <TextComponent 
                                                     index={i}
-                                                    key={i}
                                                     readOnly={mode === 'view'}
                                                     value={row[col.name]}
                                                     name={col.name}
@@ -126,11 +124,23 @@ export default class FormComponent extends Component {
                                                 /> 
                                             </div>)
 
-                                        case 'text_edit':
-                                            return ( <div className='p-col-12 p-md-6'>
-                                                <TextEditComponent 
+                                        case 'geopoint':
+                                            return ( <div key={i} className='p-col-12 p-md-12'>
+                                                <GeoPointComponent 
                                                     index={i}
-                                                    key={i}
+                                                    readOnly={mode === 'view'}
+                                                    value={row[col.name]}
+                                                    name={col.name}
+                                                    label={col.label}
+                                                    required={required}
+                                                    onInputChange={onInputChange}
+                                                /> 
+                                            </div>)
+
+                                        case 'text_edit':
+                                            return ( <div key={i} className='p-col-12 p-md-6'>
+                                                <TextComponent 
+                                                    index={i}
                                                     readOnly={mode === 'view'}
                                                     value={row[col.name]}
                                                     name={col.name}
@@ -142,10 +152,9 @@ export default class FormComponent extends Component {
                                             </div>)
 
                                         case 'long_text':
-                                            return ( <div className='p-col-12 p-md-6'>
-                                                <LongTextEditComponent 
+                                            return ( <div key={i} className='p-col-12 p-md-6'>
+                                                <TextAreaComponent 
                                                     index={i}
-                                                    key={i}
                                                     readOnly={mode === 'view'}
                                                     value={row[col.name]}
                                                     name={col.name}
@@ -170,10 +179,9 @@ export default class FormComponent extends Component {
                                             />)
                                             
                                         case 'boolean':
-                                            return ( <div className='p-col-12 p-md-6'>
-                                                <BooleanComponent 
+                                            return ( <div key={i} className='p-col-12 p-md-6'>
+                                                <SwitchComponent 
                                                     index={i}
-                                                    key={i}
                                                     readOnly={mode === 'view'}
                                                     value={row[col.name]}
                                                     name={col.name}
@@ -185,10 +193,9 @@ export default class FormComponent extends Component {
                                             </div>)
 
                                         case 'date':
-                                            return ( <div className='p-col-12 p-md-6'>
+                                            return ( <div key={i} className='p-col-12 p-md-6'>
                                                 <DatePickerComponent
                                                     index={i}
-                                                    key={i}
                                                     showTime={col.showTime}
                                                     jalali={col.showJalali}
                                                     readOnly={mode === 'view'}
