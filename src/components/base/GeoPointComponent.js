@@ -1,5 +1,7 @@
  /* global google */ 
 import React, { Component } from 'react'
+import { MAP_API, MAP_CENTER } from '../../utils/config'
+import { geoPointToStringParser, geoPointParser } from '../../utils/parser'
 import { GMap } from 'primereact/gmap'
 import Loader from 'react-loader-spinner'
 
@@ -7,34 +9,20 @@ export default class GeoPointComponent extends Component {
 
 	constructor(props) {
 		super(props)
-		this.state = {
-			isMapLoaded: false,
-			point: null,
-			points: []
-		}
 		this.onMapClick = this.onMapClick.bind(this)
 	}
 
     componentWillMount() {
+    	const { value } = this.props
     	const script = document.createElement("script")
-    	const API = 'AIzaSyDC5TPGY4g0QPjEIixs0-9CmM2ithq9rZA'
-    	script.src = `https://maps.googleapis.com/maps/api/js?key=${API}`
+    	script.src = MAP_API
     	script.id = 'map-api'
     	script.async = true
     	script.defer = true
     	script.addEventListener('load', () => {
 	      	window.google = google
-	      	this.setState({ 
-	      		isMapLoaded: true,
-	      		points: [
-		           new google.maps.Marker({
-		           		position: {
-		           			lat: 35.68995, lng: 51.40976
-		           		},
-		           		title: 'Home'
-		           })
-		        ]
-	      	})
+	      	const { onMapLoad } = this.props
+	      	onMapLoad(true)
 	    })
     	if(!document.getElementById("map-api")) {
     		document.body.appendChild(script)
@@ -42,47 +30,45 @@ export default class GeoPointComponent extends Component {
     }
 
     onMapClick(e) {
-        this.setState({
-            points: [
-	           new google.maps.Marker({
-	           		position: {
-	           			lat: e.latLng.lat(),
-	           			lng: e.latLng.lng()
-	           		},
-	           		title: 'Home'
-	           })
-	        ]
-        })
+    	const { onInputChange, name, readOnly } = this.props
+    	if(!readOnly) 
+    	{
+			const str = geoPointToStringParser(e.latLng)
+			onInputChange(str, name)
+    	}
     }
 
 	render() {
-		const { isMapLoaded, points } = this.state
 
-		const options = {
-	        center: {
-	        	lat: 35.68995,
-	        	lng: 51.40976
-	       	},
-	        zoom: 14
-	    }
+		const { 
+			value,
+			index,
+			label,
+			isMapLoaded
+		} = this.props
 
 		return (
-			<div style={{textAlign:'center'}}>
+			<div>
+				<label className='lable' htmlFor={`lbl-${index}`}> 
+                    {label}
+                </label>
 				{isMapLoaded && 
 					<GMap 
-						overlays={points}
-						options={options} 
+						overlays={geoPointParser(value)}
+						options={MAP_CENTER}
 						onMapClick={this.onMapClick}
 						style={{width: '100%', minHeight: '320px'}} 
 					/>
 				}
 				{!isMapLoaded && 
-					<Loader 
-                        type="Puff"
-                        color="#5867dd"
-                        height="100"   
-                        width="100"
-                    />
+					<div style={{textAlign:'center'}}>
+						<Loader 
+	                        type="Puff"
+	                        color="#5867dd"
+	                        height="100"   
+	                        width="100"
+	                    />
+					</div>
 				}
 			</div>
 		)

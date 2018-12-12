@@ -36,6 +36,8 @@ export default class FormComponent extends Component {
             baseSrc,
             src,
             crop,
+            isMapLoaded,
+            onMapLoad,
         } = this.props
 
         let modeFields = []
@@ -134,6 +136,8 @@ export default class FormComponent extends Component {
                                                     label={col.label}
                                                     required={required}
                                                     onInputChange={onInputChange}
+                                                    isMapLoaded={isMapLoaded}
+                                                    onMapLoad={onMapLoad}
                                                 /> 
                                             </div>)
 

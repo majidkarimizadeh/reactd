@@ -68,7 +68,9 @@ class MainView extends Component {
             numRows: 9,
             totalRows: 0,
             filter: {},
-            showFilter: false
+            showFilter: false,
+
+            isMapLoaded: false
         }
 
         this.onHideDialog = this.onHideDialog.bind(this)
@@ -107,6 +109,8 @@ class MainView extends Component {
         this.onCropComplete = this.onCropComplete.bind(this)
         this.makeClientCrop = this.makeClientCrop.bind(this)
         this.getCroppedImg = this.getCroppedImg.bind(this)
+
+        this.onMapLoad = this.onMapLoad.bind(this)
     }
 
     componentWillMount() {
@@ -204,6 +208,12 @@ class MainView extends Component {
                     dataLoading: false
                 })
             }) 
+    }
+
+    onMapLoad(loading) {
+        this.setState({
+            isMapLoaded: loading
+        })
     }
 
     onInputChange(data, name) {
@@ -714,7 +724,8 @@ class MainView extends Component {
             totalRows,
 
             filterRow,
-            showFilter
+            showFilter,
+            isMapLoaded,
 
         } = this.state
 
@@ -755,6 +766,9 @@ class MainView extends Component {
                         onImageLoaded={this.onImageLoaded}
                         onCropChange={this.onCropChange}
                         onCropComplete={this.onCropComplete}
+
+                        isMapLoaded={isMapLoaded}
+                        onMapLoad={this.onMapLoad}
                     />
                 }
 

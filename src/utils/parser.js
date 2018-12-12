@@ -149,3 +149,18 @@ export function roleParser(roles) {
 	}
 	return roleObjects
 }
+
+export function geoPointParser(str) {
+	const point = str.split('_')
+	return [
+		new window.google.maps.Marker({
+       			position: {
+	       			lat: point[0], lng: point[1]
+       			}
+       	})
+	]
+}
+
+export function geoPointToStringParser(point) {
+	return point.lat().toString() + '_' + point.lng().toString();
+}
