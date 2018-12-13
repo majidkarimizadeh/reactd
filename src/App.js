@@ -83,7 +83,7 @@ class App extends Component {
 
     onSidebarClick(event) {
         this.menuClick = true
-        setTimeout(() => {this.layoutMenuScroller.moveBar() }, 500)
+        // setTimeout(() => {this.layoutMenuScroller.moveBar() }, 500)
     }
 
     onMenuItemClick(event) {

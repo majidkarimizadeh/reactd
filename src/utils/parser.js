@@ -5,8 +5,8 @@ import moment from 'moment'
 
 export function userParser(user) {
 	return {
-		name: `${user.first_name} ${user.last_name}`,
-		img: user.img ? `${SITE_URL}/${user.img}` : false
+		name: (user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : '--- ---',
+		img: (user.img) ? `${SITE_URL}/${user.img}` : false
 	}
 }
 

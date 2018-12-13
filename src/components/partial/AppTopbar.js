@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import { AuthService } from '../../service/AuthService'
+import history from '../../utils/history'
 import { Menu } from 'primereact/menu';
 import { Button } from 'primereact/button';
 
@@ -11,6 +13,15 @@ export class AppTopbar extends Component {
 
     static propTypes = {
         onToggleMenu: PropTypes.func.isRequired
+    }
+
+    logout() {
+        let authService = new AuthService()
+        authService.logout()
+            .then(() => {
+                localStorage.removeItem('auth_token')
+                history.push('/login')
+            })
     }
 
     render() {
@@ -25,7 +36,7 @@ export class AppTopbar extends Component {
                         popup={true}
                         model={[
                             {label: 'حساب شما', icon: 'pi pi-fw pi-user'},
-                            {label: 'خروج', icon: 'pi pi-fw pi-power-off'}
+                            {label: 'خروج', icon: 'pi pi-fw pi-power-off', command: this.logout}
                         ]} 
                         ref={ el => this.menu=el }
                     />
