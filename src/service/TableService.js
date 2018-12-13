@@ -43,7 +43,6 @@ export class TableService {
             }
         }) 
         Service.setToken(apiObject)
-        console.log(apiObject)
         return axios.post(`${API_URL}/select-data/`, apiObject)
                 .then(res => {
                     return {
