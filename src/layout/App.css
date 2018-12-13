@@ -408,3 +408,13 @@ body .p-checkbox-label {
 .language-selector > div {
 	font-size: 12px;
 }
+
+.layout-topbar-fa-icon {
+	color: #b3b3b3;
+	font-size: 2em;
+	cursor: pointer;
+}
+
+.layout-topbar-fa-icon:hover {
+	color: #c3c3c3;
+}

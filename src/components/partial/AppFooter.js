@@ -12,8 +12,6 @@ export class AppFooter extends Component {
             			Reactd
             		</Link>
                 </span>
-                {/*<img src="assets/layout/images/logo.svg" alt="" width="80"/>
-                <span className="footer-text" style={{'marginLeft': '5px'}}>Theme and Layout</span>*/}
             </div>
         );
     }

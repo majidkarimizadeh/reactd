@@ -31,7 +31,7 @@ export class AppInlineProfile extends Component {
                 </a>
                 <ul className={classNames({'profile-expanded': this.state.expanded})}>
                     <li><a><span>حساب شما</span><i className="pi pi-fw pi-user"/></a></li>
-                    <li><a><span>پیغام ها</span><i className="pi pi-fw pi-inbox"/><span className="menuitem-badge">2</span></a></li>
+                    {/*<li><a><span>پیغام ها</span><i className="pi pi-fw pi-inbox"/><span className="menuitem-badge">2</span></a></li>*/}
                     <li><a><span>خروج</span><i className="pi pi-fw pi-power-off"/></a></li>
                 </ul>
             </div>

@@ -29,15 +29,15 @@ export default class RegisterComponent extends Component {
     }
 
     register() {
-    	const { name, email, password } = this.state
-    	this.setState({ error: '' })
-    	if(name && email && password) {
-    		this.authService.register(name, email, password)
-    	} else {
-    		this.setState({
-    			error: 'نام, نام کاربری و رمز عبور الزامی است.'
-    		})
-    	}
+    	// const { name, email, password } = this.state
+    	// this.setState({ error: '' })
+    	// if(name && email && password) {
+    	// 	this.authService.register(name, email, password)
+    	// } else {
+    	// 	this.setState({
+    	// 		error: 'نام, نام کاربری و رمز عبور الزامی است.'
+    	// 	})
+    	// }
     }
 
     render() {
