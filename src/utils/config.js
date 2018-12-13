@@ -22,3 +22,11 @@ export const MAP_CENTER = {
    	},
     zoom: 14
 }
+
+export const LANGUAGES = [
+    { label: 'فارسی', value: 'fa' },
+    { label: 'انگلیسی', value: 'en' },
+    { label: 'چینی', value: 'ch' },
+]
+
+export const DEFAULT_LANGUAGE = 'fa'

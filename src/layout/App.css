@@ -175,7 +175,7 @@ div.day-items.selected {
 	margin-left: 14px;
 }
 
-
+body .p-datatable .p-datatable-header,
 .p-highlight {
 	background-color: #5867dd !important;
 	border-color: #5867dd !important;
@@ -384,4 +384,27 @@ body .p-checkbox-label {
 
 .filter-dropdown .p-dropdown-trigger {
 	display: none;
+}
+
+.table-header-operation {
+	display: flex;
+	flex: 1;
+	justify-content: space-between;
+}
+
+.table-header-operation > div:first-child > button{
+	margin-right: 5px;
+}
+
+.table-header-operation > div:last-child > button{
+	margin-left: 5px;
+}
+
+.language-selector-container, 
+.language-selector-container > div {
+	display: inline;
+	margin-right: 4px;
+}
+.language-selector > div {
+	font-size: 12px;
 }

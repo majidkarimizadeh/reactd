@@ -3,6 +3,7 @@ import { Route, withRouter } from 'react-router-dom'
 import DialogComponent from './base/DialogComponent'
 import TableComponent from './base/TableComponent'
 import FormComponent from './base/FormComponent'
+import LanguageSelector from './partial/LanguageSelector'
 import { TableService } from '../service/TableService'
 import { RowService } from '../service/RowService'
 import { LookUpService } from '../service/LookUpService'
@@ -11,7 +12,6 @@ import { Growl } from 'primereact/growl'
 import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
-import { Button } from 'primereact/button'
 import { hasCustomFun } from './custom'
 import { EQ } from '../utils/config'
 import QueryBuilder from '../utils/queryBuilder'
@@ -70,7 +70,8 @@ class MainView extends Component {
             filter: {},
             showFilter: false,
 
-            isMapLoaded: false
+            isMapLoaded: false,
+            lang: null,
         }
 
         this.onHideDialog = this.onHideDialog.bind(this)
@@ -111,6 +112,7 @@ class MainView extends Component {
         this.getCroppedImg = this.getCroppedImg.bind(this)
 
         this.onMapLoad = this.onMapLoad.bind(this)
+        this.onLanguageChange = this.onLanguageChange.bind(this)
     }
 
     componentWillMount() {
@@ -183,9 +185,7 @@ class MainView extends Component {
     }
 
     onFilterInputChange(data, name) {
-        const { filterRow, table, firstRow, numRows } = this.state
-
-        console.log(data, name)
+        const { filterRow, table, firstRow, numRows, lang } = this.state
         let filter = {...filterRow}
         filter[name] = data
         this.setState({ 
@@ -194,7 +194,13 @@ class MainView extends Component {
         })
 
         let conditions = this.queryBuilder.getCondition(filter);
-        this.tableService.getTableData(table.url, 0, numRows, conditions)
+        let options = {
+            lang: lang,
+            start: 0,
+            limit: numRows,
+            conditions: conditions
+        }
+        this.tableService.getTableData(table.url, options)
             .then( res => {
                 this.setState({ 
                     data: res.data,
@@ -227,8 +233,12 @@ class MainView extends Component {
         setTimeout(() => {
             const startIndex = first
             const limitIndex = this.state.numRows
-        
-            this.tableService.getTableData(tableUrl, startIndex, limitIndex)
+            let options = {
+                lang: this.state.lang,
+                start: startIndex,
+                limit: limitIndex
+            }
+            this.tableService.getTableData(tableUrl, options)
                 .then( res => {
                     this.setState({
                         firstRow: startIndex,
@@ -310,7 +320,13 @@ class MainView extends Component {
                             detailTable: table,
                             totalRows: totalRows
                         })
-                        this.tableService.getTableData(detailTable.url, 0, 9, conditions)
+                        let options = {
+                            lang: this.state.lang,
+                            start: 0,
+                            limit: 9,
+                            conditions: conditions
+                        }
+                        this.tableService.getTableData(detailTable.url, options)
                             .then( res => this.setState({ detailData: res.data }))
                             .catch(err => this.setState({ err: err.response })  ) 
                     })
@@ -318,6 +334,11 @@ class MainView extends Component {
             }
 
         }
+    }
+
+    onLanguageChange(lang) {
+        this.setState({ lang })
+        this.onRefreshTableData()
     }
 
     onLookUp(rdf, name) {
@@ -549,7 +570,8 @@ class MainView extends Component {
                 let row = {}
                 cols.map( (item, index) => row[item.name] = '' )
                 this.setState({ cols, table, details, row, perm, totalRows })
-                this.tableService.getTableData(tableUrl)
+                let lang = this.state.lang;
+                this.tableService.getTableData(tableUrl, { lang: lang })
                     .then( res => this.setState({ data: res.data }))
                     .catch(err => this.setState({ err: err.response })  ) 
             })
@@ -703,30 +725,25 @@ class MainView extends Component {
             options,
             details,
             activeDetailIndex,
-
             detailDetails,
             detailData,
             detailCols,
             detailTable,
             detailRow,
-
             baseSrc,
             src,
             crop,
             isLoading,
             customComponent,
-
             perm,
-
             dataLoading,
             firstRow,
             numRows,
             totalRows,
-
             filterRow,
             showFilter,
             isMapLoaded,
-
+            lang,
         } = this.state
 
         const { match } = this.props
@@ -792,46 +809,10 @@ class MainView extends Component {
                                 <div>
                                     <div className="card-heading">
                                         <div className="card-heading-actions">
-                                            {perm.delete && 
-                                                <Button 
-                                                    onClick={() => this.onShowAlertDialog('delete')}
-                                                    icon="fa fa-trash"
-                                                    className="p-button-secondary toolbar-btn"
-                                                />
-                                            }
-                                            {perm.select &&
-                                                <Button 
-                                                    onClick={() => this.onShowDialog('view')}
-                                                    icon="fa fa-eye"
-                                                    className="p-button-secondary toolbar-btn"
-                                                />
-                                            }
-                                            {perm.update &&
-                                                <Button
-                                                    onClick={() => this.onShowDialog('edit')}
-                                                    icon="fa fa-pencil"
-                                                    className="p-button-secondary toolbar-btn"
-                                                />
-                                            }
-                                            {perm.insert &&
-                                                <Button 
-                                                    onClick={() => this.onShowDialog('create')}
-                                                    icon="fa fa-plus"
-                                                    className="p-button-secondary toolbar-btn"
-                                                />
-                                            }
-                                            {perm.select &&
-                                                <Button 
-                                                    onClick={() => this.onFilterVisibilityChange() }
-                                                    icon="fa fa-filter"
-                                                    className="p-button-secondary toolbar-btn"
-                                                />
-                                            }
-                                            {perm.select &&
-                                                <Button 
-                                                    onClick={() => this.onRefreshTableData() }
-                                                    icon="fa fa-refresh"
-                                                    className="p-button-secondary toolbar-btn"
+                                            {table.trans && 
+                                                <LanguageSelector
+                                                    value={lang}
+                                                    onLanguageChange={this.onLanguageChange}
                                                 />
                                             }
                                             {hasCustomFun(table.name, this.onCustomChange, this.state, this.growl)}
@@ -855,6 +836,11 @@ class MainView extends Component {
                                         onFilterInputChange={this.onFilterInputChange}
                                         options={options}
                                         showFilter={showFilter}
+                                        perm={perm}
+                                        onShowAlertDialog={this.onShowAlertDialog}
+                                        onShowDialog={this.onShowDialog}
+                                        onFilterVisibilityChange={this.onFilterVisibilityChange}
+                                        onRefreshTableData={this.onRefreshTableData}
                                     />
                                 </div>
                             }

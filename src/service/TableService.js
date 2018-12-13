@@ -28,14 +28,22 @@ export class TableService {
                 });
     }
 
-    getTableData(url, startIndex = 0, limitIndex = 9, conditions = []) 
+    getTableData(url, options = {}) 
     {
         let apiObject = new FormData();
         apiObject.append('url', url)
-        apiObject.append('start', startIndex)
-        apiObject.append('limit', limitIndex)
-        apiObject.append('conditions', JSON.stringify(conditions))
+        Object.keys(options).forEach( key => {
+            if( Array.isArray(options[key]) ) 
+            {
+                apiObject.append(key, JSON.stringify(options[key]))
+            }
+            else
+            {
+                apiObject.append(key, options[key])
+            }
+        }) 
         Service.setToken(apiObject)
+        console.log(apiObject)
         return axios.post(`${API_URL}/select-data/`, apiObject)
                 .then(res => {
                     return {

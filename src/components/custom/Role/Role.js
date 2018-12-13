@@ -6,7 +6,7 @@ export default function roleToolbar(dispatch, state, growl)
 {
 	return <Button 
 		onClick={() => onClick(dispatch, state, growl)}
-		icon="pi pi-bars" 
+		icon="fa fa-cog" 
 		className="p-button-secondary toolbar-btn"
 	/>
 }

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import DatePickerComponent from './DatePickerComponent'
 import SelectComponent from './SelectComponent'
 import TextComponent from './TextComponent'
-import { Dropdown } from 'primereact/dropdown';
+import { Button } from 'primereact/button'
+import { Dropdown } from 'primereact/dropdown'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { Lightbox } from 'primereact/lightbox'
@@ -15,8 +16,68 @@ import {
 
 export default class TableComponent extends Component {
 
+    headerTemplate() {
+
+        const { 
+            perm,
+            onShowAlertDialog,
+            onShowDialog,
+            onFilterVisibilityChange,
+            onRefreshTableData,
+        } = this.props
+
+        return <div className='table-header-operation'>
+            <div>
+                {perm.delete && 
+                    <Button 
+                        onClick={() => onShowAlertDialog('delete')}
+                        icon='fa fa-trash'
+                        className='p-button-secondary toolbar-btn'
+                    />
+                }
+                {perm.select &&
+                    <Button 
+                        onClick={() => onShowDialog('view')}
+                        icon='fa fa-eye'
+                        className='p-button-secondary toolbar-btn'
+                    />
+                }
+                {perm.update &&
+                    <Button
+                        onClick={() => onShowDialog('edit')}
+                        icon='fa fa-pencil'
+                        className='p-button-secondary toolbar-btn'
+                    />
+                }
+                {perm.insert &&
+                    <Button 
+                        onClick={() => onShowDialog('create')}
+                        icon='fa fa-plus'
+                        className='p-button-secondary toolbar-btn'
+                    />
+                }
+            </div>
+            <div>
+                {perm.select &&
+                    <Button 
+                        onClick={() => onFilterVisibilityChange() }
+                        icon='fa fa-filter'
+                        className='p-button-secondary toolbar-btn'
+                    />
+                }
+                {perm.select &&
+                    <Button 
+                        onClick={() => onRefreshTableData() }
+                        icon='fa fa-refresh'
+                        className='p-button-secondary toolbar-btn'
+                    />
+                }
+            </div>
+        </div>
+    }
+
     wysiwygTemplate(rowData, column, columnAttr ,thisClass = null) {
-        const regex = /(<([^>]+)>)/ig;
+        const regex = /(<([^>]+)>)/ig
         return rowData[column.field] ? rowData[column.field].replace(regex, '') : ''
     }
 
@@ -50,11 +111,11 @@ export default class TableComponent extends Component {
     }
     booleanFilterTemplate(name) {
         const { onFilterInputChange, filterRow } = this.props
-        let options = new Array();
+        let options = new Array()
         options[ [name] ] = [
             {'label': 'خیر', value: 0},
             {'label': 'بله', value: 1}
-        ];
+        ]
         return  <SelectComponent
                     name={name}
                     options={options}
@@ -69,8 +130,8 @@ export default class TableComponent extends Component {
         let component = <div> --- </div>
         if(src) 
         {
-            // src = "http://destription.com/home-images/iran-attractions.jpg"
-            component = <Lightbox type="content">
+            // src = 'http://destription.com/home-images/iran-attractions.jpg'
+            component = <Lightbox type='content'>
                             <a href='#' className='show-image'>مشاهده</a>
                             <img src={src} alt='' />
                         </Lightbox>
@@ -79,11 +140,11 @@ export default class TableComponent extends Component {
     }
     imageFilterTemplate(name) {
         const { onFilterInputChange, filterRow } = this.props
-        let options = new Array();
+        let options = new Array()
         options[ [name] ] = [
             {'label': 'ندارد', value: 0},
             {'label': 'دارد', value: 1}
-        ];
+        ]
         return  <SelectComponent
                     name={name}
                     options={options}
@@ -137,10 +198,12 @@ export default class TableComponent extends Component {
 			<DataTable 
                 ref={(el) => this.dt = el}
                 value={data}
+                headerClassName='p-highlight'
+                header={this.headerTemplate()}
                 scrollable={true}
-                paginatorPosition="bottom"
-                selectionMode="single"
-                emptyMessage="اطلاعاتی وجود ندارد"
+                paginatorPosition='bottom'
+                selectionMode='single'
+                emptyMessage='اطلاعاتی وجود ندارد'
                 selection={row} 
                 onSelectionChange={onSelectionChange}
 
@@ -208,7 +271,7 @@ export default class TableComponent extends Component {
                             sortable={!showFilter}
                             filter={showFilter}
                             filterElement={filterElement}
-                            className="table-column"
+                            className='table-column'
                         />
                     )
                 })}
