@@ -5,7 +5,8 @@ import {
     getJalDateByGreDate, 
     getGreDateByTimestamp, 
     getGreDateByGMT, 
-    getGMTByGreDate 
+    getGMTByGreDate,
+    getFormatedGreDate
 } from '../../utils/parser'
 import {
     DatePicker,
@@ -39,14 +40,14 @@ export default class DatePickerComponent extends Component {
 
         let JalaliComponent = showTime ? DateTimePicker : DatePicker
         let JalaliFormat = showTime ? 'jYYYY-jMM-jDD HH:mm:00' : 'jYYYY-jMM-jDD'
-
+        
         return (
             <div style={{textAlign:'right'}}>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     {label} 
                     {readOnly && 
                         <span>
-                            {` : ${jalali ? getJalDateByGreDate(value, showTime) : getGMTByGreDate(value)}`}
+                            {` : ${jalali ? getJalDateByGreDate(value, showTime) : getFormatedGreDate(value, showTime)}`}
                         </span>
                     }
                 </label>

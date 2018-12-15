@@ -212,8 +212,8 @@ export default class FormComponent extends Component {
                                             return ( <div key={i} className='p-col-12 p-md-6'>
                                                 <DatePickerComponent
                                                     index={i}
-                                                    showTime={col.showTime}
-                                                    jalali={col.showJalali}
+                                                    showTime={col.tim}
+                                                    jalali={col.jal}
                                                     readOnly={mode === 'view'}
                                                     value={row[col.nme]}
                                                     name={col.nme}
