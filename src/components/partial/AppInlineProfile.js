@@ -22,7 +22,7 @@ export class AppInlineProfile extends Component {
         let authService = new AuthService()
         authService.logout()
             .then(() => {
-                localStorage.removeItem('auth_token')
+                localStorage.removeItem('token')
                 history.push('/login')
             })
     }
@@ -44,15 +44,15 @@ export class AppInlineProfile extends Component {
                     <i className="pi pi-fw pi-cog"/>
                 </a>
                 <ul className={classNames({'profile-expanded': this.state.expanded})}>
-                    <li>
+                    {/*<li>
                         <a>
                             <span>حساب شما</span>
                             <i className="pi pi-fw pi-user"/>
                         </a>
-                    </li>
+                    </li>*/}
                     <li onClick={this.onLogoutClick}>
                         <a>
-                            <span>خروج</span>
+                            <span>Logout</span>
                             <i className="pi pi-fw pi-power-off"/>
                         </a>
                     </li>

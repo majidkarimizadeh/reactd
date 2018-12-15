@@ -5,19 +5,14 @@ import moment from 'moment'
 
 export function userParser(user) {
 	return {
-		name: (user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : '--- ---',
-		img: (user.img) ? `${SITE_URL}/${user.img}` : false
+		name: (user && user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : 'Welcome',
+		img: (user && user.img) ? `${SITE_URL}/${user.img}` : false
 	}
 }
 
 export function colParser(cols) {
 	if(!cols) return [];
-
-	let standardCols = [];
-	for (var i = 0; i < cols.length; i++) {
-		standardCols.push(JSON.parse(cols[i]))
-	}
-	return standardCols
+	return JSON.parse(cols);
 }
 
 export function detailParser(details) {
@@ -112,11 +107,17 @@ export function boolParser(value) {
 
 
 export function validationErrorParser(errors) {
-	console.log(errors)
-	let errorList = errors.map((item, index) => {
-		return <li key={index}> {item} - </li>
-	})
-	return <ul>{errorList}</ul>
+	if(Array.isArray(errors)) 
+	{
+		let errorList = errors.map((item, index) => {
+			return <li key={index}> {item} - </li>
+		})
+		return <ul>{errorList}</ul>
+	}
+	else
+	{
+		return <p>{errors}</p>
+	}
 }
 
 

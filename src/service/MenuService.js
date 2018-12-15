@@ -9,7 +9,7 @@ export class MenuService {
     getMenuItem() {
         let apiObject = new FormData()
         Service.setToken(apiObject)
-        return axios.post(`${API_URL}/menubar`, apiObject)
+        return axios.post(`${API_URL}/get-menu`, apiObject)
                 .then(res => {
                     return {
                         menu: this.generateMenuItem(res.data.menu),
@@ -25,9 +25,9 @@ export class MenuService {
             let menuItem = (typeof menuItems[i] === 'object') ? menuItems[i] : JSON.parse(menuItems[i])
             let url = menuItem.url ?  (menuItem.url.startsWith('/')) ? '/admin' + menuItem.url : '/admin/' + menuItem.url  : null
             menus.push({
-                icon: menuItem.icon,
-                label: menuItem.label,
-                items: this.generateMenuItem(menuItem.items),
+                icon: menuItem.icn,
+                label: menuItem.lbl,
+                items: this.generateMenuItem(menuItem.itm),
                 command: () => { 
                     if(url) {
                         history.push(url) 

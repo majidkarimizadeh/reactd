@@ -19,7 +19,7 @@ export class AppTopbar extends Component {
         let authService = new AuthService()
         authService.logout()
             .then(() => {
-                localStorage.removeItem('auth_token')
+                localStorage.removeItem('token')
                 history.push('/login')
             })
     }
@@ -35,8 +35,8 @@ export class AppTopbar extends Component {
                     <Menu 
                         popup={true}
                         model={[
-                            {label: 'حساب شما', icon: 'pi pi-fw pi-user'},
-                            {label: 'خروج', icon: 'pi pi-fw pi-power-off', command: this.logout}
+                            // {label: 'حساب شما', icon: 'pi pi-fw pi-user'},
+                            {label: 'Logout', icon: 'pi pi-fw pi-power-off', command: this.logout}
                         ]} 
                         ref={ el => this.menu=el }
                     />

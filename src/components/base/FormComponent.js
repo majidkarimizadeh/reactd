@@ -42,7 +42,19 @@ export default class FormComponent extends Component {
 
         let modeFields = []
         let imagesFields = []
-        if(mode) { modeFields = table[mode] }
+
+        if(mode == 'view') 
+        { 
+            modeFields = table.shw 
+        }
+        else if(mode == 'edit') 
+        {
+            modeFields = table.edt
+        }
+        else if(mode == 'create') 
+        {
+            modeFields = table.crt
+        }
 
         const footer = <div className='p-col-12 form-footer'>
             <Button 
@@ -65,7 +77,7 @@ export default class FormComponent extends Component {
                     <div className="card-heading">
                         <div className="card-heading-actions">
                         </div>
-                        <h1 className="card-heading-caption">{table.label}</h1>
+                        <h1 className="card-heading-caption">{table.lbl}</h1>
                     </div>
                     <TabView>
                         <TabPanel header='اطلاعات'>
@@ -74,66 +86,66 @@ export default class FormComponent extends Component {
                                     let col = cols.find(function(c) {
                                         return c.no === item
                                     })
-                                    let required = (('valid' in col) && ('required' in col.valid));
-                                    switch(col.controller) 
+                                    let required = (('valid' in col) && ('required' in col.vld));
+                                    switch(col.cnt) 
                                     {
-                                        case 'lookup':
+                                        case 'lku':
                                             return ( <div key={i} className='p-col-12 p-md-6'>
                                                 <SelectComponent 
                                                     index={i}
                                                     options={options}
                                                     readOnly={mode === 'view'}
-                                                    value={row[col.name]}
-                                                    name={col.name}
-                                                    label={col.label}
+                                                    value={row[col.nme]}
+                                                    name={col.nme}
+                                                    label={col.lbl}
                                                     required={required}
-                                                    placeholder={col.placeholder}
+                                                    placeholder={col.plh}
                                                     onInputChange={onInputChange}
-                                                    onMouseDown={() => {onLookUp(col.rdf, col.name)}}
+                                                    onMouseDown={() => {onLookUp(col.rdf, col.nme)}}
                                                 /> 
                                             </div>)
 
-                                        case 'password':
+                                        case 'pas':
                                             return ( <div key={i} className='p-col-12 p-md-6'>
                                                 <PasswordComponent 
                                                     index={i}
-                                                    value={row[col.name]}
+                                                    value={row[col.nme]}
                                                     readOnly={mode === 'view'}
-                                                    name={col.name}
-                                                    label={col.label}
+                                                    name={col.nme}
+                                                    label={col.lbl}
                                                     required={required}
-                                                    placeholder={col.placeholder}
+                                                    placeholder={col.plh}
                                                     onInputChange={onInputChange}
                                                 /> 
                                             </div>)
 
-                                        case 'image':
+                                        case 'img':
                                             imagesFields.push(col)
                                             break
 
-                                        case 'number':
+                                        case 'num':
                                             return ( <div key={i} className='p-col-12 p-md-6'>
                                                 <TextComponent 
                                                     index={i}
                                                     readOnly={mode === 'view'}
-                                                    value={row[col.name]}
-                                                    name={col.name}
-                                                    label={col.label}
+                                                    value={row[col.nme]}
+                                                    name={col.nme}
+                                                    label={col.lbl}
                                                     type='number'
                                                     required={required}
-                                                    placeholder={col.placeholder}
+                                                    placeholder={col.plh}
                                                     onInputChange={onInputChange}
                                                 /> 
                                             </div>)
 
-                                        case 'geopoint':
+                                        case 'geo':
                                             return ( <div key={i} className='p-col-12 p-md-12'>
                                                 <GeoPointComponent 
                                                     index={i}
                                                     readOnly={mode === 'view'}
-                                                    value={row[col.name]}
-                                                    name={col.name}
-                                                    label={col.label}
+                                                    value={row[col.nme]}
+                                                    name={col.nme}
+                                                    label={col.lbl}
                                                     required={required}
                                                     onInputChange={onInputChange}
                                                     isMapLoaded={isMapLoaded}
@@ -141,73 +153,73 @@ export default class FormComponent extends Component {
                                                 /> 
                                             </div>)
 
-                                        case 'text_edit':
+                                        case 'str':
                                             return ( <div key={i} className='p-col-12 p-md-6'>
                                                 <TextComponent 
                                                     index={i}
                                                     readOnly={mode === 'view'}
-                                                    value={row[col.name]}
-                                                    name={col.name}
+                                                    value={row[col.nme]}
+                                                    name={col.nme}
                                                     required={required}
-                                                    label={col.label}
-                                                    placeholder={col.placeholder}
+                                                    label={col.lbl}
+                                                    placeholder={col.plh}
                                                     onInputChange={onInputChange}
                                                 /> 
                                             </div>)
 
-                                        case 'long_text':
-                                            return ( <div key={i} className='p-col-12 p-md-6'>
-                                                <TextAreaComponent 
-                                                    index={i}
-                                                    readOnly={mode === 'view'}
-                                                    value={row[col.name]}
-                                                    name={col.name}
-                                                    required={required}
-                                                    label={col.label}
-                                                    placeholder={col.placeholder}
-                                                    onInputChange={onInputChange}
-                                                />
-                                            </div>)
+                                        // case 'wys':
+                                        //     return ( <div key={i} className='p-col-12 p-md-6'>
+                                        //         <TextAreaComponent 
+                                        //             index={i}
+                                        //             readOnly={mode === 'view'}
+                                        //             value={row[col.nme]}
+                                        //             name={col.nme}
+                                        //             required={required}
+                                        //             label={col.lbl}
+                                        //             placeholder={col.plh}
+                                        //             onInputChange={onInputChange}
+                                        //         />
+                                        //     </div>)
 
-                                        case 'wysiwyg':
+                                        case 'wys':
                                             return ( <WysiwygComponent 
                                                 index={i}
                                                 key={i}
                                                 readOnly={mode === 'view'}
-                                                value={row[col.name]}
-                                                name={col.name}
+                                                value={row[col.nme]}
+                                                name={col.nme}
                                                 required={required}
-                                                label={col.label}
-                                                placeholder={col.placeholder}
+                                                label={col.lbl}
+                                                placeholder={col.plh}
                                                 onInputChange={onInputChange}
                                             />)
                                             
-                                        case 'boolean':
+                                        case 'bol':
                                             return ( <div key={i} className='p-col-12 p-md-6'>
                                                 <SwitchComponent 
                                                     index={i}
                                                     readOnly={mode === 'view'}
-                                                    value={row[col.name]}
-                                                    name={col.name}
-                                                    label={col.label}
+                                                    value={row[col.nme]}
+                                                    name={col.nme}
+                                                    label={col.lbl}
                                                     required={required}
-                                                    placeholder={col.placeholder}
+                                                    placeholder={col.plh}
                                                     onInputChange={onInputChange}
                                                 />
                                             </div>)
 
-                                        case 'date':
+                                        case 'dat':
                                             return ( <div key={i} className='p-col-12 p-md-6'>
                                                 <DatePickerComponent
                                                     index={i}
                                                     showTime={col.showTime}
                                                     jalali={col.showJalali}
                                                     readOnly={mode === 'view'}
-                                                    value={row[col.name]}
-                                                    name={col.name}
+                                                    value={row[col.nme]}
+                                                    name={col.nme}
                                                     required={required}
-                                                    label={col.label}
-                                                    placeholder={col.placeholder}
+                                                    label={col.lbl}
+                                                    placeholder={col.plh}
                                                     onInputChange={onInputChange}
                                                 />
                                             </div>)
@@ -220,16 +232,16 @@ export default class FormComponent extends Component {
 
                         {!!imagesFields && imagesFields.map( (image, i) => {
                             return (
-                                <TabPanel key={i} header={image.label} >
+                                <TabPanel key={i} header={image.lbl} >
                                     <div className='p-grid'>
                                         <ImageComponent
                                             index={i}
                                             key={i}
                                             value={imageParser(row, image)}
-                                            name={image.name}
-                                            label={image.label}
+                                            name={image.nme}
+                                            label={image.lbl}
                                             readOnly={mode === 'view'}
-                                            placeholder={image.label}
+                                            placeholder={image.lbl}
                                             baseSrc={baseSrc}
                                             src={src}
                                             crop={crop}

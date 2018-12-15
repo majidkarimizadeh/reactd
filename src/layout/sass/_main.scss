@@ -35,7 +35,7 @@ a {
         @include transition(left $transitionDuration);
 
         .layout-topbar-icons {
-            // float: right;
+            float: right;
             display: block;
             -moz-animation-duration: .5s;
             -webkit-animation-duration: .5s;

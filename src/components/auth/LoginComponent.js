@@ -42,7 +42,8 @@ export default class LoginComponent extends Component {
     		.then(res => {
     			if(res.data) 
     			{
-	    			localStorage.setItem('auth_token', res.data.auth_token)
+	    			localStorage.setItem('token', res.data.token)
+	    			localStorage.setItem('user', res.data.user)
 	                history.push('/admin/users')
     			} 
     			else

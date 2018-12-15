@@ -15,11 +15,10 @@ export class TableService {
         let apiObject = new FormData();
         apiObject.append('url', url)
         Service.setToken(apiObject)
-        return axios.post(`${API_URL}/select-table/`, apiObject)
+        return axios.post(`${API_URL}/get-table/`, apiObject)
                 .then(res => {
                     return {
                         details: detailParser(res.data.details),
-                        data: dataParser(res.data.data),
                         table: tableParser(res.data.table),
                         cols: colParser(res.data.cols),
                         perm: res.data.perm,
@@ -43,7 +42,7 @@ export class TableService {
             }
         }) 
         Service.setToken(apiObject)
-        return axios.post(`${API_URL}/select-data/`, apiObject)
+        return axios.post(`${API_URL}/get-data/`, apiObject)
                 .then(res => {
                     return {
                         data: dataParser(res.data.data),

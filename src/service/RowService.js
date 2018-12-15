@@ -6,7 +6,7 @@ export class RowService {
 
     deleteRow(apiObject) {
         Service.setToken(apiObject)
-        return axios.post(`${API_URL}/delete/`, apiObject)
+        return axios.post(`${API_URL}/destroy/`, apiObject)
     }
 
     updateRow(apiObject) {

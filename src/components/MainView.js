@@ -172,7 +172,7 @@ class MainView extends Component {
         let filterRow = {}
         if(!showFilter)
         {
-            cols.map( (item, index) => filterRow[item.name] = '' )
+            cols.map( (item, index) => filterRow[item.nme] = '' )
         }
         this.setState({
             showFilter: !showFilter,
@@ -283,7 +283,7 @@ class MainView extends Component {
         const detailTable = details[activeDetailIndex]
         let row = {}
         let filterRow = {}
-        cols.map( (item, index) => filterRow[item.name] = row[item.name] = '' )
+        cols.map( (item, index) => filterRow[item.nme] = row[item.nme] = '' )
         this.setState({ 
             activeDetailIndex,
             row, 
@@ -303,7 +303,7 @@ class MainView extends Component {
 
             if(row && detailTable && detailTable.children) 
             {
-                const foreignKey = detailTable.children.find( (item) => item.table === table.name)
+                const foreignKey = detailTable.children.find( (item) => item.table === table.nme)
                 const rowPrimary = row[table.pk]
                 conditions = [{
                     logic: 'AND',
@@ -375,7 +375,7 @@ class MainView extends Component {
                     this.growl.show({
                         severity: 'success',
                         summary: 'حذف',
-                        detail: res.data
+                        detail: res.data.result
                     })
 
                     let data = [...this.state.data]
@@ -384,7 +384,7 @@ class MainView extends Component {
                         data.splice(index, 1)
                         let { cols } = this.state
                         let emptyRow = {}
-                        cols.map( (item, index) => emptyRow[item.name] = '' )
+                        cols.map( (item, index) => emptyRow[item.nme] = '' )
                         this.setState({ 
                             data,
                             isSelect: false,
@@ -394,7 +394,7 @@ class MainView extends Component {
                 })
                 .catch( err => {
                     window.scrollTo(0, 0)
-                    if(err.response.status === 422) 
+                    if(err.response && err.response.status === 422) 
                     {
                         this.messages.show({
                             severity: 'error',
@@ -423,7 +423,7 @@ class MainView extends Component {
         if(mode === 'create') {
             let { cols } = this.state
             let row = {}
-            cols.map( (item, index) => row[item.name] = '' )
+            cols.map( (item, index) => row[item.nme] = '' )
             this.setState({ mode, row, isSelect: false })
             return
         }
@@ -433,7 +433,7 @@ class MainView extends Component {
         const { cols, row } = this.state
         cols.forEach((item, index) => {
             if(item.controller === 'lookup') {
-                this.onLookUp(item.rdf, item.name)
+                this.onLookUp(item.rdf, item.nme)
             }
         })
         this.setState({ 
@@ -450,18 +450,18 @@ class MainView extends Component {
 
         if(mode === 'create') 
         {
-            fields = table[mode]
+            fields = table.crt
             apiObject.append('url', table.url)
 
             fields.forEach( (item, index) => {
                 let col = cols.find( (col) => col.no === item)
-                apiObject.append(col.name, row[col.name])
+                apiObject.append(col.nme, row[col.nme])
             })
             this.rowService.storeRow(apiObject)
                 .then( res => {
                     this.setState({
                         data: [
-                            res.data,
+                            res.data.result,
                             ...this.state.data
                         ],
                         mode: ''
@@ -494,13 +494,13 @@ class MainView extends Component {
         } 
         else if(mode === 'edit') 
         {
-            fields = table[mode]
+            fields = table.edt
             apiObject.append('url', table.url)
             apiObject.append('primary', row[table.pk])
 
             fields.forEach( (item, index) => {
                 let col = cols.find( (col) => col.no === item)
-                apiObject.append(col.name, row[col.name])
+                apiObject.append(col.nme, row[col.nme])
             })
             this.rowService.updateRow(apiObject)
                 .then( res => {  
@@ -508,7 +508,7 @@ class MainView extends Component {
                     let index = data.indexOf(pureRow)
                     if(index !== -1) 
                     {
-                        let updatedRow = Object.assign({}, pureRow, res.data)
+                        let updatedRow = Object.assign({}, pureRow, res.data.result)
                         data.splice(index, 1, updatedRow)
                         this.setState({ 
                             data,
@@ -570,7 +570,7 @@ class MainView extends Component {
         this.tableService.getTableInfo(tableUrl)
             .then(({ table, cols, details, perm, totalRows })  =>  {
                 let row = {}
-                cols.map( (item, index) => row[item.name] = '' )
+                cols.map( (item, index) => row[item.nme] = '' )
                 this.setState({ cols, table, details, row, perm, totalRows })
                 let lang = this.state.lang;
                 this.tableService.getTableData(tableUrl, { lang: lang })
@@ -753,7 +753,6 @@ class MainView extends Component {
         if (err) {
             throw err
         }
-
         return (
             <div>
                 <Growl ref={(el) => this.growl = el}></Growl>
@@ -817,9 +816,9 @@ class MainView extends Component {
                                                     onLanguageChange={this.onLanguageChange}
                                                 />
                                             }
-                                            {hasCustomFun(table.name, this.onCustomChange, this.state, this.growl)}
+                                            {hasCustomFun(table.nme, this.onCustomChange, this.state, this.growl)}
                                         </div>
-                                        <h1 className="card-heading-caption">{table.label}</h1>
+                                        <h1 className="card-heading-caption">{table.lbl}</h1>
                                     </div>
                                     <TableComponent 
                                         details={details}
@@ -862,7 +861,7 @@ class MainView extends Component {
                                             return (
                                                 <TabPanel 
                                                     key={index}
-                                                    header={item.label}
+                                                    header={item.lbl}
                                                     contentStyle={{borderColor:'red'}}
                                                 >
                                                     <Route

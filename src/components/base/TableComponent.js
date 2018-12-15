@@ -191,9 +191,8 @@ export default class TableComponent extends Component {
             showFilter
         } = this.props
 
-        const fields = table.list
+        const fields = table.lst
         const tableUrl = table.url
-
 		return (
 			<DataTable 
                 ref={(el) => this.dt = el}
@@ -221,53 +220,53 @@ export default class TableComponent extends Component {
                     })
                     let body = null
                     let filterElement = null
-                    if(col.controller === 'number') 
+                    if(col.cnt === 'num') 
                     {
-                        filterElement = this.textFilterTemplate(col.name, 'number')
+                        filterElement = this.textFilterTemplate(col.nme, 'number')
                     } 
-                    else if(col.controller === 'date') 
+                    else if(col.cnt === 'dat') 
                     {
                         body = this.dateTemplate
                         showFilter 
-                        ? filterElement = this.dateFilterTemplate(col.showTime, col.showJalali, col.name)
+                        ? filterElement = this.dateFilterTemplate(col.tim, col.jal, col.nme)
                         : filterElement = null
 
                     } 
-                    else if(col.controller === 'text_edit') 
+                    else if(col.cnt === 'str') 
                     {
-                        filterElement = this.textFilterTemplate(col.name)
+                        filterElement = this.textFilterTemplate(col.nme)
                     } 
-                    else if(col.controller === 'image') 
+                    else if(col.cnt === 'img') 
                     {
                         body = this.imageTemplate
                         showFilter 
-                        ? filterElement = this.imageFilterTemplate(col.name)
+                        ? filterElement = this.imageFilterTemplate(col.nme)
                         : filterElement = null
                     } 
-                    else if(col.controller === 'boolean') 
+                    else if(col.cnt === 'bol') 
                     {
                         body = this.booleanTemplate
                         showFilter
-                        ? filterElement = this.booleanFilterTemplate(col.name)
+                        ? filterElement = this.booleanFilterTemplate(col.nme)
                         : filterElement = null
                     } 
-                    else if(col.controller === 'lookup') 
+                    else if(col.cnt === 'lku') 
                     {
                         body = this.lookUpTemplate
                         showFilter
-                        ? filterElement = this.lookUpFilterTemplate(col.rdf, col.name)
+                        ? filterElement = this.lookUpFilterTemplate(col.rdf, col.nme)
                         : filterElement = null
                     }
-                    else if(col.controller === 'wysiwyg') 
+                    else if(col.cnt === 'wys') 
                     {
                         body = this.wysiwygTemplate
                     }
                     return (
                         <Column 
-                            field={col.name} 
+                            field={col.nme} 
                             key={i} 
                             body={body ? (rowData, column) => body(rowData, column, col, this) : null}
-                            header={col.label}
+                            header={col.lbl}
                             sortable={!showFilter}
                             filter={showFilter}
                             filterElement={filterElement}
