@@ -32,7 +32,7 @@ export class RoleComponent extends Component {
         let apiObject = new FormData()
         const { table, row } = this.props
         apiObject.append('primary', row[table.pk])
-        this.service.post('roles', apiObject)
+        this.service.post('get-roles', apiObject)
             .then( res => {
                 this.setState({
                     tree: roleParser(res.data),
@@ -68,7 +68,7 @@ export class RoleComponent extends Component {
         apiObject.append('condition', condition)
         apiObject.append('schema_id', selectedRole.schema_id)
         apiObject.append('role_id', selectedRole.role_id)
-        this.service.post('roles/update', apiObject)
+        this.service.post('update-roles', apiObject)
             .then( res => {
                 growl.show({
                     severity: 'success',
@@ -156,7 +156,7 @@ export class RoleComponent extends Component {
                                     <h2 style={{marginBottom:'18px'}}>
                                         <div>
                                             <i style={{verticalAlign:'middle'}} className='pi pi-fw pi-lock'></i>
-                                            دسترسی به جدول ({selectedRoleValue.label})
+                                            دسترسی به جدول ({selectedRoleValue.lbl})
                                         </div>
                                     </h2>
                                     <div className="p-grid">

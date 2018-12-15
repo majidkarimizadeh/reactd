@@ -131,7 +131,7 @@ export function roleParser(roles) {
 			tableName = i;
 			roleObjects[tableName] = {
 				key: i,
-				label: meta_value.label,
+				label: meta_value.lbl,
 				data: 'data ' + i,
 				icon: 'pi pi-fw pi-lock',
 				children: [],
