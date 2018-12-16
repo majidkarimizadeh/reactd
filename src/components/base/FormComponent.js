@@ -86,7 +86,7 @@ export default class FormComponent extends Component {
                                     let col = cols.find(function(c) {
                                         return c.no === item
                                     })
-                                    let required = (('valid' in col) && ('required' in col.vld));
+                                    let required = (('vld' in col) && ('required' in col.vld));
                                     switch(col.cnt) 
                                     {
                                         case 'lku':

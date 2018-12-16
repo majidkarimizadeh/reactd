@@ -45,11 +45,11 @@ export default class RegisterComponent extends Component {
         return (
         	<div className='container p-col-12'>
 	        	<div className='logo p-lg-3 p-md-4 p-sm-8 p-xs-12'>
-	                <img src='http://destription.com/images/logo.png' alt='' />
+	                <img src='assets/layout/images/logo.png' alt='' />
 		        </div>
 	        	<div className='login-container p-lg-4 p-md-6 p-sm-8 p-xs-12'>
 	        		<h3 className='form-title'>
-	        			ثبت نام
+	        			Register
 	        		</h3>
 	        		{error &&
 		        		<div className='p-col-12 p-md-12'>
@@ -58,7 +58,7 @@ export default class RegisterComponent extends Component {
 	        		}
 
 	        		<div className='p-col-12 p-md-12'>
-                        <Message severity='error' text='هم اکنون امکان ثبت نام وجود ندارد' />
+                        <Message severity='error' text='Not available now' />
                     </div>
 	        		{/*<div className='p-col-12 p-md-12'>
 	                    <InputText 
@@ -93,7 +93,7 @@ export default class RegisterComponent extends Component {
 	        	</div>
 	        	<div className='bottom-layout p-lg-4 p-md-6 p-sm-8 p-xs-12'>
 		        	<Link to='/login'>
-		        		ورود
+		        		Login
 	        		</Link>
 	        	</div>
 	        	<span className='powered'>

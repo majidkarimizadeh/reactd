@@ -20,6 +20,8 @@ export class AppTopbar extends Component {
         authService.logout()
             .then(() => {
                 localStorage.removeItem('token')
+                localStorage.removeItem('user_full_name')
+                localStorage.removeItem('user_img')
                 history.push('/login')
             })
     }

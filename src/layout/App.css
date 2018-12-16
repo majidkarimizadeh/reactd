@@ -298,6 +298,10 @@ a.show-image, a.show-image:hover {
 	background-color: #f8b7bd !important
 }
 
+div.validation-error {
+	margin: auto 15px;
+}
+
 div.validation-error span.p-messages-icon {
 	display: none !important
 }

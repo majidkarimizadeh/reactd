@@ -268,8 +268,8 @@ class MainView extends Component {
         if(!isSelect) {
             this.growl.show({
                 severity: 'warn',
-                summary: 'سطر انتخاب نشده است',
-                detail: 'لطفا ابتدا سطر مورد نظر خود را انتخاب کنید'
+                summary: 'Not found record',
+                detail: 'Please select record'
             })
             return false
         }
@@ -295,20 +295,20 @@ class MainView extends Component {
 
     refreshTab(row) {
         const { details, table, activeDetailIndex } = this.state
-
+        console.log(row, activeDetailIndex)
         if(activeDetailIndex !== -1) {
 
             const detailTable = details[activeDetailIndex]
             let conditions = [];
-
-            if(row && detailTable && detailTable.children) 
+            console.log(detailTable)
+            if(row && detailTable && detailTable.chl) 
             {
-                const foreignKey = detailTable.children.find( (item) => item.table === table.nme)
+                const foreignKey = detailTable.chl[table.nme]
                 const rowPrimary = row[table.pk]
                 conditions = [{
                     logic: 'AND',
                     cluse: [{
-                        key: foreignKey.key,
+                        key: foreignKey,
                         op: EQ,
                         value: rowPrimary
                     }]
@@ -417,6 +417,7 @@ class MainView extends Component {
 
     onHideDialog() {
         this.setState({ mode: '' })
+        this.messages.clear()
     }
 
     onShowDialog(mode) {
@@ -474,20 +475,21 @@ class MainView extends Component {
                 })
                 .catch( err => {
                     window.scrollTo(0, 0)
+                    let errData = err.response.data
                     if(err.response.status === 422) 
                     {
                         this.messages.show({
                             severity: 'error',
                             sticky: true,
-                            detail: validationErrorParser(err.response.data)
+                            detail: validationErrorParser(errData.result)
                         })
                     } 
                     else
                     {
                         this.growl.show({
                             severity: 'error',
-                            summary: 'ایجاد',
-                            detail: err.response.data
+                            summary: 'Error !',
+                            detail: errData.message
                         })
                     }
                 })
@@ -514,7 +516,7 @@ class MainView extends Component {
                             data,
                             mode: '', 
                             pureRow: updatedRow,
-                            row:updatedRow
+                            row: updatedRow
                         }) 
                     } 
                     else 
@@ -531,20 +533,21 @@ class MainView extends Component {
                 })
                 .catch( err => {
                     window.scrollTo(0, 0)
+                    let errData = err.response.data
                     if(err.response.status === 422) 
                     {
                         this.messages.show({
                             severity: 'error',
                             sticky: true,
-                            detail: validationErrorParser(err.response.data)
+                            detail: validationErrorParser(errData.result)
                         })
                     } 
                     else 
                     {
                         this.growl.show({
                             severity: 'error',
-                            summary: 'ویرایش',
-                            detail: err.response.data
+                            summary: 'Error !',
+                            detail: errData.message
                         })
                     }
 

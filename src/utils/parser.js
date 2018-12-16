@@ -5,7 +5,7 @@ import moment from 'moment'
 
 export function userParser(user) {
 	return {
-		name: (user && user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : 'Welcome',
+		name: (user && user.full_name) ? user.full_name : 'Welcome',
 		img: (user && user.img) ? `${SITE_URL}/${user.img}` : false
 	}
 }
@@ -107,17 +107,26 @@ export function boolParser(value) {
 
 
 export function validationErrorParser(errors) {
-	if(Array.isArray(errors)) 
+	let errorMessages = ''
+	if(Array.isArray(errors))
 	{
-		let errorList = errors.map((item, index) => {
-			return <li key={index}> {item} - </li>
+		errors.forEach( error => {
+			let errorMessage = validationErrorParser(error)
+			errorMessages += errorMessage
 		})
-		return <ul>{errorList}</ul>
 	}
-	else
+	else if(typeof errors === 'object' && errors !== null)
 	{
-		return <p>{errors}</p>
+		Object.keys(errors).forEach( errorKey => {
+			let errorMessage = validationErrorParser(errors[errorKey])
+			errorMessages += errorMessage
+		})
 	}
+	else if(typeof errors === 'string') 
+	{		
+		errorMessages += errors
+	}
+	return errorMessages
 }
 
 

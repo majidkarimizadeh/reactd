@@ -23,7 +23,6 @@ class App extends Component {
         super(props)
         this.state = {
             menu: [],
-            user: {},
             err: null,
             layoutMode: 'static',
             layoutColorMode: 'dark',
@@ -41,7 +40,7 @@ class App extends Component {
 
     componentDidMount() {
         this.menuService.getMenuItem()
-        .then(res => this.setState({ menu: res.menu, user: res.user }))
+        .then(res => this.setState({ menu: res.menu }))
         .catch(err => this.setState({ err: err.response })  ) 
     }
 
@@ -127,7 +126,8 @@ class App extends Component {
             throw err
         }
 
-        let logo = '/assets/layout/images/logo-white.png'
+        // let logo = '/assets/layout/images/logo-white.png'
+        let logo = '/assets/layout/images/logo.png'
 
         let wrapperClass = classNames('layout-wrapper', {
             'layout-overlay': this.state.layoutMode === 'overlay',
@@ -146,9 +146,9 @@ class App extends Component {
                     <ScrollPanel ref={(el) => this.layoutMenuScroller = el} style={{height:'100%'}}>
                         <div className="layout-sidebar-scroll-content" >
                             <div className="layout-logo">
-                                <img alt="Logo" src={logo} style={{width:'50%'}} />
+                                <img alt="Logo" src={logo} style={{width:'30%'}} />
                             </div>
-                            <AppInlineProfile user={this.state.user} />
+                            <AppInlineProfile />
                             <AppMenu model={this.state.menu} onMenuItemClick={this.onMenuItemClick} />
                         </div>
                     </ScrollPanel>

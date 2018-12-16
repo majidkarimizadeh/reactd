@@ -12,8 +12,7 @@ export class MenuService {
         return axios.post(`${API_URL}/get-menu`, apiObject)
                 .then(res => {
                     return {
-                        menu: this.generateMenuItem(res.data.menu),
-                        user: userParser(res.data.user)
+                        menu: this.generateMenuItem(res.data.menu)
                     }
                 })
     }

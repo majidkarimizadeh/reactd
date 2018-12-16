@@ -23,23 +23,26 @@ export class AppInlineProfile extends Component {
         authService.logout()
             .then(() => {
                 localStorage.removeItem('token')
+                localStorage.removeItem('user_full_name')
+                localStorage.removeItem('user_img')
                 history.push('/login')
             })
     }
 
     render() {
-        const { user } = this.props
+        const user_full_name = localStorage.getItem('user_full_name')
+        const user_img = JSON.parse(localStorage.getItem('user_img'))
         return  (
             <div className="profile">
                 <div>
                     <img 
-                        src={user.img ? user.img : '/assets/layout/images/profile.png'} 
-                        alt={user.name}
+                        src={user_img ? user_img : '/assets/layout/images/profile.png'} 
+                        alt={user_full_name}
                     />
                 </div>
                 <a className="profile-link" onClick={this.onClick}>
                     <span className="username">
-                        {user.name}
+                        {user_full_name}
                     </span>
                     <i className="pi pi-fw pi-cog"/>
                 </a>

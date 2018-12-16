@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { Messages } from 'primereact/messages'
 import { InputText } from 'primereact/inputtext'
 import { Password } from 'primereact/password'
 import { Button } from 'primereact/button';
 import { AuthService } from '../../service/AuthService'
 import { Message } from 'primereact/message';
+import { validationErrorParser } from '../../utils/parser'
 import history from '../../utils/history'
 import Loader from 'react-loader-spinner'
 import './style.css'
@@ -36,35 +38,48 @@ export default class LoginComponent extends Component {
     		error: '',
     		isLoading: true,
     	})
+    	this.messages.clear()
     	if(email && password) {
 
     		this.authService.login(email, password)
     		.then(res => {
     			if(res.data) 
     			{
-	    			localStorage.setItem('token', res.data.token)
-	    			localStorage.setItem('user', res.data.user)
+    				let data = res.data
+	    			localStorage.setItem('token', data.token)
+	    			if(data.user)
+	    			{
+	    				let user = data.user;
+	    				localStorage.setItem('user_full_name', user.full_name)
+	    				localStorage.setItem('user_img', user.img)
+	    			}
 	                history.push('/admin/users')
-    			} 
-    			else
-    			{
-	    			this.setState({
-	    				error: 'Server Error !'
-	    			})
     			}
     		})
     		.catch(err => {
     			window.scrollTo(0, 0)
     			if(err && err.response) {
-	    			this.setState({
-	    				error: err.response.data
-	    			})
+    				if(err.response.status === 422) 
+    				{
+    					this.messages.show({
+                            severity: 'error',
+                            sticky: true,
+                            detail: validationErrorParser(err.response.data)
+                        })
+    				}
+    				else if(err && err.response) 
+    				{
+	    				let errorData = err.response.data
+		    			this.setState({
+		    				error: errorData.message
+		    			})
+	    			}	
     			}
     		})
 
     	} else {
     		this.setState({
-    			error: 'نام کاربری و رمز عبور الزامی است.'
+    			error: 'Please fill username and password'
     		})
     	}
     	this.setState({ isLoading: false })
@@ -75,12 +90,13 @@ export default class LoginComponent extends Component {
         return (
         	<div className='container p-col-12'>
 	        	<div className="logo p-lg-3 p-md-4 p-sm-6 p-xs-8">
-	                <img src="http://destription.com/images/logo.png" alt="" />
+	                <img src='assets/layout/images/logo.png' alt="" />
 		        </div>
 	        	<div className='login-container p-lg-4 p-md-6 p-sm-8 p-xs-12'>
 	        		<h3 className="form-title">
-	        			ورود
+	        			Login
 	        		</h3>
+	        		<Messages className='validation-error' ref={(el) => this.messages = el}></Messages>
 	        		{error &&
 		        		<div className="p-col-12 p-md-12">
 	                        <Message severity="error" text={error} />
@@ -101,7 +117,7 @@ export default class LoginComponent extends Component {
 	        			<div className='p-col-12 p-md-12'>
 		                    <InputText 
 		                    	name='email'
-		                    	placeholder='نام کاربری'
+		                    	placeholder='Email'
 		                    	className='form-control'
 		                    	onChange={this.onChange}
 		                    />
@@ -109,7 +125,7 @@ export default class LoginComponent extends Component {
 		                <div className='p-col-12 p-md-12'>
 		                    <Password
 		                    	name='password'
-		                    	placeholder='رمز عبور'
+		                    	placeholder='Password'
 		                    	feedback={false}
 		                    	className='form-control'
 		                    	onChange={this.onChange}
@@ -118,7 +134,7 @@ export default class LoginComponent extends Component {
 		                <div className="p-col-12 p-md-12">
 			                <Button 
 			                	onClick={this.login}
-			                	label="ورود"
+			                	label="Login"
 			                />
 			            </div>
 			            </>
@@ -126,7 +142,7 @@ export default class LoginComponent extends Component {
         		</div>
 	            <div className='bottom-layout p-lg-4 p-md-6 p-sm-8 p-xs-12'>
 		        	<Link to='/register'>
-		        		ایجاد حساب کاربری
+		        		Create an account
 	        		</Link>
 	        	</div>
 	        	<span className='powered'>
