@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'babel-polyfill';
-import { Router, Switch, Route } from 'react-router-dom'
+import { Router, Switch, Route, Redirect } from 'react-router-dom'
 import registerServiceWorker from './utils/registerServiceWorker';
 import history from './utils/history'
 import PrivateRoute from './utils/privateRoute'
@@ -14,10 +14,11 @@ import ErrorBoundary from './utils/errorBoundary'
 ReactDOM.render(
     <Router history={history}>
 	   	<Switch>
-	      	<PrivateRoute path='/admin' component={App} />
 	      	<Route exact path='/logout' component={LogoutComponent} />
+	      	<Redirect exact path='/' to='/login' />
 	      	<Route exact path='/login' component={LoginComponent} />
 	      	<Route exact path='/register' component={RegisterComponent} />
+	      	<PrivateRoute path='/admin' component={App} />
 	   	</Switch>
     </Router>,
     document.getElementById('root')

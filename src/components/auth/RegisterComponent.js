@@ -58,7 +58,7 @@ export default class RegisterComponent extends Component {
 	        		}
 
 	        		<div className='p-col-12 p-md-12'>
-                        <Message severity='error' text='Not available now' />
+                        <Message severity='error' text='Registration is not available right now' />
                     </div>
 	        		{/*<div className='p-col-12 p-md-12'>
 	                    <InputText 
