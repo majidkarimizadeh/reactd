@@ -22,6 +22,7 @@ export default class LoginComponent extends Component {
         }
         this.onChange = this.onChange.bind(this)
         this.login = this.login.bind(this)
+        this.keyPress = this.keyPress.bind(this)
         this.authService = new AuthService()
     }
 
@@ -29,6 +30,13 @@ export default class LoginComponent extends Component {
     	this.setState({
     		[e.target.name]: e.target.value
     	})
+    }
+
+    keyPress(e) {
+    	if(e.charCode === 13) 
+    	{
+    		this.login()
+    	}
     }
 
     login() {
@@ -116,6 +124,7 @@ export default class LoginComponent extends Component {
 		                    	feedback={false}
 		                    	className='form-control'
 		                    	onChange={this.onChange}
+		                    	onKeyPress={this.keyPress}
 		                    />
 		                </div>
 		                <div className="p-col-12 p-md-12 login-btn">
