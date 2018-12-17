@@ -71,7 +71,7 @@ class MainView extends Component {
             showFilter: false,
 
             isMapLoaded: false,
-            lang: null,
+            lang: '',
         }
 
         this.onHideDialog = this.onHideDialog.bind(this)
@@ -295,12 +295,10 @@ class MainView extends Component {
 
     refreshTab(row) {
         const { details, table, activeDetailIndex } = this.state
-        console.log(row, activeDetailIndex)
         if(activeDetailIndex !== -1) {
 
             const detailTable = details[activeDetailIndex]
             let conditions = [];
-            console.log(detailTable)
             if(row && detailTable && detailTable.chl) 
             {
                 const foreignKey = detailTable.chl[table.nme]
@@ -338,9 +336,44 @@ class MainView extends Component {
         }
     }
 
-    onLanguageChange(lang) {
-        this.setState({ lang })
-        this.onRefreshTableData()
+    onLanguageChange(lang, refreshData = true) {
+        if(lang) 
+        {
+            this.setState({ lang })
+        }
+
+        if(refreshData) 
+        {
+            this.onRefreshTableData()
+        }
+        else
+        {
+            const { row, table, mode, cols } = this.state
+            if(mode !== 'create') 
+            {
+                let apiObject = new FormData()
+                apiObject.append('url', table.url)
+                apiObject.append('lang', lang)
+                apiObject.append('primary', row[table.pk])
+                apiObject.append('mode', (mode == 'edit') ? 'edt' : 'shw')
+                this.rowService.getRow(apiObject)
+                    .then( res => {
+                        let resRow = res.data
+                        let newRow = {}
+                        cols.forEach(col => {
+                            if(col.nme in resRow && resRow[col.nme] !== null)  
+                            {
+                                newRow[col.nme] = resRow[col.nme]
+                            }
+                            else 
+                            {
+                                newRow[col.nme] = ('trs' in col) ? '' : row[col.nme]
+                            }
+                        })
+                        this.setState({ row: newRow })
+                    })
+            }
+        }
     }
 
     onLookUp(rdf, name) {
@@ -366,10 +399,14 @@ class MainView extends Component {
     onSubmitAlertDialog(mode) {
         if(mode === 'delete') 
         {
-            const { row, table } = this.state
+            const { row, table, lang } = this.state
             let apiObject = new FormData()
             apiObject.append('url', table.url)
             apiObject.append('primary', row[table.pk])
+            if(lang) 
+            {
+                apiObject.append('lang', lang)
+            }
             this.rowService.deleteRow(apiObject)
                 .then( (res) => {
                     this.growl.show({
@@ -418,6 +455,11 @@ class MainView extends Component {
     onHideDialog() {
         this.setState({ mode: '' })
         this.messages.clear()
+        const { lang } = this.state
+        if(lang)
+        {
+            this.onLanguageChange(lang)
+        }
     }
 
     onShowDialog(mode) {
@@ -444,9 +486,13 @@ class MainView extends Component {
     }
 
     onFormSubmit(mode) {
-        const { pureRow, row, table, cols } = this.state
+        const { pureRow, row, table, cols, lang } = this.state
         let fields = []
         let apiObject = new FormData()
+        if(lang) 
+        {
+            apiObject.append('lang', lang)
+        }
         this.messages.clear()
 
         if(mode === 'create') 
@@ -506,23 +552,24 @@ class MainView extends Component {
             })
             this.rowService.updateRow(apiObject)
                 .then( res => {  
-                    let data = [...this.state.data]
-                    let index = data.indexOf(pureRow)
-                    if(index !== -1) 
-                    {
-                        let updatedRow = Object.assign({}, pureRow, res.data.result)
-                        data.splice(index, 1, updatedRow)
-                        this.setState({ 
-                            data,
-                            mode: '', 
-                            pureRow: updatedRow,
-                            row: updatedRow
-                        }) 
-                    } 
-                    else 
-                    {
+                    this.onRefreshTableData()
+                    // let data = [...this.state.data]
+                    // let index = data.indexOf(pureRow)
+                    // if(index !== -1) 
+                    // {
+                    //     let updatedRow = Object.assign({}, pureRow, res.data.result)
+                    //     data.splice(index, 1, updatedRow)
+                    //     this.setState({ 
+                    //         data,
+                    //         mode: '', 
+                    //         pureRow: updatedRow,
+                    //         row: updatedRow
+                    //     }) 
+                    // } 
+                    // else 
+                    // {
                         this.setState({ mode: '' }) 
-                    }
+                    // }
 
                     this.growl.show({
                         severity: 'success',
@@ -790,6 +837,8 @@ class MainView extends Component {
 
                         isMapLoaded={isMapLoaded}
                         onMapLoad={this.onMapLoad}
+                        lang={lang}
+                        onLanguageChange={this.onLanguageChange}
                     />
                 }
 
@@ -813,7 +862,7 @@ class MainView extends Component {
                                 <div>
                                     <div className="card-heading">
                                         <div className="card-heading-actions">
-                                            {table.trans && 
+                                            {table.trs && 
                                                 <LanguageSelector
                                                     value={lang}
                                                     onLanguageChange={this.onLanguageChange}

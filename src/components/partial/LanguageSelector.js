@@ -6,14 +6,14 @@ export default class LanguageSelector extends Component {
 
     componentWillMount() {
         const { value, onLanguageChange } = this.props
-        if(value === null) 
+        if(!value) 
         {
             onLanguageChange(DEFAULT_LANGUAGE)
         }
     }
 
     render() {
-        const { value, onLanguageChange } = this.props
+        const { value, onLanguageChange, refreshData } = this.props
 
         return  (
             <div className='language-selector-container'>
@@ -21,9 +21,13 @@ export default class LanguageSelector extends Component {
                     className='language-selector'
                     value={value} 
                     options={LANGUAGES}
-                    onChange={(e) => onLanguageChange(e.value)}
+                    onChange={(e) => onLanguageChange(e.value, refreshData)}
                 />
             </div>
         )
     }
+}
+
+LanguageSelector.defaultProps = {
+    refreshData: true
 }

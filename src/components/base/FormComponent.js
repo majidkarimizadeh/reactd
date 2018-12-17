@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import LanguageSelector from '../partial/LanguageSelector'
 import TreeComponent from './TreeComponent'
 import SelectComponent from './SelectComponent'
 import TextComponent from './TextComponent'
@@ -38,6 +39,8 @@ export default class FormComponent extends Component {
             crop,
             isMapLoaded,
             onMapLoad,
+            lang,
+            onLanguageChange,
         } = this.props
 
         let modeFields = []
@@ -76,6 +79,13 @@ export default class FormComponent extends Component {
                 <div className='card card-w-title'>
                     <div className="card-heading">
                         <div className="card-heading-actions">
+                            {table.trs && 
+                                <LanguageSelector
+                                    value={lang}
+                                    refreshData={false}
+                                    onLanguageChange={onLanguageChange}
+                                />
+                            }
                         </div>
                         <h1 className="card-heading-caption">{table.lbl}</h1>
                     </div>

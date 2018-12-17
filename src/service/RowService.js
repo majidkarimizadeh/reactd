@@ -29,4 +29,9 @@ export class RowService {
     	return axios.post(`${API_URL}/store/`, apiObject, config)
     }
 
+    getRow(apiObject) {
+        Service.setToken(apiObject)
+        return axios.post(`${API_URL}/get-row/`, apiObject)
+    }
+
 }
