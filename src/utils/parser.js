@@ -107,24 +107,24 @@ export function boolParser(value) {
 
 
 export function validationErrorParser(errors) {
-	let errorMessages = ''
+	let errorMessages = []
 	if(Array.isArray(errors))
 	{
 		errors.forEach( error => {
 			let errorMessage = validationErrorParser(error)
-			errorMessages += errorMessage
+			errorMessages.push(errorMessage)
 		})
 	}
 	else if(typeof errors === 'object' && errors !== null)
 	{
 		Object.keys(errors).forEach( errorKey => {
 			let errorMessage = validationErrorParser(errors[errorKey])
-			errorMessages += errorMessage
+			errorMessages.push(errorMessage)
 		})
 	}
 	else if(typeof errors === 'string') 
 	{		
-		errorMessages += errors
+		errorMessages.push(<p key={errors}>{errors}</p>)
 	}
 	return errorMessages
 }

@@ -19,7 +19,6 @@ export default class LoginComponent extends Component {
         	email: '',
         	password: '',
         	isLoading: false,
-        	error: ''
         }
         this.onChange = this.onChange.bind(this)
         this.login = this.login.bind(this)
@@ -35,58 +34,51 @@ export default class LoginComponent extends Component {
     login() {
     	const { email, password } = this.state;
     	this.setState({ 
-    		error: '',
     		isLoading: true,
     	})
     	this.messages.clear()
-    	if(email && password) {
-
-    		this.authService.login(email, password)
-    		.then(res => {
-    			if(res.data) 
+		this.authService.login(email, password)
+		.then(res => {
+			if(res.data) 
+			{
+				let data = res.data
+    			localStorage.setItem('token', data.token)
+    			if(data.user)
     			{
-    				let data = res.data
-	    			localStorage.setItem('token', data.token)
-	    			if(data.user)
-	    			{
-	    				let user = data.user;
-	    				localStorage.setItem('user_full_name', user.full_name)
-	    				localStorage.setItem('user_img', user.img)
-	    			}
-	                history.push('/admin/users')
+    				let user = data.user;
+    				localStorage.setItem('user_full_name', user.full_name)
+    				localStorage.setItem('user_img', user.img)
     			}
-    		})
-    		.catch(err => {
-    			window.scrollTo(0, 0)
-    			if(err && err.response) {
-    				if(err.response.status === 422) 
-    				{
-    					this.messages.show({
-                            severity: 'error',
-                            sticky: true,
-                            detail: validationErrorParser(err.response.data)
-                        })
-    				}
-    				else if(err && err.response) 
-    				{
-	    				let errorData = err.response.data
-		    			this.setState({
-		    				error: errorData.message
-		    			})
-	    			}	
-    			}
-    		})
-
-    	} else {
-    		this.setState({
-    			error: 'Please fill username and password'
-    		})
-    	}
+                history.push('/admin/users')
+			}
+		})
+		.catch(err => {
+			window.scrollTo(0, 0)
+			if(err && err.response) {
+				if(err.response.status === 422) 
+				{
+					this.messages.show({
+                        severity: 'error',
+                        sticky: true,
+                        detail: validationErrorParser(err.response.data)
+                    })
+				}
+				else if(err && err.response) 
+				{
+    				let errorData = err.response.data
+    				this.messages.show({
+                        severity: 'error',
+                        sticky: true,
+                        detail: validationErrorParser(errorData.message)
+                    })
+    			}	
+			}
+		})
     	this.setState({ isLoading: false })
     }
 
     render() {
-    	const { error, isLoading } = this.state
+    	const { isLoading } = this.state
         return (
         	<div className='container p-col-12'>
 	        	<div className="logo p-lg-3 p-md-4 p-sm-6 p-xs-8">
@@ -97,11 +89,6 @@ export default class LoginComponent extends Component {
 	        			Login
 	        		</h3>
 	        		<Messages className='validation-error' ref={(el) => this.messages = el}></Messages>
-	        		{error &&
-		        		<div className="p-col-12 p-md-12">
-	                        <Message severity="error" text={error} />
-	                    </div>
-	        		}
 	        		{isLoading && 
 	        			<div style={{width:'100%', textAlign:'center'}}>
 		        			<Loader 
