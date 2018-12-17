@@ -102,3 +102,7 @@
 .powered a {
     color: #7a8ca5 !important;
 }
+
+.login-btn {
+    text-align: center;
+}

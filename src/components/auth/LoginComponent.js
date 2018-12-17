@@ -131,7 +131,7 @@ export default class LoginComponent extends Component {
 		                    	onChange={this.onChange}
 		                    />
 		                </div>
-		                <div className="p-col-12 p-md-12">
+		                <div className="p-col-12 p-md-12 login-btn">
 			                <Button 
 			                	onClick={this.login}
 			                	label="Login"
