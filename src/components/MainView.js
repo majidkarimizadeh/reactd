@@ -13,7 +13,7 @@ import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
 import { hasCustomFun } from './custom'
-import { EQ } from '../utils/config'
+import { EQ, LIKE } from '../utils/config'
 import QueryBuilder from '../utils/queryBuilder'
 import Loader from 'react-loader-spinner'
 import history from '../utils/history'
@@ -41,6 +41,7 @@ class MainView extends Component {
             detailCols: [],
             detailTable: {},
             detailRow: {},
+            detailTotalRows: 0,
 
             isLoading: true,
 
@@ -138,7 +139,7 @@ class MainView extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { data, table, cols, details } = this.props
+        const { data, table, cols, details, totalRows } = this.props
 
         if (prevProps.data !== data) 
         {
@@ -155,6 +156,10 @@ class MainView extends Component {
         if (prevProps.details !== details) 
         {
             this.setState({ details })
+        }
+        if (prevProps.totalRows !== totalRows) 
+        {
+            this.setState({ totalRows })
         }
 
         if(prevProps.match.params.table !== this.props.match.params.table)
@@ -307,7 +312,8 @@ class MainView extends Component {
                     logic: 'AND',
                     cluse: [{
                         key: foreignKey,
-                        op: EQ,
+                        // op: EQ,
+                        op: LIKE,
                         value: rowPrimary
                     }]
                 }]
@@ -318,7 +324,7 @@ class MainView extends Component {
                             detailDetails: details,
                             detailCols: cols,
                             detailTable: table,
-                            totalRows: totalRows
+                            detailTotalRows: totalRows
                         })
                         let options = {
                             lang: this.state.lang,
@@ -782,6 +788,7 @@ class MainView extends Component {
             detailCols,
             detailTable,
             detailRow,
+            detailTotalRows,
             baseSrc,
             src,
             crop,
@@ -925,6 +932,7 @@ class MainView extends Component {
                                                                 cols={detailCols}
                                                                 row={detailRow}
                                                                 details={detailDetails}
+                                                                totalRows={detailTotalRows}
                                                                 {...props} 
                                                             />
                                                         }}
