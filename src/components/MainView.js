@@ -194,31 +194,33 @@ class MainView extends Component {
         let filter = {...filterRow}
         filter[name] = data
         this.setState({ 
-            filterRow:filter,
+            filterRow: filter,
             dataLoading: true
         })
 
-        let conditions = this.queryBuilder.getCondition(filter);
-        let options = {
-            lang: lang,
-            start: 0,
-            limit: numRows,
-            conditions: conditions
-        }
-        this.tableService.getTableData(table.url, options)
-            .then( res => {
-                this.setState({ 
-                    data: res.data,
-                    totalRows: res.totalRows,
-                    dataLoading: false
-                })   
-            })
-            .catch(err => {
-                this.setState({ 
-                    err: err.response,
-                    dataLoading: false
+        setTimeout( () => {
+            let conditions = this.queryBuilder.getCondition(filter);
+            let options = {
+                lang: lang,
+                start: 0,
+                limit: numRows,
+                conditions: conditions
+            }
+            this.tableService.getTableData(table.url, options)
+                .then( res => {
+                    this.setState({ 
+                        data: res.data,
+                        totalRows: res.totalRows,
+                        dataLoading: false
+                    })   
                 })
-            }) 
+                .catch(err => {
+                    this.setState({ 
+                        err: err.response,
+                        dataLoading: false
+                    })
+                }) 
+        }, 500)
     }
 
     onMapLoad(loading) {
