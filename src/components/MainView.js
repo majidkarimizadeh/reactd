@@ -237,20 +237,30 @@ class MainView extends Component {
 
     onLoadData(tableUrl, first) {
         this.setState({ dataLoading: true })
+
         setTimeout(() => {
+            const { showFilter, filterRow,  numRows } = this.state
             const startIndex = first
-            const limitIndex = this.state.numRows
+            const limitIndex = numRows
             let options = {
                 lang: this.state.lang,
                 start: startIndex,
-                limit: limitIndex
+                limit: limitIndex,
             }
+
+            if(showFilter) 
+            {
+                let conditions = this.queryBuilder.getCondition(filterRow);
+                options['conditions'] = conditions
+            }
+
             this.tableService.getTableData(tableUrl, options)
                 .then( res => {
                     this.setState({
                         firstRow: startIndex,
                         data: res.data,
-                        dataLoading: false
+                        dataLoading: false,
+                        totalRows: res.totalRows
                     })    
                 })
                 .catch( err => {
