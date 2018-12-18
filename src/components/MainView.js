@@ -385,8 +385,14 @@ class MainView extends Component {
     }
 
     onLookUp(rdf, name) {
-        let { options } = this.state
-        this.lookUpService.getLookUpByRdf(rdf)
+        let { options, lang } = this.state
+        let apiObject = new FormData();
+        apiObject.append('rdf', rdf)
+        if(lang) 
+        {
+            apiObject.append('lang', lang)
+        }
+        this.lookUpService.getLookUpByRdf(apiObject)
             .then( opts => {
                 options[name] = opts
                 this.setState({ options }) 

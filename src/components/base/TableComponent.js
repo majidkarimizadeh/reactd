@@ -260,6 +260,7 @@ export default class TableComponent extends Component {
                     else if(col.cnt === 'wys') 
                     {
                         body = this.wysiwygTemplate
+                        filterElement = this.textFilterTemplate(col.nme)
                     }
                     return (
                         <Column 
