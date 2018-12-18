@@ -31,18 +31,18 @@ export class AppInlineProfile extends Component {
 
     render() {
         const user_full_name = localStorage.getItem('user_full_name')
-        const user_img = JSON.parse(localStorage.getItem('user_img'))
+        const user_img = localStorage.getItem('user_img')
         return  (
             <div className="profile">
                 <div>
                     <img 
                         src={user_img ? user_img : '/assets/layout/images/profile.png'} 
-                        alt={user_full_name}
+                        alt={user_full_name ? user_full_name : 'welcome'}
                     />
                 </div>
                 <a className="profile-link" onClick={this.onClick}>
                     <span className="username">
-                        {user_full_name}
+                        {user_full_name ? user_full_name : 'welcome'}
                     </span>
                     <i className="pi pi-fw pi-cog"/>
                 </a>

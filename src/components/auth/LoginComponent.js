@@ -54,8 +54,8 @@ export default class LoginComponent extends Component {
     			if(data.user)
     			{
     				let user = data.user;
-    				localStorage.setItem('user_full_name', user.full_name)
-    				localStorage.setItem('user_img', user.img)
+    				localStorage.setItem('user_full_name', user.full_name.trim())
+    				localStorage.setItem('user_img', user.img.trim())
     			}
                 history.push('/admin/users')
 			}
