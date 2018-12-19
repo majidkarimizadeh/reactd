@@ -43,7 +43,7 @@ html, body, #root{
     -moz-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     margin-bottom: 20px;
-    z-index: 15 !important;
+    z-index: 90000 !important;
 }
 .JDheader, .JC-months, .days-titles, .day-items {
 	padding: 8px;
