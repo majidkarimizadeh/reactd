@@ -12,6 +12,7 @@ export default class PasswordComponent extends Component {
             name, 
             value, 
             readOnly,
+            required,
             onInputChange,
         } = this.props
 
@@ -19,6 +20,9 @@ export default class PasswordComponent extends Component {
             <div>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     <span>{label}</span>
+                    {(!readOnly && required) &&
+                        <span className='required'>(این فیلد اجباری است)</span>
+                    }
                     {readOnly && 
                         <span> : ---</span>
                     }

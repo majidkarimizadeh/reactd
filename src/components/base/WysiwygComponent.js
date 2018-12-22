@@ -32,6 +32,7 @@ export default class WysiwygComponent extends Component {
             value, 
             onInputChange,
             readOnly,
+            required,
         } = this.props
 
         return (
@@ -39,6 +40,9 @@ export default class WysiwygComponent extends Component {
 
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     <span> {label} </span>
+                    {(!readOnly && required) &&
+                        <span className='required'>(این فیلد اجباری است)</span>
+                    }
                     {readOnly && 
                         <span>
                             : {value ? Parser(value) : ' ---'}

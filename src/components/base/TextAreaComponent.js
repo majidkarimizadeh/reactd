@@ -13,12 +13,16 @@ export default class TextAreaComponent extends Component {
             value, 
             onInputChange,
             readOnly,
+            required,
         } = this.props
 
         return (
             <div>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     <span> {label} </span>
+                    {(!readOnly && required) &&
+                        <span className='required'>(این فیلد اجباری است)</span>
+                    }
                     {readOnly && 
                         <span>{value ? ' : ' + value : ' : ---'}</span>
                     }

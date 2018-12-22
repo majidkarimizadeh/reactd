@@ -13,13 +13,17 @@ export default class SwitchComponent extends Component {
             name, 
             value, 
             onInputChange,
-            readOnly
+            readOnly,
+            required,
         } = this.props
 
         return (
             <div>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     <span>{label}</span>
+                    {(!readOnly && required) &&
+                        <span className='required'>(این فیلد اجباری است)</span>
+                    }
                     {readOnly && 
                         <span> : {boolParser(+value)}</span>
                     }

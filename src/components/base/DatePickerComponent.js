@@ -35,6 +35,7 @@ export default class DatePickerComponent extends Component {
             value, 
             jalali,
             onInputChange,
+            required,
             readOnly,
         } = this.props
 
@@ -45,6 +46,9 @@ export default class DatePickerComponent extends Component {
             <div style={{textAlign:'right'}}>
                 <label className='lable' htmlFor={`lbl-${index}`}> 
                     {label} 
+                    {(!readOnly && required) &&
+                        <span className='required'>(این فیلد اجباری است)</span>
+                    }
                     {readOnly && 
                         <span>
                             {` : ${jalali ? getJalDateByGreDate(value, showTime) : getFormatedGreDate(value, showTime)}`}

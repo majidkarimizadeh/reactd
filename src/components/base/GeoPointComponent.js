@@ -44,6 +44,7 @@ export default class GeoPointComponent extends Component {
 			value,
 			index,
 			label,
+			required,
 			isMapLoaded
 		} = this.props
 
@@ -51,6 +52,9 @@ export default class GeoPointComponent extends Component {
 			<div>
 				<label className='lable' htmlFor={`lbl-${index}`}> 
                     {label}
+                    {(!readOnly && required) &&
+                        <span className='required'>(این فیلد اجباری است)</span>
+                    }
                 </label>
 				{isMapLoaded && 
 					<GMap 
