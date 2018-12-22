@@ -45,6 +45,7 @@ export default class GeoPointComponent extends Component {
 			index,
 			label,
 			required,
+			readOnly,
 			isMapLoaded
 		} = this.props
 
