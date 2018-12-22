@@ -26,11 +26,18 @@ export default class ErrorBoundary extends Component {
 	          		<div>
 	          			<h1 className='status'>{error.status}</h1>
 	          			<div className='message'>
-	          				<div>{error.data}</div>
+	          				<div>{error.data.error}</div>
 	          				<div>
-	          					<a onClick={() => history.goBack()} className='back'>
-		          					back
-		          				</a>
+                                {(error.status === 401) && 
+                                    <a onClick={() => history.push('/login')} className='back'>
+                                        login
+                                    </a>
+                                }
+                                {(error.status !== 401) && 
+    	          					<a onClick={() => history.goBack()} className='back'>
+    		          					back
+    		          				</a>
+                                }
 	          				</div>
           				</div>
 	          		</div>
