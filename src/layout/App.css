@@ -450,7 +450,7 @@ body .p-checkbox-label {
 	font-size: 18px;
 }
 
-.radio-input {
+.radio-input > label {
 	cursor: pointer;
 }
 
