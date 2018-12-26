@@ -250,6 +250,8 @@ export default class FormComponent extends Component {
             mode,
             lang,
             onLanguageChange,
+            showHeader,
+            cardContainerStyle
         } = this.props
 
         let modeFields = []
@@ -289,19 +291,21 @@ export default class FormComponent extends Component {
 
 		return (
             <div className='p-col-12'>
-                <div className='card card-w-title'>
-                    <div className="card-heading">
-                        <div className="card-heading-actions">
-                            {table.trs && 
-                                <LanguageSelector
-                                    value={lang}
-                                    refreshData={false}
-                                    onLanguageChange={onLanguageChange}
-                                />
-                            }
+                <div className='card card-w-title' style={cardContainerStyle}>
+                    {showHeader && 
+                        <div className="card-heading">
+                            <div className="card-heading-actions">
+                                {table.trs && 
+                                    <LanguageSelector
+                                        value={lang}
+                                        refreshData={false}
+                                        onLanguageChange={onLanguageChange}
+                                    />
+                                }
+                            </div>
+                            <h1 className="card-heading-caption">{table.lbl}</h1>
                         </div>
-                        <h1 className="card-heading-caption">{table.lbl}</h1>
-                    </div>
+                    }
                     <TabView>
                         <TabPanel header='اطلاعات'>
                             <div className='p-grid' style={{direction:'rtl'}}>
@@ -390,19 +394,19 @@ export default class FormComponent extends Component {
                                                 /> 
                                             </div>)
 
-                                        // case 'txt':
-                                        //     return ( <div key={i} className='p-col-12 p-md-6'>
-                                        //         <TextAreaComponent 
-                                        //             index={i}
-                                        //             readOnly={mode === 'view'}
-                                        //             value={emptyRow[col.nme]}
-                                        //             name={col.nme}
-                                        //             required={required}
-                                        //             label={col.lbl}
-                                        //             placeholder={col.plh}
-                                        //             onInputChange={this.onInputChange}
-                                        //         />
-                                        //     </div>)
+                                        case 'txt':
+                                            return ( <div key={i} className='p-col-12 p-md-6'>
+                                                <TextAreaComponent 
+                                                    index={i}
+                                                    readOnly={mode === 'view'}
+                                                    value={emptyRow[col.nme]}
+                                                    name={col.nme}
+                                                    required={required}
+                                                    label={col.lbl}
+                                                    placeholder={col.plh}
+                                                    onInputChange={this.onInputChange}
+                                                />
+                                            </div>)
 
                                         case 'wys':
                                             return ( <WysiwygComponent 
@@ -486,3 +490,7 @@ export default class FormComponent extends Component {
 		)
 	}
 }
+
+FormComponent.defaultProps = {
+    showHeader: true
+};

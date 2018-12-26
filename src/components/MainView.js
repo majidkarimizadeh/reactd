@@ -469,7 +469,7 @@ class MainView extends Component {
             const { table } = this.state
             this.setState({
                 mode,
-                customComponent: getCustomForm(table, this.state, this.onCustomChange)
+                customComponent: getCustomForm(table, this.state, this.onCustomChange, this.messages, this.growl)
             })
         } 
         else 
