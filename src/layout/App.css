@@ -249,13 +249,18 @@ body .p-datatable .p-datatable-thead > tr > th{
 	background-color: #f4f3f8;
 }
 
-.toolbar-btn {
+.toolbar-btn, .morph-btn {
 	background-color: #f4f3f8 !important;
 }
 
 .toolbar-btn span.p-button-text {
 	font-size: 13px !important;
 	padding: 0.2em 0.6em 0.2em 2em !important;
+}
+
+.morph-btn span.p-button-text {
+	font-size: 13px !important;
+	padding: 0.2em 0.6em !important;
 }
 
 body .p-dialog .p-dialog-content, 

@@ -12,7 +12,8 @@ import { Growl } from 'primereact/growl'
 import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
-import { hasCustomFun, getCustomForm } from './custom'
+import { getCustomFun, getCustomForm } from './custom'
+import { getMorph } from './morph'
 import { EQ } from '../utils/config'
 import QueryBuilder from '../utils/queryBuilder'
 import Loader from 'react-loader-spinner'
@@ -102,7 +103,7 @@ class MainView extends Component {
     componentDidMount() {
         setTimeout(() => {
             this.setState({ isLoading: false })
-        }, 500)
+        }, 500)        
     }
 
     componentWillUpdate(prevProps) {
@@ -725,7 +726,8 @@ class MainView extends Component {
                                                     onLanguageChange={this.onLanguageChange}
                                                 />
                                             }
-                                            {hasCustomFun(table.nme, this.onCustomChange, this.state, this.growl)}
+                                            {getCustomFun(table.nme, this.onCustomChange, this.state, this.growl)}
+                                            {getMorph(table.nme, this.onCustomChange, this.state, this.growl)}
                                         </div>
                                         <h1 className="card-heading-caption">{table.lbl}</h1>
                                     </div>
