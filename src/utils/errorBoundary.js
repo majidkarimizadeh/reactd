@@ -7,49 +7,59 @@ export default class ErrorBoundary extends Component {
     	super(props)
     	this.state = { 
     		error: null, 
-    		errorInfo: null
+    		errorMessage: ''
     	}
   	}
   
   	componentDidCatch(error, errorInfo) {
-    	this.setState({
-      		error: error,
-      		errorInfo: errorInfo
-    	})
+
+        let errorMessage = ''
 
         if(error.status && error.status === 401) 
         {
             history.push('/login')
         }
+        else if(error.status && error.status === 500)
+        {
+            errorMessage = 'Server Error';
+        }
+        else if(error.data) 
+        {
+            if(typeof error.data === 'string' || error.data instanceof String) 
+            {
+                errorMessage = error.data;
+            }
+            else 
+            {
+                errorMessage = error.data.error;
+            }
+        }
+        else if(error.response && error.response.data) 
+        {
+            errorMessage = error.response.data;
+        }
+
+        this.setState({
+            error, errorMessage
+        })
   	}
   
   	render() {
-  		const { error } = this.state 
+  		const { error, errorMessage } = this.state 
 
     	if (error) {
-
       		return (
 	        	<div className='error-page'>
 	          		<div>
 	          			<h1 className='status'>{error.status}</h1>
 	          			<div className='message'>
 	          				<div>
-                                {error.data ? error.data.error : ''}
-                            </div>
-                            <div>
-                                {(error.response && error.response.data) ? error.response.data.error : ''}
+                                {errorMessage}
                             </div>
 	          				<div>
-                                {(error.status === 401) && 
-                                    <a onClick={() => history.push('/login')} className='back'>
-                                        login
-                                    </a>
-                                }
-                                {(error.status !== 401) && 
-    	          					<a onClick={() => history.goBack()} className='back'>
-    		          					back
-    		          				</a>
-                                }
+	          					<a onClick={() => history.goBack()} className='back'>
+		          					back
+		          				</a>
 	          				</div>
           				</div>
 	          		</div>
