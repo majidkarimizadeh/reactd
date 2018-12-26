@@ -19,6 +19,7 @@ export default class TableComponent extends Component {
     headerTemplate() {
 
         const { 
+            table,
             perm,
             onShowAlertDialog,
             onShowDialog,
@@ -30,28 +31,28 @@ export default class TableComponent extends Component {
             <div>
                 {perm.delete && 
                     <Button 
-                        onClick={() => onShowAlertDialog('delete')}
+                        onClick={() => onShowAlertDialog(('cd' in table) ? 'custom' : 'delete')}
                         icon='fa fa-trash'
                         className='p-button-secondary toolbar-btn'
                     />
                 }
                 {perm.select &&
                     <Button 
-                        onClick={() => onShowDialog('view')}
+                        onClick={() => onShowDialog(('cv' in table) ? 'custom' : 'view')}
                         icon='fa fa-eye'
                         className='p-button-secondary toolbar-btn'
                     />
                 }
                 {perm.update &&
                     <Button
-                        onClick={() => onShowDialog('edit')}
+                        onClick={() => onShowDialog(('ce' in table) ? 'custom' : 'edit')}
                         icon='fa fa-pencil'
                         className='p-button-secondary toolbar-btn'
                     />
                 }
                 {perm.insert &&
                     <Button 
-                        onClick={() => onShowDialog('create')}
+                        onClick={() => onShowDialog(('cc' in table) ? 'custom' : 'create')}
                         icon='fa fa-plus'
                         className='p-button-secondary toolbar-btn'
                     />

@@ -428,3 +428,32 @@ body .p-checkbox-label {
 .layout-topbar-fa-icon:hover {
 	color: #c3c3c3;
 }
+
+.active-stepper {
+	background-color: #5867dd !important;
+	border-color: #5867dd !important;
+	color: white;
+	cursor: pointer;
+}
+
+.step-in-stepper {
+	cursor: pointer;
+	padding: 8px;
+    /*margin: 2px;*/
+    border: 1px solid #e3e3e3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.step-in-stepper > i {
+	font-size: 18px;
+}
+
+.radio-input {
+	cursor: pointer;
+}
+
+.radio-input > .p-radiobutton {
+	margin: 8px;
+}

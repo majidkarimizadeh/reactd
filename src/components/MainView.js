@@ -12,8 +12,8 @@ import { Growl } from 'primereact/growl'
 import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
-import { hasCustomFun } from './custom'
-import { EQ, LIKE } from '../utils/config'
+import { hasCustomFun, getCustomForm } from './custom'
+import { EQ } from '../utils/config'
 import QueryBuilder from '../utils/queryBuilder'
 import Loader from 'react-loader-spinner'
 import history from '../utils/history'
@@ -51,16 +51,6 @@ class MainView extends Component {
             options: [],
             activeDetailIndex: -1,
 
-            baseSrc: [],
-            src: [],
-            crop: [
-                // {
-                //     x: 10,
-                //     y: 10,
-                //     aspect: 1,
-                //     width: 50,
-                // }
-            ],
             customComponent: null,
             err: null,
 
@@ -75,9 +65,9 @@ class MainView extends Component {
             lang: '',
         }
 
-        this.onHideDialog = this.onHideDialog.bind(this)
+        this.onCancelForm = this.onCancelForm.bind(this)
+        this.onSubmitForm = this.onSubmitForm.bind(this)
         this.onShowDialog = this.onShowDialog.bind(this)
-        this.onFormSubmit = this.onFormSubmit.bind(this)
 
         this.onTabChange = this.onTabChange.bind(this)
         this.onShowAlertDialog = this.onShowAlertDialog.bind(this)
@@ -92,7 +82,6 @@ class MainView extends Component {
         this.onFilterInputChange = this.onFilterInputChange.bind(this)
         this.onFilterVisibilityChange = this.onFilterVisibilityChange.bind(this)
 
-        this.onInputChange = this.onInputChange.bind(this)
         this.onSelectionChange = this.onSelectionChange.bind(this)
         this.onCustomChange = this.onCustomChange.bind(this)
         this.onLoadData = this.onLoadData.bind(this)
@@ -103,16 +92,6 @@ class MainView extends Component {
         this.lookUpService = new LookUpService()
         this.queryBuilder = new QueryBuilder()
 
-        this.onSelectFile = this.onSelectFile.bind(this)
-        this.onCropRevert = this.onCropRevert.bind(this)
-        this.onClearFile = this.onClearFile.bind(this)
-        this.onImageLoaded = this.onImageLoaded.bind(this)
-        this.onCropChange = this.onCropChange.bind(this)
-        this.onCropComplete = this.onCropComplete.bind(this)
-        this.makeClientCrop = this.makeClientCrop.bind(this)
-        this.getCroppedImg = this.getCroppedImg.bind(this)
-
-        this.onMapLoad = this.onMapLoad.bind(this)
         this.onLanguageChange = this.onLanguageChange.bind(this)
     }
 
@@ -223,18 +202,6 @@ class MainView extends Component {
         }, 500)
     }
 
-    onMapLoad(loading) {
-        this.setState({
-            isMapLoaded: loading
-        })
-    }
-
-    onInputChange(data, name) {
-        let row = {...this.state.row}
-        row[name] = data
-        this.setState({ row })
-    }
-
     onLoadData(tableUrl, first) {
         this.setState({ dataLoading: true })
 
@@ -324,8 +291,7 @@ class MainView extends Component {
                     logic: 'AND',
                     cluse: [{
                         key: foreignKey,
-                        // op: EQ,
-                        op: LIKE,
+                        op: EQ,
                         value: rowPrimary
                     }]
                 }]
@@ -355,13 +321,12 @@ class MainView extends Component {
     }
 
     onLanguageChange(lang, refreshData = true) {
-        if(lang) 
-        {
-            this.setState({ lang })
-        }
-
         if(refreshData) 
         {
+            if(lang) 
+            {
+                this.setState({ lang })
+            }
             this.onRefreshTableData()
         }
         else
@@ -389,6 +354,10 @@ class MainView extends Component {
                             }
                         })
                         this.setState({ row: newRow })
+                        if(lang) 
+                        {
+                            this.setState({ lang })
+                        }
                     })
             }
         }
@@ -476,7 +445,7 @@ class MainView extends Component {
         }
     }
 
-    onHideDialog() {
+    onCancelForm() {
         this.setState({ mode: '' })
         this.messages.clear()
         const { lang } = this.state
@@ -487,30 +456,43 @@ class MainView extends Component {
     }
 
     onShowDialog(mode) {
-        if(mode === 'create') {
+        if(mode === 'create') 
+        {
             let { cols } = this.state
             let row = {}
             cols.map( (item, index) => row[item.nme] = '' )
             this.setState({ mode, row, isSelect: false })
             return
         }
-        if(!this.isSelectedRow()) {
-            return
-        }
-        const { cols, row } = this.state
-        cols.forEach((item, index) => {
-            if(item.controller === 'lookup') {
-                this.onLookUp(item.rdf, item.nme)
+        else if(mode === 'custom')
+        {
+            const { table } = this.state
+            this.setState({
+                mode,
+                customComponent: getCustomForm(table, this.state, this.onCustomChange)
+            })
+        } 
+        else 
+        {
+            if(!this.isSelectedRow()) {
+                return
             }
-        })
-        this.setState({ 
-            pureRow: row,
-            mode
-        })
+            const { cols, row } = this.state
+            cols.forEach((item, index) => {
+                if(item.controller === 'lookup') {
+                    this.onLookUp(item.rdf, item.nme)
+                }
+            })
+            this.setState({ 
+                pureRow: row,
+                mode
+            })
+        }
+
     }
 
-    onFormSubmit(mode) {
-        const { pureRow, row, table, cols, lang } = this.state
+    onSubmitForm(filledRow, mode) {
+        const { pureRow, table, cols, lang } = this.state
         let fields = []
         let apiObject = new FormData()
         if(lang) 
@@ -526,7 +508,7 @@ class MainView extends Component {
 
             fields.forEach( (item, index) => {
                 let col = cols.find( (col) => col.no === item)
-                apiObject.append(col.nme, row[col.nme])
+                apiObject.append(col.nme, filledRow[col.nme])
             })
             this.rowService.storeRow(apiObject)
                 .then( res => {
@@ -568,11 +550,11 @@ class MainView extends Component {
         {
             fields = table.edt
             apiObject.append('url', table.url)
-            apiObject.append('primary', row[table.pk])
+            apiObject.append('primary', filledRow[table.pk])
 
             fields.forEach( (item, index) => {
                 let col = cols.find( (col) => col.no === item)
-                apiObject.append(col.nme, row[col.nme])
+                apiObject.append(col.nme, filledRow[col.nme])
             })
             this.rowService.updateRow(apiObject)
                 .then( res => {  
@@ -654,140 +636,6 @@ class MainView extends Component {
             .catch(err => this.setState({ err: err.response })  ) 
     }
 
-
-    onClearFile(index) {
-        let src = [...this.state.src]
-        src[index] = null
-
-        let baseSrc = [...this.state.baseSrc]
-        baseSrc[index] = null
-
-        this.setState({
-            src, baseSrc
-        })
-    }
-
-    onSelectFile(e, name, index) {
-        if (e.files && e.files.length > 0) {
-            const reader = new FileReader()
-            reader.addEventListener('load', () => {
-                let src = [...this.state.src]
-                src[index] = reader.result
-
-                let baseSrc = [...this.state.baseSrc]
-                baseSrc[index] = reader.result
-
-                this.setState({ src, baseSrc })
-            })
-
-            this.setState({ 
-                row: {
-                    ...this.state.row,
-                    [name]: e.files[0]
-                }
-            })
-            reader.readAsDataURL(e.files[0])
-        }
-    }
-
-    onImageLoaded(image, pixelCrop, index) {
-        this.imageRef = image
-
-        const { crop } = this.state
-
-        if (crop[index] && crop[index].aspect && crop[index].height && crop[index].width) {
-            let crops = [...this.state.crop]
-            crops[index] = { ...crop, height: null }
-            this.setState({ crop: crops })
-        } else {
-            this.makeClientCrop(crop[index], pixelCrop, index)
-        }
-    }
-
-    onCropComplete(colName, index) {
-        const { crop } = this.state
-        this.makeClientCrop(crop[index], getPixelCrop(this.imageRef, crop[index]), colName, index)
-    }
-
-    onCropRevert(index) {
-        let src = [...this.state.src]
-        src[index] = this.state.baseSrc[index]
-
-        let crop = [...this.state.crop]
-        crop[index] = {
-            x: 10,
-            y: 10,
-            width: 50,
-            height:null
-        }
-
-        this.setState({ src, crop  })
-    }
-
-    onCropChange(cr, index) {
-        let crop = [...this.state.crop]
-        crop[index] = cr
-        this.setState({ crop })
-    }
-
-    async makeClientCrop(crop, pixelCrop, colName, index) {
-        if (this.imageRef && crop && crop.width && crop.height) {
-            const croppedImageUrl = await this.getCroppedImg(
-                this.imageRef,
-                pixelCrop,
-                'newFile.jpeg',
-                colName
-            )
-
-            let src = [...this.state.src]
-            src[index] = croppedImageUrl
-
-            let crops = [...this.state.crop] 
-            crops[index] = {
-                x: 10,
-                y: 10,
-                width: 50,
-                height:null
-            }
-            this.setState({ src, crop:crops })
-        }
-    }
-
-    getCroppedImg(image, pixelCrop, fileName, colName) {
-        const canvas = document.createElement('canvas')
-        canvas.width = pixelCrop.width
-        canvas.height = pixelCrop.height
-        const ctx = canvas.getContext('2d')
-
-        ctx.drawImage(
-            image,
-            pixelCrop.x,
-            pixelCrop.y,
-            pixelCrop.width,
-            pixelCrop.height,
-            0,
-            0,
-            pixelCrop.width,
-            pixelCrop.height,
-        )
-
-        return new Promise((resolve, reject) => {
-            canvas.toBlob(blob => {
-                this.setState({
-                    row: {
-                        ...this.state.row,
-                        [colName]: blob
-                    }  
-                })
-                blob.name = fileName
-                window.URL.revokeObjectURL(this.fileUrl)
-                this.fileUrl = window.URL.createObjectURL(blob)
-                resolve(this.fileUrl)
-            }, 'image/jpeg')
-        })
-    }
-
-
     render() {
     
         const { 
@@ -844,25 +692,9 @@ class MainView extends Component {
                         cols={cols}
                         mode={mode}
                         row={row}
-                        onInputChange={this.onInputChange}
-                        onSubmit={this.onFormSubmit}
-                        onHideDialog={this.onHideDialog}
-                        onLookUp={this.onLookUp}
-                        options={options}
-
-                        baseSrc={baseSrc}
-                        src={src}
-                        crop={crop}
-                        onSelectFile={this.onSelectFile}
-                        onCropRevert={this.onCropRevert}
-                        onClearFile={this.onClearFile}
-                        onImageLoaded={this.onImageLoaded}
-                        onCropChange={this.onCropChange}
-                        onCropComplete={this.onCropComplete}
-
-                        isMapLoaded={isMapLoaded}
-                        onMapLoad={this.onMapLoad}
                         lang={lang}
+                        onSubmitForm={this.onSubmitForm}
+                        onCancelForm={this.onCancelForm}
                         onLanguageChange={this.onLanguageChange}
                     />
                 }
