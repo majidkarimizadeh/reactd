@@ -4,30 +4,59 @@ import { LANGUAGES, DEFAULT_LANGUAGE } from '../../utils/config'
 
 export default class LanguageSelector extends Component {
 
+    constructor(props) {
+        super(props)
+        this.selected = false
+    }
+
     componentWillMount() {
-        const { value, onLanguageChange } = this.props
+        const { value, onLanguageChange, readOnly } = this.props
         if(!value) 
         {
             onLanguageChange(DEFAULT_LANGUAGE)
         }
+        if(readOnly) 
+        {
+            this.selected = LANGUAGES.find( item => {
+                if(item.value === value) 
+                {
+                    return item;
+                }
+            })
+        }
     }
 
     render() {
-        const { value, onLanguageChange, refreshData } = this.props
+        const { 
+            value,
+            onLanguageChange,
+            refreshData,
+            readOnly
+        } = this.props
 
         return  (
             <div className='language-selector-container'>
-                <SelectButton
-                    className='language-selector'
-                    value={value} 
-                    options={LANGUAGES}
-                    onChange={(e) => onLanguageChange(e.value, refreshData)}
-                />
+                {readOnly && 
+                    <SelectButton
+                        className='language-selector'
+                        value={this.selected.value} 
+                        options={[this.selected]}
+                    />
+                }
+                {!readOnly && 
+                    <SelectButton
+                        className='language-selector'
+                        value={value} 
+                        options={LANGUAGES}
+                        onChange={(e) => onLanguageChange(e.value, refreshData)}
+                    />
+                }
             </div>
         )
     }
 }
 
 LanguageSelector.defaultProps = {
-    refreshData: true
+    refreshData: true,
+    readOnly: false
 }

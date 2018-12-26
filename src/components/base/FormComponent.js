@@ -298,6 +298,7 @@ export default class FormComponent extends Component {
                                 {table.trs && 
                                     <LanguageSelector
                                         value={lang}
+                                        readOnly={mode === 'create'}
                                         refreshData={false}
                                         onLanguageChange={onLanguageChange}
                                     />
