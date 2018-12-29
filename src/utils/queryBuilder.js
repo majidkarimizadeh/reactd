@@ -1,4 +1,4 @@
-import { LIKE } from './config'
+import { LIKE, EQ } from './config'
 
 export default class QueryBuilder {
 
@@ -11,7 +11,7 @@ export default class QueryBuilder {
             {
                 cluse.push({
                     key: key,
-                    op: LIKE,
+                    op: typeof filter[key] === 'number' ? EQ : LIKE,
                     value: filter[key]
                 })
             }
