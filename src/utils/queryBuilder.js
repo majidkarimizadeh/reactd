@@ -6,8 +6,8 @@ export default class QueryBuilder {
     {
         let cluse = new Array()
         let where = []
-        Object.keys(filter).forEach((key) => {
-            if( filter[key] ) 
+        Object.keys(filter).forEach((key) => {            
+            if( filter[key] !== '') 
             {
                 cluse.push({
                     key: key,
