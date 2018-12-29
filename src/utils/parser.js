@@ -42,15 +42,15 @@ export function lookupParser(lookups) {
 
 export function imageParser(record, field) {
 
-	if(field.name && record[field.name])
+	if(field.nme && record[field.nme])
 	{
-		if(record[field.name] == 'jpeg' || record[field.name] == 'jpg' || record[field.name] == 'png') 
+		if(record[field.nme] == 'jpeg' || record[field.nme] == 'jpg' || record[field.nme] == 'png') 
 		{
-			return SITE_URL + "/images/profiles/" + record.id + "/p." + record[field.name]
+			return SITE_URL + "/images/profiles/" + record.id + "/p." + record[field.nme]
 		}
 		else
 		{
-			return SITE_URL + "/" + record[field.name]
+			return SITE_URL + "/" + record[field.nme]
 		}
 	}
 	return false;
