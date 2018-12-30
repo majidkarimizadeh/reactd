@@ -54,6 +54,9 @@ export default class WysiwygComponent extends Component {
                         tag='textarea' 
                         model={value}
                         config={{
+                            requestHeaders: {
+                                Authorization: 'Bearer ' + localStorage.getItem('token')
+                            },
                             placeholderText: placeholder,
                             charCounterCount: true,
                             videoResponsive: true,
