@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
 import DialogComponent from './base/DialogComponent'
 import TableComponent from './base/TableComponent'
+import GridComponent from './base/GridComponent'
 import FormComponent from './base/FormComponent'
 import LanguageSelector from './partial/LanguageSelector'
 import { TableService } from '../service/TableService'
@@ -64,6 +65,8 @@ class MainView extends Component {
 
             isMapLoaded: false,
             lang: '',
+
+            defaultView: 'lst'
         }
 
         this.onCancelForm = this.onCancelForm.bind(this)
@@ -94,6 +97,8 @@ class MainView extends Component {
         this.queryBuilder = new QueryBuilder()
 
         this.onLanguageChange = this.onLanguageChange.bind(this)
+
+        this.onChangeView = this.onChangeView.bind(this)
     }
 
     componentWillMount() {
@@ -152,6 +157,13 @@ class MainView extends Component {
         }
     }
 
+    onChangeView(defaultView) {
+        this.setState({ isLoading: true, defaultView })
+        setTimeout(() => {
+            this.setState({ isLoading: false })
+        }, 500)    
+    }
+
     onFilterVisibilityChange() {
         const { cols, showFilter } = this.state
         let filterRow = {}
@@ -204,8 +216,11 @@ class MainView extends Component {
     }
 
     onLoadData(tableUrl, first) {
+        let { dataLoading } = this.state
+        if(dataLoading) {
+            return
+        }
         this.setState({ dataLoading: true })
-
         setTimeout(() => {
             const { showFilter, filterRow,  numRows } = this.state
             const startIndex = first
@@ -224,12 +239,22 @@ class MainView extends Component {
 
             this.tableService.getTableData(tableUrl, options)
                 .then( res => {
+                    // let defaultView = this.state.defaultView
+                    let updatedData = []
+                    // if(defaultView === 'grd') {
+                    //     updatedData = [
+                    //         ...this.state.data,
+                    //         ...res.data
+                    //     ]
+                    // } else {
+                        updatedData = res.data
+                    // }
                     this.setState({
                         firstRow: startIndex,
-                        data: res.data,
+                        data: updatedData,
                         dataLoading: false,
                         totalRows: res.totalRows
-                    })    
+                    })
                 })
                 .catch( err => {
                     this.setState({ dataLoading: false })
@@ -379,8 +404,10 @@ class MainView extends Component {
             })
     }
 
-    onShowAlertDialog(mode) {
-        if(!this.isSelectedRow()) {
+    onShowAlertDialog(mode, row = null) {
+        if(row) {
+            this.onSelectionChange(row)
+        } else if(!this.isSelectedRow()) {
             return
         }
         this.setState({ alertMode: mode })
@@ -456,7 +483,7 @@ class MainView extends Component {
         }
     }
 
-    onShowDialog(mode) {
+    onShowDialog(mode, selectedRow = null) {
         if(mode === 'create') 
         {
             let { cols } = this.state
@@ -475,7 +502,9 @@ class MainView extends Component {
         } 
         else 
         {
-            if(!this.isSelectedRow()) {
+            if(selectedRow) {
+                this.onSelectionChange(selectedRow)
+            } else if(!this.isSelectedRow()) {
                 return
             }
             const { cols, row } = this.state
@@ -609,17 +638,17 @@ class MainView extends Component {
         }
     }
 
-    onSelectionChange(e) {
-        Object.keys(e.data).forEach(key => {
-            if (typeof e.data[key] === 'object' && e.data[key] === null) {
-                e.data[key] = ''
+    onSelectionChange(selectedRow) {
+        Object.keys(selectedRow).forEach(key => {
+            if (typeof selectedRow[key] === 'object' && selectedRow[key] === null) {
+                selectedRow[key] = ''
             }
         })
         this.setState({
-            row: e.data,
+            row: selectedRow,
             isSelect: true
         })
-        this.refreshTab(e.data)
+        this.refreshTab(selectedRow)
     }
 
     getTableInfo() {
@@ -631,7 +660,9 @@ class MainView extends Component {
                 this.setState({ cols, table, details, row, perm, totalRows })
                 let lang = this.state.lang;
                 this.tableService.getTableData(tableUrl, { lang: lang })
-                    .then( res => this.setState({ data: res.data }))
+                    .then( res => {
+                        this.setState({ data: res.data })
+                    })
                     .catch(err => this.setState({ err: err.response })  ) 
             })
             .catch(err => this.setState({ err: err.response })  ) 
@@ -670,6 +701,7 @@ class MainView extends Component {
             showFilter,
             isMapLoaded,
             lang,
+            defaultView,
         } = this.state
 
         const { match } = this.props
@@ -731,29 +763,58 @@ class MainView extends Component {
                                         </div>
                                         <h1 className="card-heading-caption">{table.lbl}</h1>
                                     </div>
-                                    <TableComponent 
-                                        details={details}
-                                        data={data}
-                                        cols={cols}
-                                        table={table}
-                                        row={row}
-                                        filterRow={filterRow}
-                                        onSelectionChange={this.onSelectionChange}
-                                        dataLoading={dataLoading}
-                                        firstRow={firstRow}
-                                        numRows={numRows}
-                                        totalRows={totalRows}
-                                        onLoadData={this.onLoadData}
-                                        onLookUp={this.onLookUp}
-                                        onFilterInputChange={this.onFilterInputChange}
-                                        options={options}
-                                        showFilter={showFilter}
-                                        perm={perm}
-                                        onShowAlertDialog={this.onShowAlertDialog}
-                                        onShowDialog={this.onShowDialog}
-                                        onFilterVisibilityChange={this.onFilterVisibilityChange}
-                                        onRefreshTableData={this.onRefreshTableData}
-                                    />
+                                    {(defaultView === 'lst') &&
+                                        <TableComponent 
+                                            details={details}
+                                            data={data}
+                                            cols={cols}
+                                            table={table}
+                                            row={row}
+                                            filterRow={filterRow}
+                                            onSelectionChange={this.onSelectionChange}
+                                            dataLoading={dataLoading}
+                                            firstRow={firstRow}
+                                            numRows={numRows}
+                                            totalRows={totalRows}
+                                            onLoadData={this.onLoadData}
+                                            onLookUp={this.onLookUp}
+                                            onFilterInputChange={this.onFilterInputChange}
+                                            options={options}
+                                            showFilter={showFilter}
+                                            perm={perm}
+                                            onShowAlertDialog={this.onShowAlertDialog}
+                                            onShowDialog={this.onShowDialog}
+                                            onFilterVisibilityChange={this.onFilterVisibilityChange}
+                                            onRefreshTableData={this.onRefreshTableData}
+                                            onChangeView={this.onChangeView}
+                                        />
+                                    }
+                                    {(defaultView === 'grd') &&
+                                        <GridComponent
+                                            details={details}
+                                            data={data}
+                                            cols={cols}
+                                            table={table}
+                                            row={row}
+                                            filterRow={filterRow}
+                                            onSelectionChange={this.onSelectionChange}
+                                            dataLoading={dataLoading}
+                                            firstRow={firstRow}
+                                            numRows={numRows}
+                                            totalRows={totalRows}
+                                            onLoadData={this.onLoadData}
+                                            onLookUp={this.onLookUp}
+                                            onFilterInputChange={this.onFilterInputChange}
+                                            options={options}
+                                            showFilter={showFilter}
+                                            perm={perm}
+                                            onShowAlertDialog={this.onShowAlertDialog}
+                                            onShowDialog={this.onShowDialog}
+                                            onFilterVisibilityChange={this.onFilterVisibilityChange}
+                                            onRefreshTableData={this.onRefreshTableData}
+                                            onChangeView={this.onChangeView}
+                                        />
+                                    }
                                 </div>
                             }
                             </div>

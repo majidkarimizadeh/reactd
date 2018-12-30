@@ -7,6 +7,7 @@ import { Dropdown } from 'primereact/dropdown'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { Lightbox } from 'primereact/lightbox'
+import { SelectButton } from 'primereact/selectbutton'
 import { 
     getJalDateByGreDate, 
     getFormatedGreDate, 
@@ -25,6 +26,7 @@ export default class TableComponent extends Component {
             onShowDialog,
             onFilterVisibilityChange,
             onRefreshTableData,
+            onChangeView,
         } = this.props
 
         return <div className='table-header-operation'>
@@ -73,6 +75,11 @@ export default class TableComponent extends Component {
                         className='p-button-secondary toolbar-btn'
                     />
                 }
+                <Button 
+                    onClick={() => onChangeView('grd')}
+                    icon='fa fa-th-large'
+                    className='p-button-secondary toolbar-btn'
+                />
             </div>
         </div>
     }
@@ -205,7 +212,7 @@ export default class TableComponent extends Component {
                 selectionMode='single'
                 emptyMessage='اطلاعاتی وجود ندارد'
                 selection={row} 
-                onSelectionChange={onSelectionChange}
+                onSelectionChange={(e) => onSelectionChange(e.data)}
 
                 paginator={true}
                 rows={numRows}
