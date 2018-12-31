@@ -16,9 +16,6 @@ const rowCustoms = {
 		(...rest) => tourTypeToolbar(...rest),
 	],
 }
-
-const tableCustoms = {}
-
 export function getRowCustom(key) 
 {
 	if (key in rowCustoms) 
@@ -28,6 +25,7 @@ export function getRowCustom(key)
 	return []
 }
 
+const tableCustoms = {}
 export function getTableCustom(key)
 {
 	if (key in tableCustoms) 
@@ -38,15 +36,14 @@ export function getTableCustom(key)
 }
 
 
-const customForms = {
+const customModes = {
 	tours: (...rest) => createTourForm(...rest),
 }
-export function getCustomForm(table, ...rest) 
+export function getCustomMode(key, ...rest) 
 {
-	let key = table.nme 
-	if (key in customForms) 
+	if (key in customModes) 
 	{
-		const customsFormFunction = customForms[key]
+		const customsFormFunction = customModes[key]
 		return customsFormFunction(...rest)
 	}
 	return null

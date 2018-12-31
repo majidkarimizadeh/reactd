@@ -12,7 +12,7 @@ import { Growl } from 'primereact/growl'
 import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
-import { getTableCustom, getRowCustom, getCustomForm } from './custom'
+import { getTableCustom, getRowCustom, getCustomMode } from './custom'
 import { getMorph } from './morph'
 import { EQ } from '../utils/config'
 import QueryBuilder from '../utils/queryBuilder'
@@ -527,7 +527,7 @@ class MainView extends Component {
             const { table } = this.state
             this.setState({
                 mode,
-                customComponent: getCustomForm(table, this.state, this.onCustomChange, this.messages, this.growl)
+                customComponent: getCustomMode(table.nme, this)
             })
         } 
         else 
