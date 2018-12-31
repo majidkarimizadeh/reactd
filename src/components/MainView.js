@@ -191,7 +191,10 @@ class MainView extends Component {
     }
 
     onCustomShow(table, row = null) {
-        return getCustomFun(table.nme, row, this)
+        let components = getCustomFun(table.nme)
+        return components.map( component => {
+            return component(row, this);
+        })
     }
 
     onFilterInputChange(data, name) {
