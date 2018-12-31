@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
+import Loader from 'react-loader-spinner'
 import TableComponent from './TableComponent'
 import GridComponent from './GridComponent'
 
@@ -29,6 +30,7 @@ class DataViewComponent extends Component {
             isLoading,
             customComponent,
             perm,
+            viewLoading,
             dataLoading,
             firstRow,
             numRows,
@@ -55,7 +57,12 @@ class DataViewComponent extends Component {
 
         return (
             <div>
-                {(defaultView === 'lst') &&
+                {viewLoading && 
+                    <div>
+                        <Loader type="Oval" color="#5867dd" height={80} width={80} />
+                    </div>
+                }
+                {(!viewLoading && defaultView === 'lst') &&
                     <TableComponent 
                         details={details}
                         data={data}
@@ -82,7 +89,7 @@ class DataViewComponent extends Component {
                         onChangeView={onChangeView}
                     />
                 }
-                {(defaultView === 'grd') &&
+                {(!viewLoading && defaultView === 'grd') &&
                     <GridComponent
                         data={data}
                         table={table}

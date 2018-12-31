@@ -65,7 +65,8 @@ class MainView extends Component {
             isMapLoaded: false,
             lang: '',
 
-            defaultView: 'lst'
+            defaultView: 'lst',
+            viewLoading: false,
         }
 
         this.onCancelForm = this.onCancelForm.bind(this)
@@ -163,10 +164,10 @@ class MainView extends Component {
     onChangeView(defaultView) {
         this.setState({ 
             defaultView,
-            isLoading: true, 
+            viewLoading: true, 
         })
         setTimeout(() => {
-            this.setState({ isLoading: false })
+            this.setState({ viewLoading: false })
         }, 500)    
     }
 
@@ -682,6 +683,7 @@ class MainView extends Component {
             isMapLoaded,
             lang,
             defaultView,
+            viewLoading,
         } = this.state
 
         const { match } = this.props
@@ -755,6 +757,7 @@ class MainView extends Component {
                                         dataLoading={dataLoading}
                                         firstRow={firstRow}
                                         numRows={numRows}
+                                        viewLoading={viewLoading}
                                         totalRows={totalRows}
                                         onLoadData={this.onLoadData}
                                         onLookUp={this.onLookUp}
