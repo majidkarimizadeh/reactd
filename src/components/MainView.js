@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
 import DialogComponent from './base/DialogComponent'
-import TableComponent from './base/TableComponent'
-import GridComponent from './base/GridComponent'
+import DataViewComponent from './base/DataViewComponent'
 import FormComponent from './base/FormComponent'
 import LanguageSelector from './partial/LanguageSelector'
 import { TableService } from '../service/TableService'
@@ -591,23 +590,7 @@ class MainView extends Component {
             this.rowService.updateRow(apiObject)
                 .then( res => {  
                     this.onRefreshTableData()
-                    // let data = [...this.state.data]
-                    // let index = data.indexOf(pureRow)
-                    // if(index !== -1) 
-                    // {
-                    //     let updatedRow = Object.assign({}, pureRow, res.data.result)
-                    //     data.splice(index, 1, updatedRow)
-                    //     this.setState({ 
-                    //         data,
-                    //         mode: '', 
-                    //         pureRow: updatedRow,
-                    //         row: updatedRow
-                    //     }) 
-                    // } 
-                    // else 
-                    // {
-                        this.setState({ mode: '' }) 
-                    // }
+                    this.setState({ mode: '' }) 
 
                     this.growl.show({
                         severity: 'success',
@@ -760,58 +743,31 @@ class MainView extends Component {
                                         </div>
                                         <h1 className="card-heading-caption">{table.lbl}</h1>
                                     </div>
-                                    {(defaultView === 'lst') &&
-                                        <TableComponent 
-                                            details={details}
-                                            data={data}
-                                            cols={cols}
-                                            table={table}
-                                            row={row}
-                                            filterRow={filterRow}
-                                            onSelectionChange={this.onSelectionChange}
-                                            dataLoading={dataLoading}
-                                            firstRow={firstRow}
-                                            numRows={numRows}
-                                            totalRows={totalRows}
-                                            onLoadData={this.onLoadData}
-                                            onLookUp={this.onLookUp}
-                                            onFilterInputChange={this.onFilterInputChange}
-                                            options={options}
-                                            showFilter={showFilter}
-                                            perm={perm}
-                                            onShowAlertDialog={this.onShowAlertDialog}
-                                            onShowDialog={this.onShowDialog}
-                                            onFilterVisibilityChange={this.onFilterVisibilityChange}
-                                            onRefreshTableData={this.onRefreshTableData}
-                                            onChangeView={this.onChangeView}
-                                        />
-                                    }
-                                    {(defaultView === 'grd') &&
-                                        <GridComponent
-                                            details={details}
-                                            data={data}
-                                            cols={cols}
-                                            table={table}
-                                            row={row}
-                                            filterRow={filterRow}
-                                            onSelectionChange={this.onSelectionChange}
-                                            dataLoading={dataLoading}
-                                            firstRow={firstRow}
-                                            numRows={numRows}
-                                            totalRows={totalRows}
-                                            onLoadData={this.onLoadData}
-                                            onLookUp={this.onLookUp}
-                                            onFilterInputChange={this.onFilterInputChange}
-                                            options={options}
-                                            showFilter={showFilter}
-                                            perm={perm}
-                                            onShowAlertDialog={this.onShowAlertDialog}
-                                            onShowDialog={this.onShowDialog}
-                                            onFilterVisibilityChange={this.onFilterVisibilityChange}
-                                            onRefreshTableData={this.onRefreshTableData}
-                                            onChangeView={this.onChangeView}
-                                        />
-                                    }
+                                    <DataViewComponent 
+                                        details={details}
+                                        data={data}
+                                        cols={cols}
+                                        table={table}
+                                        row={row}
+                                        defaultView={defaultView}
+                                        filterRow={filterRow}
+                                        onSelectionChange={this.onSelectionChange}
+                                        dataLoading={dataLoading}
+                                        firstRow={firstRow}
+                                        numRows={numRows}
+                                        totalRows={totalRows}
+                                        onLoadData={this.onLoadData}
+                                        onLookUp={this.onLookUp}
+                                        onFilterInputChange={this.onFilterInputChange}
+                                        options={options}
+                                        showFilter={showFilter}
+                                        perm={perm}
+                                        onShowAlertDialog={this.onShowAlertDialog}
+                                        onShowDialog={this.onShowDialog}
+                                        onFilterVisibilityChange={this.onFilterVisibilityChange}
+                                        onRefreshTableData={this.onRefreshTableData}
+                                        onChangeView={this.onChangeView}
+                                    />
                                 </div>
                             }
                             </div>
