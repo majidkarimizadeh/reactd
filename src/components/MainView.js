@@ -12,7 +12,7 @@ import { Growl } from 'primereact/growl'
 import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
-import { getCustomFun, getCustomForm } from './custom'
+import { getTableCustom, getRowCustom, getCustomForm } from './custom'
 import { getMorph } from './morph'
 import { EQ } from '../utils/config'
 import QueryBuilder from '../utils/queryBuilder'
@@ -73,7 +73,7 @@ class MainView extends Component {
         this.onSubmitForm = this.onSubmitForm.bind(this)
         this.onShowDialog = this.onShowDialog.bind(this)
 
-        this.onCustomShow = this.onCustomShow.bind(this)
+        this.onAllCustomShow = this.onAllCustomShow.bind(this)
         this.onTabChange = this.onTabChange.bind(this)
         this.onShowAlertDialog = this.onShowAlertDialog.bind(this)
         this.onHideAlertDialog = this.onHideAlertDialog.bind(this)
@@ -100,6 +100,10 @@ class MainView extends Component {
         this.onLanguageChange = this.onLanguageChange.bind(this)
 
         this.onChangeView = this.onChangeView.bind(this)
+
+        this.onTableCustomShow = this.onTableCustomShow.bind(this)
+        this.onRowCustomShow = this.onRowCustomShow.bind(this)
+        this.onAllCustomShow = this.onAllCustomShow.bind(this)
     }
 
     // @function: get table info from schema and fill state
@@ -190,10 +194,26 @@ class MainView extends Component {
         this.setState(newState) 
     }
 
-    onCustomShow(table, row = null) {
-        let components = getCustomFun(table.nme)
-        return components.map( component => {
-            return component(row, this);
+    onTableCustomShow(table) {
+        const tableBtns = getTableCustom(table.nme)
+        return tableBtns.map( btn => {
+            return btn(this);
+        })
+    }
+
+    onRowCustomShow(table, row = null) {
+        const rowBtns = getRowCustom(table.nme)
+        return rowBtns.map( btn => {
+            return btn(row, this);
+        })
+    }    
+
+    onAllCustomShow(table, row = null) {
+        const tableBtns = getTableCustom(table.nme)
+        const rowBtns = getRowCustom(table.nme)
+        const btns = tableBtns.concat(rowBtns);
+        return btns.map( btn => {
+            return btn(row, this);
         })
     }
 
@@ -779,7 +799,10 @@ class MainView extends Component {
                                         onFilterVisibilityChange={this.onFilterVisibilityChange}
                                         onRefreshTableData={this.onRefreshTableData}
                                         onChangeView={this.onChangeView}
-                                        onCustomShow={this.onCustomShow}
+
+                                        onTableCustomShow={this.onTableCustomShow}
+                                        onRowCustomShow={this.onRowCustomShow}
+                                        onAllCustomShow={this.onAllCustomShow}
                                     />
                                 </div>
                             }

@@ -5,7 +5,7 @@ import tourTypeToolbar from './TourType/TourType'
 import createTourForm from './Tour/Tour'
 import { Button } from 'primereact/button'
 
-const customs = {
+const rowCustoms = {
 	roles: [
 		(...rest) => roleToolbar(...rest),
 	],
@@ -17,19 +17,30 @@ const customs = {
 	],
 }
 
-export function getCustomFun(key) 
+const tableCustoms = {}
+
+export function getRowCustom(key) 
 {
-	if (key in customs) 
+	if (key in rowCustoms) 
 	{
-		return customs[key]
+		return rowCustoms[key]
 	}
 	return []
 }
 
+export function getTableCustom(key)
+{
+	if (key in tableCustoms) 
+	{
+		return tableCustoms[key]
+	}
+	return []
+}
+
+
 const customForms = {
 	tours: (...rest) => createTourForm(...rest),
 }
-
 export function getCustomForm(table, ...rest) 
 {
 	let key = table.nme 

@@ -20,7 +20,7 @@ export default class TableComponent extends Component {
     headerTemplate() {
 
         const { 
-            onCustomShow,
+            onAllCustomShow,
             table,
             perm,
             onShowAlertDialog,
@@ -60,7 +60,7 @@ export default class TableComponent extends Component {
                         className='p-button-secondary toolbar-btn'
                     />
                 }
-                {onCustomShow(table)}
+                {onAllCustomShow(table)}
             </div>
             <div>
                 {perm.select &&

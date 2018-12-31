@@ -16,6 +16,7 @@ export default class GridComponent extends Component {
         const { 
             table,
             perm,
+            onTableCustomShow,
             onShowDialog,
             onRefreshTableData,
             onChangeView,
@@ -30,6 +31,7 @@ export default class GridComponent extends Component {
                         className='p-button-secondary toolbar-btn'
                     />
                 }
+                {onTableCustomShow(table)}
             </div>
             <div>
                <Button 
@@ -45,7 +47,7 @@ export default class GridComponent extends Component {
         const { 
             table,
             perm,
-            onCustomShow,
+            onRowCustomShow,
             onShowAlertDialog,
             onShowDialog,
             onFilterVisibilityChange,
@@ -60,7 +62,7 @@ export default class GridComponent extends Component {
                         src='http://destription.com/home-images/point.jpg'
                     />
                     <div className='grid-item-btn'>
-                        {onCustomShow(table, item)}
+                        {onRowCustomShow(table, item)}
                         {perm.select &&
                             <Button 
                                 onClick={() => onShowDialog(('cv' in table) ? 'custom' : 'view', item)}
