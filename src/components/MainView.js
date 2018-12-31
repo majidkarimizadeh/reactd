@@ -73,6 +73,7 @@ class MainView extends Component {
         this.onSubmitForm = this.onSubmitForm.bind(this)
         this.onShowDialog = this.onShowDialog.bind(this)
 
+        this.onCustomShow = this.onCustomShow.bind(this)
         this.onTabChange = this.onTabChange.bind(this)
         this.onShowAlertDialog = this.onShowAlertDialog.bind(this)
         this.onHideAlertDialog = this.onHideAlertDialog.bind(this)
@@ -187,6 +188,10 @@ class MainView extends Component {
 
     onCustomChange( newState ) {
         this.setState(newState) 
+    }
+
+    onCustomShow(table, row = null) {
+        return getCustomFun(table.nme, row, this)
     }
 
     onFilterInputChange(data, name) {
@@ -624,7 +629,7 @@ class MainView extends Component {
         }
     }
 
-    onSelectionChange(selectedRow) {
+    onSelectionChange(selectedRow, refreshTabData = true) {
         Object.keys(selectedRow).forEach(key => {
             if (typeof selectedRow[key] === 'object' && selectedRow[key] === null) {
                 selectedRow[key] = ''
@@ -634,7 +639,9 @@ class MainView extends Component {
             row: selectedRow,
             isSelect: true
         })
-        this.refreshTab(selectedRow)
+        if(refreshTabData) {
+            this.refreshTab(selectedRow)
+        }
     }
 
     getTableInfo() {
@@ -740,7 +747,6 @@ class MainView extends Component {
                                                     onLanguageChange={this.onLanguageChange}
                                                 />
                                             }
-                                            {getCustomFun(table.nme, this.onCustomChange, this.state, this.growl)}
                                             {getMorph(table.nme, this.onCustomChange, this.state, this.growl)}
                                         </div>
                                         <h1 className="card-heading-caption">{table.lbl}</h1>
@@ -770,6 +776,7 @@ class MainView extends Component {
                                         onFilterVisibilityChange={this.onFilterVisibilityChange}
                                         onRefreshTableData={this.onRefreshTableData}
                                         onChangeView={this.onChangeView}
+                                        onCustomShow={this.onCustomShow}
                                     />
                                 </div>
                             }

@@ -20,6 +20,7 @@ export default class TableComponent extends Component {
     headerTemplate() {
 
         const { 
+            onCustomShow,
             table,
             perm,
             onShowAlertDialog,
@@ -59,6 +60,7 @@ export default class TableComponent extends Component {
                         className='p-button-secondary toolbar-btn'
                     />
                 }
+                {onCustomShow(table)}
             </div>
             <div>
                 {perm.select &&
@@ -183,6 +185,10 @@ export default class TableComponent extends Component {
                     name={name}
                     onInputChange={onFilterInputChange}
                 />
+    }
+
+    actionTemplate(rowData, column) {
+        return <div>adasd</div>
     }
 
 	render() {

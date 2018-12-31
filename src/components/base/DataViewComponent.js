@@ -52,6 +52,7 @@ class DataViewComponent extends Component {
             onShowAlertDialog,
             onShowDialog,
             onChangeView,
+            onCustomShow
 
         } = this.props
 
@@ -78,6 +79,7 @@ class DataViewComponent extends Component {
                         showFilter={showFilter}
                         perm={perm}
 
+                        onCustomShow={onCustomShow}
                         onShowAlertDialog={onShowAlertDialog}
                         onShowDialog={onShowDialog}
                         onLoadData={onLoadData}
@@ -100,6 +102,7 @@ class DataViewComponent extends Component {
                         perm={perm}
 
                         onLoadData={onLoadData}
+                        onCustomShow={onCustomShow}
                         onShowAlertDialog={onShowAlertDialog}
                         onShowDialog={onShowDialog}
                         onChangeView={onChangeView}

@@ -45,6 +45,7 @@ export default class GridComponent extends Component {
         const { 
             table,
             perm,
+            onCustomShow,
             onShowAlertDialog,
             onShowDialog,
             onFilterVisibilityChange,
@@ -59,6 +60,7 @@ export default class GridComponent extends Component {
                         src='http://destription.com/home-images/point.jpg'
                     />
                     <div className='grid-item-btn'>
+                        {onCustomShow(table, item)}
                         {perm.select &&
                             <Button 
                                 onClick={() => onShowDialog(('cv' in table) ? 'custom' : 'view', item)}

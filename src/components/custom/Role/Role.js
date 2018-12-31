@@ -2,36 +2,39 @@ import React from 'react'
 import { RoleComponent } from './RoleComponent'
 import { Button } from 'primereact/button'
 
-export default function roleToolbar(dispatch, state, growl) 
+export default function roleToolbar(...rest) 
 {
 	return <Button 
-		onClick={() => onClick(dispatch, state, growl)}
+		onClick={() => onClick(...rest)}
 		icon="fa fa-cog" 
 		className="p-button-secondary toolbar-btn"
 	/>
 }
 
-function onClick(dispatch, state, growl) 
-{
-	const { isSelect } = state;
-	if( !isSelect ) 
+function onClick(selectedRow, $this) 
+{	
+	const { isSelect, row } = $this.state;
+	if(selectedRow) {
+		$this.onSelectionChange(selectedRow, false)
+	}
+	else if( !isSelect ) 
 	{
-		growl.show({
+		$this.growl.show({
             severity: 'warn',
             summary: 'سطر انتخاب نشده است',
             detail: 'لطفا ابتدا سطر مورد نظر خود را انتخاب کنید'
         })
-	}
-	else 
-	{
-		dispatch({
-			mode: 'custom',
-			customComponent: 
-				<RoleComponent 
-					{...state} 
-					dispatch={dispatch}
-					growl={growl}
-				/>
-		})
-	}
+        return
+	} 
+
+	$this.onCustomChange({
+		mode: 'custom',
+		customComponent: 
+			<RoleComponent 
+				{...$this.state} 
+				row={selectedRow ? selectedRow : row}
+				dispatch={$this.onCustomChange}
+			/>
+	})
+
 }
