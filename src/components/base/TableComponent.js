@@ -140,7 +140,9 @@ export default class TableComponent extends Component {
         {
             // src = 'http://destription.com/home-images/iran-attractions.jpg'
             component = <Lightbox type='content'>
-                            <a href='#' className='show-image'>مشاهده</a>
+                            <a href='#' className='show-image'>
+                                <i className='fa fa-eye'></i>
+                            </a>
                             <img src={src} alt='' />
                         </Lightbox>
         } 

@@ -101,6 +101,7 @@ class MainView extends Component {
         this.onChangeView = this.onChangeView.bind(this)
     }
 
+    // @function: get table info from schema and fill state
     componentWillMount() {
         this.getTableInfo()
     }
@@ -147,6 +148,8 @@ class MainView extends Component {
             this.setState({ totalRows })
         }
 
+        // change state when url change 
+        // it fill state with fresh data url
         if(prevProps.match.params.table !== this.props.match.params.table)
         {
             setTimeout(() => {
@@ -157,13 +160,18 @@ class MainView extends Component {
         }
     }
 
+    // change view between grade and list
     onChangeView(defaultView) {
-        this.setState({ isLoading: true, defaultView })
+        this.setState({ 
+            defaultView,
+            isLoading: true, 
+        })
         setTimeout(() => {
             this.setState({ isLoading: false })
         }, 500)    
     }
 
+    // change filter visibility
     onFilterVisibilityChange() {
         const { cols, showFilter } = this.state
         let filterRow = {}
@@ -215,20 +223,22 @@ class MainView extends Component {
         }, 500)
     }
 
-    onLoadData(tableUrl, first) {
+    // @param tableurl: url in meta_value in schema table
+    // @param first: start record for loading data
+    // @param append: append data or replace
+    // @function: load and set data state
+    onLoadData(tableUrl, first, append = false) {
         let { dataLoading } = this.state
         if(dataLoading) {
             return
         }
         this.setState({ dataLoading: true })
         setTimeout(() => {
-            const { showFilter, filterRow,  numRows } = this.state
-            const startIndex = first
-            const limitIndex = numRows
+            const { showFilter, filterRow, numRows, lang } = this.state
             let options = {
-                lang: this.state.lang,
-                start: startIndex,
-                limit: limitIndex,
+                lang: lang,
+                start: first,
+                limit: numRows,
             }
 
             if(showFilter) 
@@ -239,19 +249,9 @@ class MainView extends Component {
 
             this.tableService.getTableData(tableUrl, options)
                 .then( res => {
-                    // let defaultView = this.state.defaultView
-                    let updatedData = []
-                    // if(defaultView === 'grd') {
-                    //     updatedData = [
-                    //         ...this.state.data,
-                    //         ...res.data
-                    //     ]
-                    // } else {
-                        updatedData = res.data
-                    // }
                     this.setState({
-                        firstRow: startIndex,
-                        data: updatedData,
+                        firstRow: first,
+                        data: res.data,
                         dataLoading: false,
                         totalRows: res.totalRows
                     })
@@ -263,12 +263,13 @@ class MainView extends Component {
         }, 250)
     }
 
+    // @function: it refresh data in table and remove filter and selection
     onRefreshTableData() {
         const { table, firstRow } = this.state
         this.setState({ 
             showFilter: false,
             row: {},
-            isSelect: false
+            isSelect: false,
         }) 
         this.onLoadData(table.url, firstRow)
     }
@@ -328,7 +329,8 @@ class MainView extends Component {
                             detailDetails: details,
                             detailCols: cols,
                             detailTable: table,
-                            detailTotalRows: totalRows
+                            detailTotalRows: totalRows,
+                            defaultView: table.grd ? 'grd' : 'lst'
                         })
                         let options = {
                             lang: this.state.lang,
@@ -657,13 +659,8 @@ class MainView extends Component {
             .then(({ table, cols, details, perm, totalRows })  =>  {
                 let row = {}
                 cols.map( (item, index) => row[item.nme] = '' )
-                this.setState({ cols, table, details, row, perm, totalRows })
-                let lang = this.state.lang;
-                this.tableService.getTableData(tableUrl, { lang: lang })
-                    .then( res => {
-                        this.setState({ data: res.data })
-                    })
-                    .catch(err => this.setState({ err: err.response })  ) 
+                this.setState({ cols, table, details, row, perm, totalRows, defaultView: table.grd ? 'grd' : 'lst'})
+                this.onLoadData(tableUrl, 0)
             })
             .catch(err => this.setState({ err: err.response })  ) 
     }

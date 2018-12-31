@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import FormComponent from '../base/FormComponent'
-import QueryBuilder from '../../utils/queryBuilder'
+import { Paginator } from 'primereact/paginator';
 import { Lightbox } from 'primereact/lightbox';
-import { DataScroller } from 'primereact/datascroller';
-import { TableService } from '../../service/TableService'
-import { colParser, tableParser } from '../../utils/parser'
+import { DataView } from 'primereact/dataview';
 import { Button } from 'primereact/button'
-import Loader from 'react-loader-spinner'
 
 export default class GridComponent extends Component {
 
@@ -36,13 +32,6 @@ export default class GridComponent extends Component {
                 }
             </div>
             <div>
-               {perm.select &&
-                    <Button 
-                        onClick={() => onRefreshTableData() }
-                        icon='fa fa-refresh'
-                        className='p-button-secondary toolbar-btn'
-                    />
-                }
                <Button 
                     onClick={() => onChangeView('lst')}
                     icon='fa fa-bars'
@@ -53,7 +42,6 @@ export default class GridComponent extends Component {
     }
 
     itemTemplate(item) {
-
         const { 
             table,
             perm,
@@ -64,14 +52,12 @@ export default class GridComponent extends Component {
         } = this.props
 
         return (
-            <div>
-                <div className='grid-item'>
-                    <div className='grid-item-img'>
-                        <img 
-                            style={{maxWidth:'100%', height:'auto'}} 
-                            src='http://destription.com/home-images/point.jpg'
-                        />
-                    </div>
+            <div className='grid-item'>
+                <div className='grid-item-img'>
+                    <img 
+                        style={{maxWidth:'100%', height:'auto'}} 
+                        src='http://destription.com/home-images/point.jpg'
+                    />
                     <div className='grid-item-btn'>
                         {perm.select &&
                             <Button 
@@ -103,68 +89,32 @@ export default class GridComponent extends Component {
         );
     }
 
-    // onLazyLoadData(e) {
-    //     const { lang, morphKey, table, row, numRows } = this.props
-    //     const { dataLoading } = this.state
-    //     if(dataLoading) {
-    //         return
-    //     }
-    //     this.setState({ dataLoading: true })
-
-    //     const startIndex = e.first
-    //     const limitIndex = numRows
-    //     let conditions = this.queryBuilder.getCondition({
-    //         type: 'country',
-    //         // relation_id: row.id
-    //     });
-    //     let options = {
-    //         lang: lang,
-    //         start: startIndex,
-    //         limit: limitIndex,
-    //         conditions: conditions
-    //     }
-
-    //     this.tableService.getTableData(morphKey, options)
-    //         .then( res => {
-    //             this.setState({
-    //                 firstRow: startIndex,
-    //                 data: [
-    //                     ...this.state.data,
-    //                     ...res.data
-    //                 ],
-    //                 dataLoading: false,
-    //                 totalRows: res.totalRows
-    //             })    
-    //         })
-    //         .catch( err => { })
-    // }
-
     render() {
 
         const { 
             data,
             table, 
-            cols,
-            row,
             totalRows,
-            lang,
+            firstRow,
             numRows,
-            onLoadData
+            onLoadData,
+            dataLoading,
         } = this.props
 
-        const footer = <Button ref={(el) => this.loadButton = el} type="text" icon="pi pi-plus" label="Load" />;
-
     	return (
-            <DataScroller 
+            <DataView
+                layout='grid'
+                footer={<Paginator 
+                        totalRecords={totalRows}
+                        first={firstRow} 
+                        rows={numRows}
+                        className='dataview-custom-paginator'
+                        onPageChange={(e) => onLoadData(table.url, e.first)}></Paginator>
+                    }
                 value={data} 
-                rows={numRows}
-                footer={footer}
-                lazy={true}
-                loader={this.loadButton}
                 header={this.headerTemplate()}
                 itemTemplate={this.itemTemplate}
-                onLazyLoad={(e) => onLoadData(table.url, e.first)}
-                className='scroll-grid-dataview'
+                className='grid-dataview'
             />
         )
     }

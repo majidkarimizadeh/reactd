@@ -174,7 +174,8 @@ div.day-items.selected {
 	margin-left: 14px;
 }
 
-body .p-datatable .p-datatable-header,
+body .p-datatable .p-datatable-header, 
+body .p-dataview .p-dataview-header,
 .p-highlight {
 	background-color: #5867dd !important;
 	border-color: #5867dd !important;
@@ -240,12 +241,17 @@ a.p-paginator-element {
 	border-radius: 50% !important;
 }
 
+body .p-dataview .p-dataview-content,
+body .p-dataview .p-dataview-footer,
 body .p-datatable .p-datatable-thead > tr > th,
-body .p-datatable .p-datatable-tbody > tr > td {
+body .p-datatable .p-datatable-tbody > tr > td,
+body .p-dataview .p-dataview-thead > tr > th,
+body .p-dataview .p-dataview-tbody > tr > td {
 	border-color: #eee;
 }
 
-body .p-datatable .p-datatable-thead > tr > th{
+body .p-datatable .p-datatable-thead > tr > th,
+body .p-dataview .p-dataview-thead > tr > th {
 	background-color: #f4f3f8;
 }
 
@@ -463,53 +469,42 @@ body .p-checkbox-label {
 	margin: 8px;
 }
 
-.scroll-grid-dataview > div.p-datascroller-header{
-	background-color: #5867dd !important;
-	border-color: #5867dd !important;
+.grid-dataview div.p-dataview-content > div.p-grid{
+	margin-top: auto;
 }
 
-.scroll-grid-dataview > div.p-datascroller-footer, 
-.scroll-grid-dataview > div.p-datascroller-header {
-	border-color: transparent;
-}
-
-.scroll-grid-dataview > div.p-datascroller-content {
-	border-color: transparent;
-	text-align: center;
-	padding: 0.5em 0px !important;
-}
-.scroll-grid-dataview  ul.p-datascroller-list {	
-	display: flex;
-	flex-wrap: wrap;
-	padding: 0 4px;
-}
-.scroll-grid-dataview  ul.p-datascroller-list > li {	
+.grid-item {	
 	flex: 25%;
 	max-width: 25%;
 	padding: 4px 4px;
 }
 @media screen and (max-width: 800px) {
-  	.scroll-grid-dataview  ul.p-datascroller-list > li {
+  	.grid-item {
     	flex: 50%;
     	max-width: 50%;
   	}
 }
 @media screen and (max-width: 600px) {
-  	.scroll-grid-dataview  ul.p-datascroller-list > li {
+  	.grid-item {
 	    flex: 100%;
     	max-width: 100%;
   	}
 }
 
-.grid-item {
+.grid-item-img {
 	position: relative;
 }
 .grid-item-btn { 
 	position: absolute;
-	bottom: 10px;
 	left: 0px;
 	right: 0px;
+	bottom: 10px;
 }
 .grid-item-btn > button {
 	margin: 4px;
+}
+
+.dataview-custom-paginator {
+	background-color: transparent !important;
+	border-color: transparent !important;
 }
