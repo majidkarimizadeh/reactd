@@ -350,38 +350,34 @@ class MainView extends Component {
 
             const detailTable = details[activeDetailIndex]
             let conditions = [];
-            let cluse;
+            let cluse = [];
             if(row && detailTable) 
             {
-                let foreignKey;
                 const rowPrimary = row[table.pk]
+                let foreignKey;
                 if(Number(detailTable.mrp) === 1) {
                     foreignKey = 'relation_id'
-                    cluse = [{
+                    cluse.push({
                         key: 'type',
                         op: EQ,
                         value: table.nme
-                    },
-                    {
-                        key: foreignKey,
-                        op: EQ,
-                        value: rowPrimary
-                    }]
+                    })
                 } else if(detailTable.chl) {
                     foreignKey = detailTable.chl[table.nme]
-                    cluse = [{
-                        key: foreignKey,
-                        op: EQ,
-                        value: rowPrimary
-                    }]
                 } else {
                     return
                 }
 
+                cluse.push({
+                    key: foreignKey,
+                    op: EQ,
+                    value: rowPrimary
+                })
                 conditions.push({
                     logic: 'AND',
                     cluse: cluse
                 })
+                
                 this.tableService.getTableInfo(detailTable.url)
                     .then( ({ details, cols, table, totalRows }) => { 
                         this.setState({ 
