@@ -1,39 +1,41 @@
 import React from 'react'
-import MorphComponent from './MorphComponent'
 import { Button } from 'primereact/button'
 
-export default function morph(morphKey, dispatch, state, growl) 
+export default function morph(morph, ...rest) 
 {
 	return <Button 
-		key={morphKey}
-		onClick={ () => onClick(morphKey, dispatch, state, growl)}
-		label={morphKey}
+		key={morph.name}
+		onClick={() => onClick(morph, ...rest)}
+		label={morph.label}
+		icon={morph.icon}
 		className='p-button-secondary morph-btn'
 	/>
 }
 
-function onClick(morphKey, dispatch, state, growl) 
+function onClick(morph, selectedRow, $this) 
 {
-	const { isSelect } = state;
-	if( !isSelect ) 
+	const { isSelect, row } = $this.state;
+	if(selectedRow) {
+		$this.onSelectionChange(selectedRow, false)
+	}
+	else if( !isSelect ) 
 	{
-		growl.show({
+		$this.growl.show({
             severity: 'warn',
             summary: 'سطر انتخاب نشده است',
             detail: 'لطفا ابتدا سطر مورد نظر خود را انتخاب کنید'
         })
+        return
 	}
-	else 
-	{
-		dispatch({
-			mode: 'custom',
-			customComponent: 
-				<MorphComponent 
-					{...state} 
-					morphKey={morphKey}
-					dispatch={dispatch}
-					growl={growl}
-				/>
-		})
-	}
+
+	$this.onCustomChange({
+		mode: 'custom',
+		customComponent: 
+			<morph.component 
+				{...$this} 
+				{...$this.state} 
+				morphKey={morph.name}
+				dispatch={$this.onCustomChange}
+			/>
+	})
 }

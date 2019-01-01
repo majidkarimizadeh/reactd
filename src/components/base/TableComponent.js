@@ -28,6 +28,7 @@ export default class TableComponent extends Component {
             onFilterVisibilityChange,
             onRefreshTableData,
             onChangeView,
+            onRowMorphShow
         } = this.props
 
         return <div className='table-header-operation'>
@@ -61,6 +62,7 @@ export default class TableComponent extends Component {
                     />
                 }
                 {onAllCustomShow(table)}
+                {onRowMorphShow(table)}
             </div>
             <div>
                 {perm.select &&

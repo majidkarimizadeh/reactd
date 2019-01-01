@@ -56,6 +56,7 @@ class DataViewComponent extends Component {
             onTableCustomShow,
             onRowCustomShow,
             onAllCustomShow,
+            onRowMorphShow
 
         } = this.props
 
@@ -92,6 +93,7 @@ class DataViewComponent extends Component {
                         onRefreshTableData={onRefreshTableData}
                         onSelectionChange={onSelectionChange}
                         onChangeView={onChangeView}
+                        onRowMorphShow={onRowMorphShow}
                     />
                 }
                 {(!viewLoading && defaultView === 'grd') &&
@@ -111,6 +113,7 @@ class DataViewComponent extends Component {
                         
                         onTableCustomShow={onTableCustomShow}
                         onRowCustomShow={onRowCustomShow}
+                        onRowMorphShow={onRowMorphShow}
                     />
                 }
             </div>

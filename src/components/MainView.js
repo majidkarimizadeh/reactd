@@ -13,7 +13,7 @@ import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
 import { getTableCustom, getRowCustom, getCustomMode } from './custom'
-import { getMorph } from './morph'
+import { getRowMorph } from './morph'
 import { EQ } from '../utils/config'
 import QueryBuilder from '../utils/queryBuilder'
 import Loader from 'react-loader-spinner'
@@ -104,6 +104,7 @@ class MainView extends Component {
         this.onTableCustomShow = this.onTableCustomShow.bind(this)
         this.onRowCustomShow = this.onRowCustomShow.bind(this)
         this.onAllCustomShow = this.onAllCustomShow.bind(this)
+        this.onRowMorphShow = this.onRowMorphShow.bind(this)
     }
 
     // @function: get table info from schema and fill state
@@ -206,7 +207,7 @@ class MainView extends Component {
         return rowBtns.map( btn => {
             return btn(row, this);
         })
-    }    
+    }
 
     onAllCustomShow(table, row = null) {
         const tableBtns = getTableCustom(table.nme)
@@ -216,6 +217,11 @@ class MainView extends Component {
             return btn(row, this);
         })
     }
+
+    onRowMorphShow(table, row = null) {
+        return getRowMorph(table.nme, row, this)
+    }
+
 
     onFilterInputChange(data, name) {
         const { filterRow, table, firstRow, numRows, lang } = this.state
@@ -770,7 +776,6 @@ class MainView extends Component {
                                                     onLanguageChange={this.onLanguageChange}
                                                 />
                                             }
-                                            {getMorph(table.nme, this.onCustomChange, this.state, this.growl)}
                                         </div>
                                         <h1 className="card-heading-caption">{table.lbl}</h1>
                                     </div>
@@ -803,6 +808,7 @@ class MainView extends Component {
                                         onTableCustomShow={this.onTableCustomShow}
                                         onRowCustomShow={this.onRowCustomShow}
                                         onAllCustomShow={this.onAllCustomShow}
+                                        onRowMorphShow={this.onRowMorphShow}
                                     />
                                 </div>
                             }
