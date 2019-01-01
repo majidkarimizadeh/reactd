@@ -52,7 +52,6 @@ export default class GridComponent extends Component {
             onShowDialog,
             onFilterVisibilityChange,
             onRefreshTableData,
-            onRowMorphShow,
         } = this.props
 
         return (
@@ -63,7 +62,6 @@ export default class GridComponent extends Component {
                         src='http://destription.com/home-images/point.jpg'
                     />
                     <div className='grid-item-btn'>
-                        {onRowMorphShow(table, item)}
                         {onRowCustomShow(table, item)}
                         {perm.select &&
                             <Button 

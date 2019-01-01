@@ -13,7 +13,6 @@ import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
 import { getTableCustom, getRowCustom, getCustomMode } from './custom'
-import { getRowMorph } from './morph'
 import { EQ } from '../utils/config'
 import QueryBuilder from '../utils/queryBuilder'
 import Loader from 'react-loader-spinner'
@@ -104,7 +103,6 @@ class MainView extends Component {
         this.onTableCustomShow = this.onTableCustomShow.bind(this)
         this.onRowCustomShow = this.onRowCustomShow.bind(this)
         this.onAllCustomShow = this.onAllCustomShow.bind(this)
-        this.onRowMorphShow = this.onRowMorphShow.bind(this)
     }
 
     // @function: get table info from schema and fill state
@@ -159,7 +157,9 @@ class MainView extends Component {
         if(prevProps.match.params.table !== this.props.match.params.table)
         {
             setTimeout(() => {
-                this.setState({ isLoading: false })
+                this.setState({ 
+                    isLoading: false,
+                })
             }, 500)
             window.scrollTo(0, 0)
             this.getTableInfo()
@@ -218,11 +218,6 @@ class MainView extends Component {
         })
     }
 
-    onRowMorphShow(table, row = null) {
-        return getRowMorph(table.nme, row, this)
-    }
-
-
     onFilterInputChange(data, name) {
         const { filterRow, table, firstRow, numRows, lang } = this.state
         let filter = {...filterRow}
@@ -261,23 +256,34 @@ class MainView extends Component {
     // @param first: start record for loading data
     // @param append: append data or replace
     // @function: load and set data state
-    onLoadData(tableUrl, first, append = false) {
+    onLoadData(tableUrl, first) {
         let { dataLoading } = this.state
         if(dataLoading) {
             return
         }
         this.setState({ dataLoading: true })
         setTimeout(() => {
-            const { showFilter, filterRow, numRows, lang } = this.state
+            const { showFilter, filterRow, numRows, lang, table } = this.state
+            const { parentTable } = this.props
             let options = {
                 lang: lang,
                 start: first,
                 limit: numRows,
             }
-
             if(showFilter) 
             {
+                if(parentTable && table.mrp && Number(table.mrp) === 1) 
+                {
+                    filterRow['type'] = parentTable.nme
+                }
                 let conditions = this.queryBuilder.getCondition(filterRow);
+                options['conditions'] = conditions
+            } 
+            else if(parentTable && table.mrp && Number(table.mrp) === 1)
+            {
+                let conditions = this.queryBuilder.getCondition({
+                    type: parentTable.nme
+                });
                 options['conditions'] = conditions
             }
 
@@ -344,19 +350,38 @@ class MainView extends Component {
 
             const detailTable = details[activeDetailIndex]
             let conditions = [];
-            if(row && detailTable && detailTable.chl) 
+            let cluse;
+            if(row && detailTable) 
             {
-                const foreignKey = detailTable.chl[table.nme]
+                let foreignKey;
                 const rowPrimary = row[table.pk]
-                conditions = [{
-                    logic: 'AND',
-                    cluse: [{
+                if(Number(detailTable.mrp) === 1) {
+                    foreignKey = 'relation_id'
+                    cluse = [{
+                        key: 'type',
+                        op: EQ,
+                        value: table.nme
+                    },
+                    {
                         key: foreignKey,
                         op: EQ,
                         value: rowPrimary
                     }]
-                }]
+                } else if(detailTable.chl) {
+                    foreignKey = detailTable.chl[table.nme]
+                    cluse = [{
+                        key: foreignKey,
+                        op: EQ,
+                        value: rowPrimary
+                    }]
+                } else {
+                    return
+                }
 
+                conditions.push({
+                    logic: 'AND',
+                    cluse: cluse
+                })
                 this.tableService.getTableInfo(detailTable.url)
                     .then( ({ details, cols, table, totalRows }) => { 
                         this.setState({ 
@@ -808,7 +833,6 @@ class MainView extends Component {
                                         onTableCustomShow={this.onTableCustomShow}
                                         onRowCustomShow={this.onRowCustomShow}
                                         onAllCustomShow={this.onAllCustomShow}
-                                        onRowMorphShow={this.onRowMorphShow}
                                     />
                                 </div>
                             }
@@ -835,6 +859,7 @@ class MainView extends Component {
                                                         path={`${match.url}/:table`}
                                                         render={ props => {
                                                             return <MainView 
+                                                                parentTable={table}
                                                                 data={detailData}
                                                                 table={detailTable}
                                                                 cols={detailCols}
