@@ -377,7 +377,7 @@ class MainView extends Component {
                     logic: 'AND',
                     cluse: cluse
                 })
-                
+
                 this.tableService.getTableInfo(detailTable.url)
                     .then( ({ details, cols, table, totalRows }) => { 
                         this.setState({ 
@@ -597,6 +597,14 @@ class MainView extends Component {
                 let col = cols.find( (col) => col.no === item)
                 apiObject.append(col.nme, filledRow[col.nme])
             })
+
+            // if(Number(table.mrp) === 1) 
+            // {
+            //     const { parentTable } = this.props
+            //     apiObject.append('type', parentTable.nme)
+            //     return;
+            // }
+
             this.rowService.storeRow(apiObject)
                 .then( res => {
                     this.setState({
