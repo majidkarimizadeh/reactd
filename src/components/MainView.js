@@ -13,7 +13,7 @@ import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
 import { getTableCustom, getRowCustom, getCustomMode } from './custom'
-import { EQ } from '../utils/config'
+import { EQ , DEFAULT_LANGUAGE } from '../utils/config'
 import QueryBuilder from '../utils/queryBuilder'
 import Loader from 'react-loader-spinner'
 import history from '../utils/history'
@@ -61,7 +61,7 @@ class MainView extends Component {
             filter: {},
             showFilter: false,
 
-            lang: '',
+            lang: DEFAULT_LANGUAGE,
 
             defaultView: 'lst',
             viewLoading: false,
@@ -111,23 +111,13 @@ class MainView extends Component {
         this.getTableInfo()
     }
 
-    componentDidMount() {
-        setTimeout(() => {
-            this.setState({ isLoading: false })
-        }, 500)        
-    }
-
     // --------------------------------------------
     // | remove all error messages ( Not growls ) |
     // --------------------------------------------
     componentWillUpdate(prevProps) {
         if(prevProps.match.params.table !== this.props.match.params.table)
         {
-            this.setState({ 
-                isLoading: true,
-                mode: '',
-                isSelect: false
-            })
+            this.setState({ mode: '', isSelect: false })
             this.messages.clear()
         }
     }
@@ -162,11 +152,6 @@ class MainView extends Component {
 
         if(prevProps.match.params.table !== this.props.match.params.table)
         {
-            setTimeout(() => {
-                this.setState({ 
-                    isLoading: false,
-                })
-            }, 500)
             window.scrollTo(0, 0)
             this.getTableInfo()
         }
@@ -182,7 +167,7 @@ class MainView extends Component {
         })
         setTimeout(() => {
             this.setState({ viewLoading: false })
-        }, 500)    
+        }, 100)    
     }
 
     // ----------------------------------------------
@@ -297,11 +282,15 @@ class MainView extends Component {
                     firstRow: first,
                     data: res.data,
                     dataLoading: false,
+                    isLoading: false,
                     totalRows: res.totalRows
                 })
             })
             .catch( err => {
-                this.setState({ dataLoading: false })
+                this.setState({ 
+                    dataLoading: false,
+                    isLoading: false,
+                })
             })
     }
 
@@ -751,6 +740,7 @@ class MainView extends Component {
     // -------------------------------------------
     getTableInfo() {
         let tableUrl = this.props.match.params.table
+        this.setState({ isLoading: true })
         this.tableService.getTableInfo(tableUrl)
             .then(({ table, cols, details, perm, totalRows })  =>  {
                 let row = {}

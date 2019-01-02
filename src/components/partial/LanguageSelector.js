@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { SelectButton } from 'primereact/selectbutton'
-import { LANGUAGES, DEFAULT_LANGUAGE } from '../../utils/config'
+import { LANGUAGES } from '../../utils/config'
 
 export default class LanguageSelector extends Component {
 
@@ -11,10 +11,6 @@ export default class LanguageSelector extends Component {
 
     componentWillMount() {
         const { value, onLanguageChange, readOnly } = this.props
-        if(!value) 
-        {
-            onLanguageChange(DEFAULT_LANGUAGE)
-        }
         if(readOnly) 
         {
             this.selected = LANGUAGES.find( item => {
