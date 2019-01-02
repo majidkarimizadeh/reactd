@@ -545,14 +545,17 @@ class MainView extends Component {
         }
     }
 
+    // ----------------------------------------------------------------------------------
+    // | if in edit and view mode change lang when cancel form data will be refresh     | 
+    // ----------------------------------------------------------------------------------
     onCancelForm() {
-        this.setState({ mode: '' })
-        this.messages.clear()
-        const { lang } = this.state
-        if(lang)
+        const { lang, mode } = this.state
+        if(lang && mode !== 'create')
         {
             this.onLanguageChange(lang)
         }
+        this.setState({ mode: '' })
+        this.messages.clear()
     }
 
     // ------------------------------------------------
