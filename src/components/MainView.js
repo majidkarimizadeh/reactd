@@ -61,7 +61,6 @@ class MainView extends Component {
             filter: {},
             showFilter: false,
 
-            isMapLoaded: false,
             lang: '',
 
             defaultView: 'lst',
@@ -105,7 +104,9 @@ class MainView extends Component {
         this.onAllCustomShow = this.onAllCustomShow.bind(this)
     }
 
-    // @function: get table info from schema and fill state
+    // -------------------------------------------------------------------------------
+    // | get table cols, totalRows and ... from schema and fill state for first time |
+    // -------------------------------------------------------------------------------
     componentWillMount() {
         this.getTableInfo()
     }
@@ -116,6 +117,9 @@ class MainView extends Component {
         }, 500)        
     }
 
+    // --------------------------------------------
+    // | remove all error messages ( Not growls ) |
+    // --------------------------------------------
     componentWillUpdate(prevProps) {
         if(prevProps.match.params.table !== this.props.match.params.table)
         {
@@ -128,6 +132,10 @@ class MainView extends Component {
         }
     }
 
+    // ------------------------------------------------
+    // | change table info when a new table is needed |
+    // | on table click make component update         |
+    // ------------------------------------------------
     componentDidUpdate(prevProps) {
         const { data, table, cols, details, totalRows } = this.props
 
@@ -152,8 +160,6 @@ class MainView extends Component {
             this.setState({ totalRows })
         }
 
-        // change state when url change 
-        // it fill state with fresh data url
         if(prevProps.match.params.table !== this.props.match.params.table)
         {
             setTimeout(() => {
@@ -166,7 +172,9 @@ class MainView extends Component {
         }
     }
 
-    // change view between grade and list
+    // -------------------------------------
+    // | change view between grid and list |
+    // -------------------------------------
     onChangeView(defaultView) {
         this.setState({ 
             defaultView,
@@ -177,7 +185,10 @@ class MainView extends Component {
         }, 500)    
     }
 
-    // change filter visibility
+    // ----------------------------------------------
+    // | change filter visibility                   |
+    // | if visibility hide set filter row to empty |
+    // ----------------------------------------------
     onFilterVisibilityChange() {
         const { cols, showFilter } = this.state
         let filterRow = {}
@@ -191,10 +202,16 @@ class MainView extends Component {
         }) 
     }
 
+    // ----------------------------------------------
+    // | used for change state in custom forms      |
+    // ----------------------------------------------
     onCustomChange( newState ) {
         this.setState(newState) 
     }
 
+    // --------------------------------------------------
+    // | show buttons of custom forms that need table   | 
+    // --------------------------------------------------
     onTableCustomShow(table) {
         const tableBtns = getTableCustom(table.nme)
         return tableBtns.map( btn => {
@@ -202,6 +219,9 @@ class MainView extends Component {
         })
     }
 
+    // --------------------------------------------------
+    // | show buttons of custom forms that need row     | 
+    // --------------------------------------------------
     onRowCustomShow(table, row = null) {
         const rowBtns = getRowCustom(table.nme)
         return rowBtns.map( btn => {
@@ -209,6 +229,9 @@ class MainView extends Component {
         })
     }
 
+    // --------------------------------------------------
+    // | show buttons of custom forms (all of them)     | 
+    // --------------------------------------------------
     onAllCustomShow(table, row = null) {
         const tableBtns = getTableCustom(table.nme)
         const rowBtns = getRowCustom(table.nme)
@@ -218,102 +241,87 @@ class MainView extends Component {
         })
     }
 
+    // ----------------------------------------------------
+    // | complete filter object and load data with filter | 
+    // ----------------------------------------------------
     onFilterInputChange(data, name) {
         const { filterRow, table, firstRow, numRows, lang } = this.state
         let filter = {...filterRow}
         filter[name] = data
-        this.setState({ 
-            filterRow: filter,
-            dataLoading: true
-        })
-
-        setTimeout( () => {
-            let conditions = this.queryBuilder.getCondition(filter);
-            let options = {
-                lang: lang,
-                start: 0,
-                limit: numRows,
-                conditions: conditions
+        this.setState({ filterRow: filter }, 
+            () => {
+                setTimeout( () => {
+                    this.onLoadData(table.url, firstRow)
+                }, 500)
             }
-            this.tableService.getTableData(table.url, options)
-                .then( res => {
-                    this.setState({ 
-                        data: res.data,
-                        totalRows: res.totalRows,
-                        dataLoading: false
-                    })   
-                })
-                .catch(err => {
-                    this.setState({ 
-                        err: err.response,
-                        dataLoading: false
-                    })
-                }) 
-        }, 500)
+        )
     }
 
-    // @param tableurl: url in meta_value in schema table
-    // @param first: start record for loading data
-    // @param append: append data or replace
-    // @function: load and set data state
+    // -----------------------------------------------
+    // | main function for loading data              | 
+    // | check all condition and request for data    | 
+    // -----------------------------------------------
     onLoadData(tableUrl, first) {
         let { dataLoading } = this.state
         if(dataLoading) {
             return
         }
         this.setState({ dataLoading: true })
-        setTimeout(() => {
-            const { showFilter, filterRow, numRows, lang, table } = this.state
-            const { parentTable } = this.props
-            let options = {
-                lang: lang,
-                start: first,
-                limit: numRows,
-            }
-            if(showFilter) 
+        const { showFilter, filterRow, numRows, lang, table } = this.state
+        const { parentTable } = this.props
+        let options = {
+            lang: lang,
+            start: first,
+            limit: numRows,
+        }
+        if(showFilter) 
+        {
+            if(parentTable && table.mrp) 
             {
-                if(parentTable && table.mrp) 
-                {
-                    filterRow['type'] = parentTable.nme
-                }
-                let conditions = this.queryBuilder.getCondition(filterRow);
-                options['conditions'] = conditions
-            } 
-            else if(parentTable && table.mrp)
-            {
-                let conditions = this.queryBuilder.getCondition({
-                    type: parentTable.nme
-                });
-                options['conditions'] = conditions
+                filterRow['type'] = parentTable.nme
             }
+            let conditions = this.queryBuilder.getCondition(filterRow);
+            options['conditions'] = conditions
+        } 
+        else if(parentTable && table.mrp)
+        {
+            let conditions = this.queryBuilder.getCondition({
+                type: parentTable.nme
+            });
+            options['conditions'] = conditions
+        }
 
-            this.tableService.getTableData(tableUrl, options)
-                .then( res => {
-                    this.setState({
-                        firstRow: first,
-                        data: res.data,
-                        dataLoading: false,
-                        totalRows: res.totalRows
-                    })
+        this.tableService.getTableData(tableUrl, options)
+            .then( res => {
+                this.setState({
+                    firstRow: first,
+                    data: res.data,
+                    dataLoading: false,
+                    totalRows: res.totalRows
                 })
-                .catch( err => {
-                    this.setState({ dataLoading: false })
-                })
-
-        }, 250)
+            })
+            .catch( err => {
+                this.setState({ dataLoading: false })
+            })
     }
 
-    // @function: it refresh data in table and remove filter and selection
+    // ------------------------------------------------------------
+    // | refresh data of table. also remove filter and selection  | 
+    // ------------------------------------------------------------
     onRefreshTableData() {
         const { table, firstRow } = this.state
         this.setState({ 
             showFilter: false,
             row: {},
             isSelect: false,
+        }, () => {
+            this.onLoadData(table.url, firstRow) 
         }) 
-        this.onLoadData(table.url, firstRow)
     }
 
+    // ------------------------------------------------------------
+    // | check if row selected (this work in list view mode)      | 
+    // ------------------------------------------------------------
     isSelectedRow() {
         let { isSelect } = this.state
         if(!isSelect) {
@@ -327,6 +335,10 @@ class MainView extends Component {
         return true
     }
 
+    // ---------------------------------------------------
+    // | on detail tab click                             | 
+    // | remove selecteion and filter and change url     | 
+    // ---------------------------------------------------
     onTabChange(e) {
         const { details, cols } = this.state
         const { match } = this.props
@@ -344,6 +356,9 @@ class MainView extends Component {
         history.push(match.url + "/" + detailTable.url)
     }
 
+    // ---------------------------------------------------
+    // | refresh detail table when having selection row  | 
+    // ---------------------------------------------------
     refreshTab(row) {
         const { details, table, activeDetailIndex } = this.state
         if(activeDetailIndex !== -1) {
@@ -403,14 +418,22 @@ class MainView extends Component {
         }
     }
 
+    // ----------------------------------------------------------------------
+    // | on language change                                                | 
+    // | set state language and refresh data table                         | 
+    // | you cannot change lang while you are in create mode               | 
+    // | in edit & view you can change lang & see row in diffrent lang     | 
+    // | only multi language col will replace with translated data         | 
+    // ---------------------------------------------------------------------
     onLanguageChange(lang, refreshData = true) {
         if(refreshData) 
         {
             if(lang) 
             {
-                this.setState({ lang })
+                this.setState({ lang }, () => {
+                    this.onRefreshTableData()
+                })
             }
-            this.onRefreshTableData()
         }
         else
         {
@@ -474,6 +497,9 @@ class MainView extends Component {
         this.setState({ alertMode: '' })
     }
 
+    // ---------------------------------------
+    // | destroy design in alert dialog      | 
+    // ---------------------------------------
     onSubmitAlertDialog(mode) {
         if(mode === 'delete') 
         {
@@ -540,6 +566,9 @@ class MainView extends Component {
         }
     }
 
+    // ------------------------------------------------
+    // | change mode to create or edit or custom      | 
+    // ------------------------------------------------
     onShowDialog(mode, selectedRow = null) {
         if(mode === 'create') 
         {
@@ -578,6 +607,12 @@ class MainView extends Component {
 
     }
 
+    // ------------------------------------------------
+    // | submit :)                                    |  
+    // | submit form in edit or create mode           | 
+    // | it fill apiObject                            | 
+    // | if table is polymorphic table set type       | 
+    // ------------------------------------------------
     onSubmitForm(filledRow, mode) {
         const { pureRow, table, cols, lang } = this.state
         let fields = []
@@ -693,6 +728,9 @@ class MainView extends Component {
         }
     }
 
+    // ------------------------------------------
+    // | set slected row by received row        | 
+    // ------------------------------------------
     onSelectionChange(selectedRow, refreshTabData = true) {
         Object.keys(selectedRow).forEach(key => {
             if (typeof selectedRow[key] === 'object' && selectedRow[key] === null) {
@@ -708,14 +746,19 @@ class MainView extends Component {
         }
     }
 
+    // -------------------------------------------
+    // | get table info and then get data        | 
+    // -------------------------------------------
     getTableInfo() {
         let tableUrl = this.props.match.params.table
         this.tableService.getTableInfo(tableUrl)
             .then(({ table, cols, details, perm, totalRows })  =>  {
                 let row = {}
                 cols.map( (item, index) => row[item.nme] = '' )
-                this.setState({ cols, table, details, row, perm, totalRows, defaultView: table.grd ? 'grd' : 'lst'})
-                this.onLoadData(tableUrl, 0)
+                this.setState(
+                    { cols, table, details, row, perm, totalRows, defaultView: table.grd ? 'grd' : 'lst'},
+                    () => { this.onLoadData(tableUrl, 0)}
+                )
             })
             .catch(err => this.setState({ err: err.response })  ) 
     }
@@ -751,7 +794,6 @@ class MainView extends Component {
             totalRows,
             filterRow,
             showFilter,
-            isMapLoaded,
             lang,
             defaultView,
             viewLoading,
