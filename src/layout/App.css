@@ -492,6 +492,7 @@ body .p-checkbox-label {
 }
 
 .grid-item-img {
+	background-color: rgba(0, 0, 0, 0.3);
 	position: relative;
 }
 .grid-item-btn { 

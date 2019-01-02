@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Paginator } from 'primereact/paginator';
 import { Lightbox } from 'primereact/lightbox';
 import { DataView } from 'primereact/dataview';
+import { imageTemplteParser } from '../../utils/parser';
 import { Button } from 'primereact/button'
 
 export default class GridComponent extends Component {
@@ -34,7 +35,7 @@ export default class GridComponent extends Component {
                 {onTableCustomShow(table)}
             </div>
             <div>
-               <Button 
+                <Button 
                     onClick={() => onChangeView('lst')}
                     icon='fa fa-bars'
                     className='p-button-secondary toolbar-btn'
@@ -59,7 +60,7 @@ export default class GridComponent extends Component {
                 <div className='grid-item-img'>
                     <img 
                         style={{maxWidth:'100%', height:'auto'}} 
-                        src='http://destription.com/home-images/point.jpg'
+                        src={imageTemplteParser(item, table)}
                     />
                     <div className='grid-item-btn'>
                         {onRowCustomShow(table, item)}

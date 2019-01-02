@@ -77,11 +77,13 @@ export default class TableComponent extends Component {
                         className='p-button-secondary toolbar-btn'
                     />
                 }
-                <Button 
-                    onClick={() => onChangeView('grd')}
-                    icon='fa fa-th-large'
-                    className='p-button-secondary toolbar-btn'
-                />
+                {table.gim &&
+                    <Button 
+                        onClick={() => onChangeView('grd')}
+                        icon='fa fa-th-large'
+                        className='p-button-secondary toolbar-btn'
+                    />
+                }
             </div>
         </div>
     }

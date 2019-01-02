@@ -389,7 +389,7 @@ class MainView extends Component {
                             detailCols: cols,
                             detailTable: table,
                             detailTotalRows: totalRows,
-                            defaultView: table.grd ? 'grd' : 'lst'
+                            defaultView: table.tmp
                         })
                         let options = {
                             lang: this.state.lang,
@@ -749,7 +749,7 @@ class MainView extends Component {
                 let row = {}
                 cols.map( (item, index) => row[item.nme] = '' )
                 this.setState(
-                    { cols, table, details, row, perm, totalRows, defaultView: table.grd ? 'grd' : 'lst'},
+                    { cols, table, details, row, perm, totalRows, defaultView: table.tmp },
                     () => { this.onLoadData(tableUrl, 0)}
                 )
             })

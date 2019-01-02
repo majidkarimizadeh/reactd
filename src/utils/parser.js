@@ -40,6 +40,17 @@ export function lookupParser(lookups) {
 	return lookups
 }
 
+export function imageTemplteParser(row, table) {
+	console.log(row, table.gim)
+	if(row && table && table.gim && row[table.gim]
+		&& !(row[table.gim] == 'jpeg' || row[table.gim] == 'jpg' || row[table.gim] == 'png')
+		)
+	{
+		return SITE_URL + "/storage/images/" + table.nme + "/" + row[table.gim];
+	}
+	return 'http://destription.com/images/favicon.png';
+}
+
 export function imageParser(record, field) {
 
 	if(field.nme && record[field.nme])
