@@ -272,14 +272,14 @@ class MainView extends Component {
             }
             if(showFilter) 
             {
-                if(parentTable && table.mrp && Number(table.mrp) === 1) 
+                if(parentTable && table.mrp) 
                 {
                     filterRow['type'] = parentTable.nme
                 }
                 let conditions = this.queryBuilder.getCondition(filterRow);
                 options['conditions'] = conditions
             } 
-            else if(parentTable && table.mrp && Number(table.mrp) === 1)
+            else if(parentTable && table.mrp)
             {
                 let conditions = this.queryBuilder.getCondition({
                     type: parentTable.nme
@@ -355,7 +355,7 @@ class MainView extends Component {
             {
                 const rowPrimary = row[table.pk]
                 let foreignKey;
-                if(Number(detailTable.mrp) === 1) {
+                if(detailTable.mrp) {
                     foreignKey = 'relation_id'
                     cluse.push({
                         key: 'type',
@@ -598,12 +598,11 @@ class MainView extends Component {
                 apiObject.append(col.nme, filledRow[col.nme])
             })
 
-            // if(Number(table.mrp) === 1) 
-            // {
-            //     const { parentTable } = this.props
-            //     apiObject.append('type', parentTable.nme)
-            //     return;
-            // }
+            if(table.mrp) 
+            {
+                const { parentTable } = this.props
+                apiObject.append('type', parentTable.nme)
+            }
 
             this.rowService.storeRow(apiObject)
                 .then( res => {
@@ -651,6 +650,13 @@ class MainView extends Component {
                 let col = cols.find( (col) => col.no === item)
                 apiObject.append(col.nme, filledRow[col.nme])
             })
+
+            if(table.mrp) 
+            {
+                const { parentTable } = this.props
+                apiObject.append('type', parentTable.nme)
+            }
+            
             this.rowService.updateRow(apiObject)
                 .then( res => {  
                     this.onRefreshTableData()
@@ -751,7 +757,7 @@ class MainView extends Component {
             viewLoading,
         } = this.state
 
-        const { match } = this.props
+        const { match, parentTable } = this.props
 
         if (err) {
             throw err
@@ -768,6 +774,7 @@ class MainView extends Component {
                 />
                 {(mode && mode !== 'custom') &&
                     <FormComponent
+                        parentTable={parentTable}
                         table={table}
                         cols={cols}
                         mode={mode}

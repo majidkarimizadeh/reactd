@@ -204,11 +204,26 @@ export default class FormComponent extends Component {
         })
     }
 
-    onLookUp(rdf, name) {
+    onLookUp(col) {
+        const rdf = col.rdf
+        const name = col.nme
         let { options } = this.state
-        let { lang } = this.props
+        let { lang, parentTable } = this.props
         let apiObject = new FormData()
-        apiObject.append('rdf', rdf)
+
+        if(Array.isArray(rdf)) 
+        {
+            const rdfObjetct = rdf.find( item => {
+                return (parentTable.nme in item) && (item[parentTable.nme])
+            })
+            if(rdfObjetct) {
+                apiObject.append('rdf', rdfObjetct[parentTable.nme])
+            } else {
+                return
+            }
+        } else {
+            apiObject.append('rdf', rdf)
+        }
         if(lang) 
         {
             apiObject.append('lang', lang)
@@ -329,7 +344,7 @@ export default class FormComponent extends Component {
                                                     required={required}
                                                     placeholder={col.plh}
                                                     onInputChange={this.onInputChange}
-                                                    onMouseDown={() => {this.onLookUp(col.rdf, col.nme)}}
+                                                    onMouseDown={() => {this.onLookUp(col)}}
                                                 /> 
                                             </div>)
 
