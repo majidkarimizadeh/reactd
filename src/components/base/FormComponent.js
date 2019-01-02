@@ -207,9 +207,23 @@ export default class FormComponent extends Component {
     onLookUp(col) {
         const rdf = col.rdf
         const name = col.nme
-        let { options } = this.state
+        const related = col.rlt
+        let { options, emptyRow } = this.state
         let { lang, parentTable } = this.props
         let apiObject = new FormData()
+
+        if(related) 
+        {   
+            if((related in emptyRow) && emptyRow[related]) 
+            {
+                apiObject.append('relatedKey', related)
+                apiObject.append('relatedValue', emptyRow[related])
+            }
+            else
+            {
+                return
+            }
+        }
 
         if(Array.isArray(rdf)) 
         {
@@ -224,10 +238,12 @@ export default class FormComponent extends Component {
         } else {
             apiObject.append('rdf', rdf)
         }
+
         if(lang) 
         {
             apiObject.append('lang', lang)
         }
+
         this.lookUpService.getLookUpByRdf(apiObject)
             .then( opts => {
                 options[name] = opts
