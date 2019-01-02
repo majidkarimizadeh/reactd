@@ -40,7 +40,8 @@ export default class FormComponent extends Component {
         this.onCropComplete = this.onCropComplete.bind(this)
         this.makeClientCrop = this.makeClientCrop.bind(this)
         this.getCroppedImg = this.getCroppedImg.bind(this)
-
+        
+        this.onMapLoad = this.onMapLoad.bind(this)
         this.lookUpService = new LookUpService()
     }
 

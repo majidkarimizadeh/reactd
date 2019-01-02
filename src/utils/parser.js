@@ -162,16 +162,13 @@ export function roleParser(roles) {
 }
 
 export function geoPointParser(str) {
-	const point = str.split('_')
-	return [
-		new window.google.maps.Marker({
-       			position: {
-	       			lat: point[0], lng: point[1]
-       			}
-       	})
-	]
+	if(str.indexOf('_') !== -1) {
+		return str.split('_')
+	} else {
+		return null
+	}
 }
 
 export function geoPointToStringParser(point) {
-	return point.lat().toString() + '_' + point.lng().toString();
+	return point.lat.toString() + '_' + point.lng.toString();
 }

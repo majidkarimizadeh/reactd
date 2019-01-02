@@ -1,40 +1,30 @@
- /* global google */ 
-import React, { Component } from 'react'
+ import React, { Component } from 'react'
 import { MAP_API, MAP_CENTER } from '../../utils/config'
 import { geoPointToStringParser, geoPointParser } from '../../utils/parser'
-import { GMap } from 'primereact/gmap'
+import { Map, TileLayer, Marker, Popup }  from 'react-leaflet'
 import Loader from 'react-loader-spinner'
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
 
 export default class GeoPointComponent extends Component {
 
 	constructor(props) {
 		super(props)
 		this.onMapClick = this.onMapClick.bind(this)
-	}
-
-    componentWillMount() {
-    	const { value } = this.props
-    	const script = document.createElement("script")
-    	script.src = MAP_API
-    	script.id = 'map-api'
-    	script.async = true
-    	script.defer = true
-    	script.addEventListener('load', () => {
-	      	window.google = google
-	      	const { onMapLoad } = this.props
-	      	onMapLoad(true)
-	    })
-    	if(!document.getElementById("map-api")) {
-    		document.body.appendChild(script)
-    	}
-    }
+	}	
 
     onMapClick(e) {
-    	const { onInputChange, name, readOnly } = this.props
-    	if(!readOnly) 
-    	{
-			const str = geoPointToStringParser(e.latLng)
-			onInputChange(str, name)
+    	const { readOnly, onInputChange, name } = this.props
+    	if(!readOnly) {
+    		let str = geoPointToStringParser(e.latlng)
+    		onInputChange(str, name)
     	}
     }
 
@@ -49,6 +39,8 @@ export default class GeoPointComponent extends Component {
 			isMapLoaded
 		} = this.props
 
+		let point = geoPointParser(value)
+
 		return (
 			<div>
 				<label className='lable' htmlFor={`lbl-${index}`}> 
@@ -57,24 +49,22 @@ export default class GeoPointComponent extends Component {
                         <span className='required'>(این فیلد اجباری است)</span>
                     }
                 </label>
-				{isMapLoaded && 
-					<GMap 
-						overlays={geoPointParser(value)}
-						options={MAP_CENTER}
-						onMapClick={this.onMapClick}
-						style={{width: '100%', minHeight: '320px'}} 
-					/>
-				}
-				{!isMapLoaded && 
-					<div style={{textAlign:'center'}}>
-						<Loader 
-	                        type="Puff"
-	                        color="#5867dd"
-	                        height="100"   
-	                        width="100"
-	                    />
-					</div>
-				}
+				<Map 
+					animate={true}
+					style={{height:'300px'}} 
+					center={point ? point : [35.6892, 51.3890]} 
+					zoom={16}
+					onClick={this.onMapClick}
+				>
+			        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+			        {!!point &&
+				        <Marker position={point}>
+				          	<Popup>
+				            	{label}
+				          	</Popup>
+				        </Marker>
+			    	}
+			    </Map>
 			</div>
 		)
 	}
