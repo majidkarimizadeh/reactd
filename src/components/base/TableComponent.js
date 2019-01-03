@@ -63,6 +63,13 @@ export default class TableComponent extends Component {
                 {onAllCustomShow(table)}
             </div>
             <div>
+                {(perm.select && Number(table.exp) !== 0) &&
+                    <Button 
+                        onClick={() => this.dt.exportCSV() }
+                        icon='fa fa-file-excel-o'
+                        className='p-button-secondary toolbar-btn'
+                    />
+                }
                 {perm.select &&
                     <Button 
                         onClick={() => onFilterVisibilityChange() }
