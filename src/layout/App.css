@@ -2,6 +2,11 @@ html, body, #root{
   	height:100%;
 }
 
+.layout-wrapper .layout-sidebar ul li ul{
+	padding-left: 0px !important;
+	padding-right: 1.5em !important;
+}
+
 .full-width-upload-btn > span {
 	width: 100% !important;
 }
