@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Paginator } from 'primereact/paginator';
 import { Lightbox } from 'primereact/lightbox';
 import { DataView } from 'primereact/dataview';
-import { imageTemplteParser } from '../../utils/parser';
+import { imageParser } from '../../utils/parser';
 import { Button } from 'primereact/button'
 
 export default class GridComponent extends Component {
@@ -47,6 +47,7 @@ export default class GridComponent extends Component {
     itemTemplate(item) {
         const { 
             table,
+            cols,
             perm,
             onRowCustomShow,
             onShowAlertDialog,
@@ -55,13 +56,33 @@ export default class GridComponent extends Component {
             onRefreshTableData,
         } = this.props
 
+        const fields = table.grd
+        let image = ''
+        let title = ''
+
+        if(!!fields) {
+            fields.map( field => {
+                let col = cols.find(function(c) {
+                    return c.no === field
+                })
+                if(col.cnt === 'img') 
+                {
+                    image = <img 
+                        style={{maxWidth:'100%', height:'auto'}} 
+                        src={imageParser(item, col, false)}
+                    />
+                }
+                else 
+                {
+                    title = item[col.nme]
+                }
+            })
+        }
+
         return (
             <div className='grid-item'>
                 <div className='grid-item-img'>
-                    <img 
-                        style={{maxWidth:'100%', height:'auto'}} 
-                        src={imageTemplteParser(item, table)}
-                    />
+                    {image}
                     <div className='grid-item-btn'>
                         {onRowCustomShow(table, item)}
                         {perm.select &&
@@ -88,7 +109,7 @@ export default class GridComponent extends Component {
                     </div>
                 </div>
                 <div>
-                    {item.name}
+                    {title}
                 </div>
             </div>
         );

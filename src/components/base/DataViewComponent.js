@@ -97,6 +97,7 @@ class DataViewComponent extends Component {
                 {(!viewLoading && defaultView === 'grd') &&
                     <GridComponent
                         data={data}
+                        cols={cols}
                         table={table}
                         dataLoading={dataLoading}
                         firstRow={firstRow}

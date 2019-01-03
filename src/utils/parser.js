@@ -40,20 +40,9 @@ export function lookupParser(lookups) {
 	return lookups
 }
 
-export function imageTemplteParser(row, table) {
-	console.log(row, table.gim)
-	if(row && table && table.gim && row[table.gim]
-		&& !(row[table.gim] == 'jpeg' || row[table.gim] == 'jpg' || row[table.gim] == 'png')
-		)
-	{
-		return SITE_URL + "/storage/images/" + table.nme + "/" + row[table.gim];
-	}
-	return 'http://destription.com/images/favicon.png';
-}
+export function imageParser(record, field, isShow = true) {
 
-export function imageParser(record, field) {
-
-	if(field.nme && record[field.nme])
+	if(field.nme && record[field.nme] && isShow)
 	{
 		if(record[field.nme] == 'jpeg' || record[field.nme] == 'jpg' || record[field.nme] == 'png') 
 		{
@@ -64,7 +53,7 @@ export function imageParser(record, field) {
 			return SITE_URL + "/" + record[field.nme]
 		}
 	}
-	return false;
+	return 'http://destription.com/images/favicon.png';
 }
 
 export function getJalDateByGreDate(date, hasTime = false) {
