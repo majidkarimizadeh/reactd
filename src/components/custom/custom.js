@@ -1,7 +1,7 @@
-import RoleComponent from './components/Role/RoleComponent'
-import TourComponent from './components/Tour/TourComponent'
-import UserComponent from './components/User/UserComponent'
-import TourTypeComponent from './components/TourType/TourTypeComponent'
+import RoleComponent from './Role/RoleComponent'
+import TourComponent from './Tour/TourComponent'
+import UserComponent from './User/UserComponent'
+import TourTypeComponent from './TourType/TourTypeComponent'
 
 export const rowCustoms = {
 	roles: [
