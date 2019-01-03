@@ -12,7 +12,8 @@ import {
     getJalDateByGreDate, 
     getFormatedGreDate, 
     imageParser, 
-    boolParser 
+    boolParser,
+    stripTag
 } from '../../utils/parser'
 
 export default class TableComponent extends Component {
@@ -96,8 +97,7 @@ export default class TableComponent extends Component {
     }
 
     wysiwygTemplate(rowData, column, columnAttr ,thisClass = null) {
-        const regex = /(<([^>]+)>)/ig
-        return rowData[column.field] ? rowData[column.field].replace(regex, '') : ''
+        return stripTag(rowData[column.field])
     }
 
     textFilterTemplate(name, type = null) {

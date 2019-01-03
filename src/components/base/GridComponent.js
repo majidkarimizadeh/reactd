@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Paginator } from 'primereact/paginator';
 import { Lightbox } from 'primereact/lightbox';
 import { DataView } from 'primereact/dataview';
-import { imageParser } from '../../utils/parser';
+import { imageParser, stripTag } from '../../utils/parser';
 import { Button } from 'primereact/button'
 
 export default class GridComponent extends Component {
@@ -74,7 +74,10 @@ export default class GridComponent extends Component {
                 }
                 else 
                 {
-                    title = item[col.nme]
+                    title = stripTag(item[col.nme])
+                    if(title.length > 24) {
+                        title = title.substr(0, 22) + '...'
+                    }
                 }
             })
         }

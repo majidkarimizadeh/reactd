@@ -172,3 +172,13 @@ export function geoPointParser(str) {
 export function geoPointToStringParser(point) {
 	return point.lat.toString() + '_' + point.lng.toString();
 }
+
+
+export function stripTag(text) {
+	const regex = /(<([^>]+)>)/ig
+	if(text) 
+	{
+		return text.replace(regex, '')
+	} 
+	return ''
+}
