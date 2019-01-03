@@ -380,7 +380,6 @@ class MainView extends Component {
                             detailCols: cols,
                             detailTable: table,
                             detailTotalRows: totalRows,
-                            defaultView: table.tmp
                         })
                         let options = {
                             lang: this.state.lang,
