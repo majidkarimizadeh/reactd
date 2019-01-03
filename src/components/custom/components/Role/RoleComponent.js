@@ -7,7 +7,7 @@ import { ScrollPanel } from 'primereact/components/scrollpanel/ScrollPanel'
 import { CustomService } from '../../../service/CustomService'
 import { roleParser } from '../../../utils/parser'
 
-export class RoleComponent extends Component {
+export default class RoleComponent extends Component {
 
     constructor(props) {
         super(props)

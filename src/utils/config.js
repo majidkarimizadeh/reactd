@@ -26,3 +26,10 @@ export const LANGUAGES = [
 ]
 
 export const DEFAULT_LANGUAGE = 'fa'
+
+export const CUSTOM_MODES = [
+	'cc', // custom create component
+	'cv', // custom view component
+	'ce', // custom edit component
+	'cd', // custom delete component
+];

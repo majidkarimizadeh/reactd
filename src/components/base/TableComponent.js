@@ -34,28 +34,28 @@ export default class TableComponent extends Component {
             <div>
                 {perm.delete && 
                     <Button 
-                        onClick={() => onShowAlertDialog(('cd' in table) ? 'custom' : 'delete')}
+                        onClick={() => onShowAlertDialog(('cd' in table) ? 'cd' : 'delete')}
                         icon='fa fa-trash'
                         className='p-button-secondary toolbar-btn'
                     />
                 }
                 {perm.select &&
                     <Button 
-                        onClick={() => onShowDialog(('cv' in table) ? 'custom' : 'view')}
+                        onClick={() => onShowDialog(('cv' in table) ? 'cv' : 'view')}
                         icon='fa fa-eye'
                         className='p-button-secondary toolbar-btn'
                     />
                 }
                 {perm.update &&
                     <Button
-                        onClick={() => onShowDialog(('ce' in table) ? 'custom' : 'edit')}
+                        onClick={() => onShowDialog(('ce' in table) ? 'ce' : 'edit')}
                         icon='fa fa-pencil'
                         className='p-button-secondary toolbar-btn'
                     />
                 }
                 {perm.insert &&
                     <Button 
-                        onClick={() => onShowDialog(('cc' in table) ? 'custom' : 'create')}
+                        onClick={() => onShowDialog(('cc' in table) ? 'cc' : 'create')}
                         icon='fa fa-plus'
                         className='p-button-secondary toolbar-btn'
                     />

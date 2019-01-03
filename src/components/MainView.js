@@ -13,7 +13,7 @@ import { Messages } from 'primereact/messages'
 import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
 import { getTableCustom, getRowCustom, getCustomMode } from './custom'
-import { EQ , DEFAULT_LANGUAGE } from '../utils/config'
+import { EQ , DEFAULT_LANGUAGE, CUSTOM_MODES } from '../utils/config'
 import QueryBuilder from '../utils/queryBuilder'
 import Loader from 'react-loader-spinner'
 import history from '../utils/history'
@@ -198,32 +198,23 @@ class MainView extends Component {
     // | show buttons of custom forms that need table   | 
     // --------------------------------------------------
     onTableCustomShow(table) {
-        const tableBtns = getTableCustom(table.nme)
-        return tableBtns.map( btn => {
-            return btn(this);
-        })
+        return getTableCustom(table.nme, this)
     }
 
     // --------------------------------------------------
     // | show buttons of custom forms that need row     | 
     // --------------------------------------------------
     onRowCustomShow(table, row = null) {
-        const rowBtns = getRowCustom(table.nme)
-        return rowBtns.map( btn => {
-            return btn(row, this);
-        })
+        return getRowCustom(table.nme, row, this)
     }
 
     // --------------------------------------------------
     // | show buttons of custom forms (all of them)     | 
     // --------------------------------------------------
     onAllCustomShow(table, row = null) {
-        const tableBtns = getTableCustom(table.nme)
-        const rowBtns = getRowCustom(table.nme)
-        const btns = tableBtns.concat(rowBtns);
-        return btns.map( btn => {
-            return btn(row, this);
-        })
+        const tableBtns = getTableCustom(table.nme, this)
+        const rowBtns = getRowCustom(table.nme, row, this)
+        return tableBtns.concat(rowBtns);
     }
 
     // ----------------------------------------------------
@@ -562,6 +553,14 @@ class MainView extends Component {
     // | change mode to create or edit or custom      | 
     // ------------------------------------------------
     onShowDialog(mode, selectedRow = null) {
+
+        if(CUSTOM_MODES.indexOf(mode) !== -1)
+        {
+            const { table } = this.state
+            getCustomMode(table.nme, selectedRow, mode, this)
+            return;
+        } 
+
         if(mode === 'create') 
         {
             let { cols } = this.state
@@ -570,14 +569,6 @@ class MainView extends Component {
             this.setState({ mode, row, isSelect: false })
             return
         }
-        else if(mode === 'custom')
-        {
-            const { table } = this.state
-            this.setState({
-                mode,
-                customComponent: getCustomMode(table.nme, this)
-            })
-        } 
         else 
         {
             if(selectedRow) {

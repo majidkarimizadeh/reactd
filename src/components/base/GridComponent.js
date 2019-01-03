@@ -27,7 +27,7 @@ export default class GridComponent extends Component {
             <div>
                 {perm.insert &&
                     <Button 
-                        onClick={() => onShowDialog(('cc' in table) ? 'custom' : 'create')}
+                        onClick={() => onShowDialog(('cc' in table) ? 'cc' : 'create')}
                         icon='fa fa-plus'
                         className='p-button-secondary toolbar-btn'
                     />
