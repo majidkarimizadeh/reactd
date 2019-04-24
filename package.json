@@ -10,6 +10,7 @@
     "font-awesome": "^4.7.0",
     "fullcalendar": "4.0.0-alpha",
     "html-react-parser": "^0.4.7",
+    "immutable": "^4.0.0-rc.12",
     "leaflet": "^1.4.0",
     "moment": "^2.22.2",
     "moment-jalaali": "^0.8.1",
