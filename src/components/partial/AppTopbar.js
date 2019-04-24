@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { AuthService } from '../../service/AuthService'
 import history from '../../utils/history'
 import { Menu } from 'primereact/menu';
-import { Button } from 'primereact/button';
 
 export class AppTopbar extends Component {
 

@@ -9,7 +9,6 @@ import App from './App';
 import LoginComponent from './components/auth/LoginComponent'
 import LogoutComponent from './components/auth/LogoutComponent'
 import RegisterComponent from './components/auth/RegisterComponent'
-import ErrorBoundary from './utils/errorBoundary'
 
 ReactDOM.render(
     <Router history={history}>

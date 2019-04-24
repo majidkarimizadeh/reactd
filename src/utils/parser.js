@@ -44,7 +44,7 @@ export function imageParser(record, field, isShow = true) {
 
 	if(field.nme && record[field.nme] && isShow)
 	{
-		if(record[field.nme] == 'jpeg' || record[field.nme] == 'jpg' || record[field.nme] == 'png') 
+		if(record[field.nme] === 'jpeg' || record[field.nme] === 'jpg' || record[field.nme] === 'png') 
 		{
 			return SITE_URL + "/images/profiles/" + record.id + "/p." + record[field.nme]
 		}
@@ -135,7 +135,7 @@ export function roleParser(roles) {
 	let tableName = null;
 	for (var i = 0; i < roles.length; i++) {
 		let meta_value = JSON.parse(roles[i].meta_value);
-		if(meta_value.table == undefined) 
+		if(meta_value.table === undefined) 
 		{
 			tableName = i;
 			roleObjects[tableName] = {

@@ -5,7 +5,6 @@ import { InputText } from 'primereact/inputtext'
 import { Password } from 'primereact/password'
 import { Button } from 'primereact/button';
 import { AuthService } from '../../service/AuthService'
-import { Message } from 'primereact/message';
 import { validationErrorParser } from '../../utils/parser'
 import history from '../../utils/history'
 import Loader from 'react-loader-spinner'

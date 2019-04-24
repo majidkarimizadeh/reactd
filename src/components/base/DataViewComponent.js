@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Route, withRouter } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import TableComponent from './TableComponent'
 import GridComponent from './GridComponent'
@@ -8,27 +7,12 @@ class DataViewComponent extends Component {
     
     render() {
         const { 
-            err,
             data, 
             cols, 
             table,
             row,
-            mode,
-            alertMode,
             options,
             details,
-            activeDetailIndex,
-            detailDetails,
-            detailData,
-            detailCols,
-            detailTable,
-            detailRow,
-            detailTotalRows,
-            baseSrc,
-            src,
-            crop,
-            isLoading,
-            customComponent,
             perm,
             viewLoading,
             dataLoading,
@@ -37,8 +21,6 @@ class DataViewComponent extends Component {
             totalRows,
             filterRow,
             showFilter,
-            isMapLoaded,
-            lang,
             defaultView,
 
 

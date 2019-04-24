@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
-import TreeComponent from '../../base/TreeComponent'
-import TextAreaComponent from '../../base/TextAreaComponent'
 import SwitchComponent from '../../base/SwitchComponent'
 import { Button } from 'primereact/button'
-import { ScrollPanel } from 'primereact/components/scrollpanel/ScrollPanel'
 import { CustomService } from '../../../service/CustomService'
-import { colParser } from '../../../utils/parser'
 
 export default class TourTypeComponent extends Component {
 
@@ -25,7 +21,7 @@ export default class TourTypeComponent extends Component {
 
     componentWillMount() {
         let apiObject = new FormData()
-        const { table, row } = this.props
+        const { row } = this.props
         apiObject.append('slug', row['slug'])
         this.service.post('get-tour-cols', apiObject)
             .then( res => {
@@ -89,7 +85,7 @@ export default class TourTypeComponent extends Component {
 
         Object.keys(formCols).forEach( (formCol, i) => {
             cols.forEach( (col, j) => {
-                if(col.nme == formCol) 
+                if(col.nme === formCol) 
                 {
                     formColsArray.push(col)
                 }
@@ -98,7 +94,7 @@ export default class TourTypeComponent extends Component {
 
         Object.keys(uiCols).forEach( (uiCol, i) => {
             cols.forEach( (col, j) => {
-                if(col.nme == uiCol) 
+                if(col.nme === uiCol) 
                 {
                     uiColsArray.push(col)
                 }
@@ -133,14 +129,12 @@ export default class TourTypeComponent extends Component {
     render() {
 
         const {
-            table,
             row,
             dispatch
         } = this.props
 
         const {
             cols,
-            selected,
             formCols,
             requireCols,
             uiCols,

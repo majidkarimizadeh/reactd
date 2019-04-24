@@ -4,7 +4,7 @@ export default class QueryBuilder {
 
 	getCondition(filter)
     {
-        let cluse = new Array()
+        let cluse = []
         let where = []
         Object.keys(filter).forEach((key) => {            
             if( filter[key] !== '') 
@@ -16,7 +16,7 @@ export default class QueryBuilder {
                 })
             }
         })
-        if(cluse.length != 0) 
+        if(cluse.length !== 0) 
         {
             where = [{
                 logic: 'AND',

@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { InputText } from 'primereact/inputtext'
-import { Password } from 'primereact/password'
-import { Button } from 'primereact/button'
 import { AuthService } from '../../service/AuthService'
 import { Message } from 'primereact/message'
 import './style.css'

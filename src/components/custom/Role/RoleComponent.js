@@ -62,7 +62,7 @@ export default class RoleComponent extends Component {
 
         const { growl } = this.props
 
-        let perm = select << 3 | insert << 2 | update << 1 | del
+        let perm = (select << 3) | (insert << 2) | (update << 1) | del
         let apiObject = new FormData()
         apiObject.append('perm', perm)
         apiObject.append('condition', condition)
@@ -104,14 +104,12 @@ export default class RoleComponent extends Component {
     render() {
 
         const {
-            table,
             row,
             dispatch
         } = this.props
 
         const {
             tree,
-            roles,
             selectedRoleValue,
             condition,
             select,

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import LanguageSelector from '../partial/LanguageSelector'
-import TreeComponent from './TreeComponent'
 import SelectComponent from './SelectComponent'
 import TextComponent from './TextComponent'
 import DatePickerComponent from './DatePickerComponent'
@@ -278,7 +277,6 @@ export default class FormComponent extends Component {
 		const {
             table,
             cols,
-            row,
             mode,
             lang,
             onLanguageChange,
@@ -289,19 +287,19 @@ export default class FormComponent extends Component {
         let modeFields = []
         let imagesFields = []
 
-        if(mode == 'view') 
+        if(mode === 'view') 
         { 
             modeFields = table.shw 
         }
-        else if(mode == 'edit') 
+        else if(mode === 'edit') 
         {
             modeFields = table.edt
         }
-        else if(mode == 'create') 
+        else if(mode === 'create') 
         {
             modeFields = table.crt
         }
-        else if(mode == 'custom') 
+        else if(mode === 'custom') 
         {
             modeFields = table.crt
         }

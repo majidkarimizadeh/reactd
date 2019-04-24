@@ -10,7 +10,7 @@ export default class LanguageSelector extends Component {
     }
 
     componentWillMount() {
-        const { value, onLanguageChange, readOnly } = this.props
+        const { value, readOnly } = this.props
         if(readOnly) 
         {
             this.selected = LANGUAGES.find( item => {

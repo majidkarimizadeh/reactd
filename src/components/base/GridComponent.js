@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Paginator } from 'primereact/paginator';
-import { Lightbox } from 'primereact/lightbox';
 import { DataView } from 'primereact/dataview';
 import { imageParser, stripTag } from '../../utils/parser';
 import { Button } from 'primereact/button'
@@ -19,7 +18,6 @@ export default class GridComponent extends Component {
             perm,
             onTableCustomShow,
             onShowDialog,
-            onRefreshTableData,
             onChangeView,
         } = this.props
 
@@ -52,8 +50,6 @@ export default class GridComponent extends Component {
             onRowCustomShow,
             onShowAlertDialog,
             onShowDialog,
-            onFilterVisibilityChange,
-            onRefreshTableData,
         } = this.props
 
         const fields = table.grd
@@ -70,6 +66,7 @@ export default class GridComponent extends Component {
                     image = <img 
                         style={{maxWidth:'100%', height:'auto'}} 
                         src={imageParser(item, col, false)}
+                        alt={stripTag(item[col.nme])}
                     />
                 }
                 else 
@@ -127,7 +124,6 @@ export default class GridComponent extends Component {
             firstRow,
             numRows,
             onLoadData,
-            dataLoading,
         } = this.props
 
     	return (

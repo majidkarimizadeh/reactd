@@ -1,8 +1,6 @@
- import React, { Component } from 'react'
-import { MAP_API, MAP_CENTER } from '../../utils/config'
+import React, { Component } from 'react'
 import { geoPointToStringParser, geoPointParser } from '../../utils/parser'
 import { Map, TileLayer, Marker, Popup }  from 'react-leaflet'
-import Loader from 'react-loader-spinner'
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -36,7 +34,6 @@ export default class GeoPointComponent extends Component {
 			label,
 			required,
 			readOnly,
-			isMapLoaded
 		} = this.props
 
 		let point = geoPointParser(value)

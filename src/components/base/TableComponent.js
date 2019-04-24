@@ -3,11 +3,9 @@ import DatePickerComponent from './DatePickerComponent'
 import SelectComponent from './SelectComponent'
 import TextComponent from './TextComponent'
 import { Button } from 'primereact/button'
-import { Dropdown } from 'primereact/dropdown'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { Lightbox } from 'primereact/lightbox'
-import { SelectButton } from 'primereact/selectbutton'
 import { 
     getJalDateByGreDate, 
     getFormatedGreDate, 
@@ -130,7 +128,7 @@ export default class TableComponent extends Component {
     }
     booleanFilterTemplate(name) {
         const { onFilterInputChange, filterRow } = this.props
-        let options = new Array()
+        let options = []
         options[ [name] ] = [
             {'label': 'خیر', value: 0},
             {'label': 'بله', value: 1}
@@ -161,7 +159,7 @@ export default class TableComponent extends Component {
     }
     imageFilterTemplate(name) {
         const { onFilterInputChange, filterRow } = this.props
-        let options = new Array()
+        let options = []
         options[ [name] ] = [
             {'label': 'ندارد', value: 0},
             {'label': 'دارد', value: 1}

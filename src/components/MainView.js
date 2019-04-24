@@ -10,7 +10,6 @@ import { LookUpService } from '../service/LookUpService'
 import { TabView,TabPanel } from 'primereact/tabview'
 import { Growl } from 'primereact/growl'
 import { Messages } from 'primereact/messages'
-import { getPixelCrop } from 'react-image-crop'
 import { validationErrorParser } from '../utils/parser'
 import { getTableCustom, getRowCustom, getCustomMode } from './custom'
 import { EQ , DEFAULT_LANGUAGE, CUSTOM_MODES } from '../utils/config'
@@ -221,7 +220,7 @@ class MainView extends Component {
     // | complete filter object and load data with filter | 
     // ----------------------------------------------------
     onFilterInputChange(data, name) {
-        const { filterRow, table, firstRow, numRows, lang } = this.state
+        const { filterRow, table, firstRow } = this.state
         let filter = {...filterRow}
         filter[name] = data
         this.setState({ filterRow: filter }, 
@@ -423,7 +422,7 @@ class MainView extends Component {
                 apiObject.append('url', table.url)
                 apiObject.append('lang', lang)
                 apiObject.append('primary', row[table.pk])
-                apiObject.append('mode', (mode == 'edit') ? 'edt' : 'shw')
+                apiObject.append('mode', (mode === 'edit') ? 'edt' : 'shw')
                 this.rowService.getRow(apiObject)
                     .then( res => {
                         let resRow = res.data
@@ -596,7 +595,7 @@ class MainView extends Component {
     // | if table is polymorphic table set type       | 
     // ------------------------------------------------
     onSubmitForm(filledRow, mode) {
-        const { pureRow, table, cols, lang } = this.state
+        const { table, cols, lang } = this.state
         let fields = []
         let apiObject = new FormData()
         if(lang) 
@@ -765,9 +764,6 @@ class MainView extends Component {
             detailTable,
             detailRow,
             detailTotalRows,
-            baseSrc,
-            src,
-            crop,
             isLoading,
             customComponent,
             perm,
