@@ -22,7 +22,7 @@
     "react": "^16.6.3",
     "react-advance-jalaali-datepicker": "^1.0.0",
     "react-dom": "^16.6.3",
-    "react-froala-wysiwyg": "^2.9.1",
+    "react-froala-wysiwyg": "^2.9.5-1",
     "react-image-crop": "^6.0.9",
     "react-leaflet": "^2.1.4",
     "react-loader-spinner": "^2.2.0",
